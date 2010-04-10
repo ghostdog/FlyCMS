@@ -2,8 +2,10 @@
 
 class Model_FlyOrm extends ORM {
 
-    public function get_errors($name) {
-        return $this->_validate->errors($name);
+    protected $error_msg_filename = '';
+
+    public function get_errors() {
+        return $this->_validate->errors($this->error_msg_filename);
     }
 
     public function save_if_valid(Array $values) {
@@ -17,11 +19,13 @@ class Model_FlyOrm extends ORM {
     public function is_unique(Validate $array, $target) {
                 $exists = (bool) $this->where($target, '=', $array[$target])->count_all();
 		if ($exists)
-			$array->error($target, 'Podana wartość już istnieje, musisz podać inną.' );
+			$array->error($target, Kohana::message($this->error_msg_filename.'.'.$target));
     }
 
     public function get_validator() {
         return $this->_validate;
     }
+
+
 }
 ?>

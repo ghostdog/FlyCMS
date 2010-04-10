@@ -2,8 +2,8 @@
 	
 	class Controller_Admin_Admin extends Controller_Fly {
 
-
-		public $template = 'admin/template';
+		public $template = 'template';
+                
                 protected $model;
   
                 protected function set_page_title($title) {
@@ -11,15 +11,15 @@
 		}
 		
 		protected function load_page_content($view) {
-			$this->template->content = View::factory('admin/'.$view);
+			$this->template->content = View::factory($view);
 		}
 
                 protected function set_page_content($content) {
                     $this->template->content = $content;
                 }
 
-                protected function set_content_var($val_name, $val_content) {
-                    $this->template->content->$val_name = $val_content;
+                protected function set_content_var($var_name, $value) {
+                    $this->template->content->$var_name = $value;
                 }
 
                 protected function set_success_msg($msg_id) {
@@ -35,6 +35,10 @@
                             $this->template->content->errors =
                                 arr::merge($this->template->content->errors, $errors);
                     else $this->template->content->errors = $errors;
+                }
+
+                protected function get_page_content() {
+                    return $this->template->content;
                 }
 
 		protected function is_ajax() {

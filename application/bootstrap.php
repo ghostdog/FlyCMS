@@ -73,6 +73,7 @@ Kohana::modules(array(
 
 	// 'pagination' => MODPATH.'pagination', // Paging of results
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
+           'image' => MODPATH.'image',
 	   'formo' => MODPATH.'formo',
            'firephp' => MODPATH.'firephp',
            'flyform' => MODPATH.'flyform', 
@@ -80,6 +81,7 @@ Kohana::modules(array(
            'orm'        => MODPATH.'orm',        // Object Relationship Mapping
            'templates'  => MODPATH.'templates',
            'unittest'   =>MODPATH.'unittest',
+           'templates' =>MODPATH.'templates',
 
 	));
 
