@@ -18,7 +18,7 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
            $add_form = View::factory('tpl_form')->bind('template', $template);
 
            $this->template->content->tpl_content = $add_form;
-           if ($_POST) {
+           if ($_POST) { 
                         $template = arr::merge($template, $_POST);
                        if ($this->model->validate_template(arr::merge($_POST, $_FILES))) {
                            
