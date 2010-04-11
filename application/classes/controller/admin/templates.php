@@ -6,7 +6,7 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
         parent::before();
         $this->model = ORM::factory('template');
         $this->set_page_title('Szablony');
-        $this->template->center = View::factory('tpl_main');
+        $this->load_page_content('tpl_main');
     }
 
     public function action_index() {
@@ -17,7 +17,7 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
            $template = array('name' => '', 'description' => '');
            $add_form = View::factory('tpl_form')->bind('template', $template);
 
-           $this->template->center->tpl_content = $add_form;
+           $this->template->content->tpl_content = $add_form;
            if ($_POST) { 
                         $template = arr::merge($template, $_POST);
                        if ($this->model->validate_template(arr::merge($_POST, $_FILES))) {

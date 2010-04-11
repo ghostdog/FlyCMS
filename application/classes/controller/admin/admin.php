@@ -11,23 +11,23 @@
 		}
 		
 		protected function load_page_content($view) {
-			$this->template->center = View::factory($view);
+			$this->template->content = View::factory($view);
 		}
 
                 protected function set_page_content($content) {
-                    $this->template->center = $content;
+                    $this->template->content = $content;
                 }
 
                 protected function set_content_var($var_name, $value) {
-                    $this->template->center->$var_name = $value;
+                    $this->template->content->$var_name = $value;
                 }
 
                 protected function set_success_msg($msg_id) {
-                    $this->template->center->msg = Kohana::message('success', $msg_id);
+                    $this->template->content->msg = Kohana::message('success', $msg_id);
                 }
 
                 protected function set_form_vals(Array $values) {
-                    $this->template->center->values = $values;
+                    $this->template->content->values = $values;
                 }
 
                 protected function set_form_errors(Array $errors) {
