@@ -9,7 +9,7 @@ class ZipArchiveInstaller extends ArchiveInstaller {
         parent::__construct();
     }
 
-    public function validate(Validate & $validate, array $required_content) {
+    public function validate(Validate $validate, array $required_content) {
         $this->zip->open(self::$upload_path.'temp.zip');
         $tmp_extract_folder = self::$temp_path.time();
         Fire::log($tmp_extract_folder, 'tmp_extract_folder');

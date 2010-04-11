@@ -15,7 +15,7 @@ return array(
             'Upload::valid' => 'Upload pliku zakończony niepowodzeniem.',
             'Upload::type' => 'Niepoprawne rozszerzenie przekazanego pliku. Dopuszczalne rozszerzenia to: :param1',
             'invalid' => 'Brak wymaganych plików szablonu',
-        )
+        ),
 )
 
 

@@ -19,9 +19,10 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
 
            $this->template->content->tpl_content = $add_form;
            if ($_POST) { 
-                        $template = arr::merge($template, $_POST);
-                       if ($this->model->validate_template(arr::merge($_POST, $_FILES))) {
-                           
+                        $template = arr::merge($template, $_POST, $_FILES);
+                       if ($this->model->validate_template($template)) {
+                           $this->model->save();
+                           $this->set_success_msg('templates');
                        } else {
                            $this->template->content->tpl_content->errors = $this->model->get_tpl_errors();
                        }

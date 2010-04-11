@@ -11,7 +11,7 @@ abstract class ArchiveInstaller {
         fire::log(self::$upload_path, 'upload_path');
     }
     
-    abstract public function validate(Validate & $validate, array $required_content);
+    abstract public function validate(Validate $validate, array $required_content);
 
     abstract public function install($path);
 

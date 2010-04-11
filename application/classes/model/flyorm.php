@@ -19,7 +19,7 @@ class Model_FlyOrm extends ORM {
     public function is_unique(Validate $array, $target) {
                 $exists = (bool) $this->where($target, '=', $array[$target])->count_all();
 		if ($exists)
-			$array->error($target, Kohana::message($this->error_msg_filename.'.'.$target));
+			$array->error($target, 'unique');
     }
 
     public function get_validator() {

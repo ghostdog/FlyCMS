@@ -35,7 +35,7 @@ class File extends Kohana_File {
         foreach ($dir_files as $file) {
                 $ext = self::get_filename_ext($file);
                 if (in_array($ext, $extensions))
-                        $result[] = $file->getFilename();
+                        $result[] = $file;
         }
         if (empty($result)) return false;
         else return $result;

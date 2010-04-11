@@ -22,6 +22,8 @@ class Model_Template extends Model_FlyOrm {
     }
 
     public function validate_template(Array $values) {
+        $this->values($values);
+        $this->created = time();
         $validate = $this->get_data_validator($values);
         if ($validate->check()) {
             $tpl_path = $this->templates_dir.$values['name'];
@@ -31,16 +33,18 @@ class Model_Template extends Model_FlyOrm {
                         return true;
                     } else {
                         $validate->error('file', Kohana::message($this->error_msg_filename, 'file.invalid'));
-                        fire::log(Kohana::message($this->error_msg_filename, 'file.invalid'));//Brak wymaganych plików szablonu
                     }
                 } else {
                     if ($this->upload_exists($validate)) {
-                        $this->upload_install_if_valid($validate, $tpl_path);
+                       if ($this->upload_install_if_valid($validate, $tpl_path)) {
+                           $this->create_thumb_img_if_exists($tpl_path);
+                           return true;
+                       }
                     }
                 }
         }
         $this->errors = $validate->errors($this->error_msg_filename); 
-        fire::log($this->errors);// array('file'=>'templates.file.Brak wymaganych plików szablonu')
+        fire::log($this->errors);
         return false;
     }
 
@@ -96,14 +100,14 @@ class Model_Template extends Model_FlyOrm {
             Upload::save($array['file'], 'temp.'.$ext);
             $installer = ArchiveInstaller::get_installer_by_ext($ext);
             if ($installer->validate($array, self::$required_files))
-                    $installer->install($tpl_path);
-            Fire::log($array->errors()); 
+                    return $installer->install($tpl_path);
             return false;
     }
-
-
-   
-
-
+    
+    public function __get($name) {
+        $value = parent::__get($name);
+        if ($name == 'created')
+            return date("Y-m-d H:i:s", $value);
+    }
 }
 ?>
