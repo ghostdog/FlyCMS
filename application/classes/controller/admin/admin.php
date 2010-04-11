@@ -11,23 +11,23 @@
 		}
 		
 		protected function load_page_content($view) {
-			$this->template->content = View::factory($view);
+			$this->template->center = View::factory($view);
 		}
 
                 protected function set_page_content($content) {
-                    $this->template->content = $content;
+                    $this->template->center = $content;
                 }
 
                 protected function set_content_var($var_name, $value) {
-                    $this->template->content->$var_name = $value;
+                    $this->template->center->$var_name = $value;
                 }
 
                 protected function set_success_msg($msg_id) {
-                    $this->template->content->msg = Kohana::message('success', $msg_id);
+                    $this->template->center->msg = Kohana::message('success', $msg_id);
                 }
 
                 protected function set_form_vals(Array $values) {
-                    $this->template->content->values = $values;
+                    $this->template->center->values = $values;
                 }
 
                 protected function set_form_errors(Array $errors) {
@@ -35,10 +35,6 @@
                             $this->template->content->errors =
                                 arr::merge($this->template->content->errors, $errors);
                     else $this->template->content->errors = $errors;
-                }
-
-                protected function get_page_content() {
-                    return $this->template->content;
                 }
 
 		protected function is_ajax() {
