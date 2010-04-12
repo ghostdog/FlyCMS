@@ -18,10 +18,10 @@ class ZipArchiveInstaller extends ArchiveInstaller {
         $files_found = file::search_dir_files_by_names($tmp_extract_folder, $required_content);
         if ($files_found == FALSE || sizeof($required_content) != sizeof($files_found)) {
             $validate->error('file', Kohana::message('templates', 'file.invalid'));
-            file::remove_dir($tmp_extract_folder);
+            file::recursive_remove_directory($tmp_extract_folder);
             return false;
         }
-        file::remove_dir($tmp_extract_folder);
+        file::recursive_remove_directory($tmp_extract_folder);
         return true;
     }
 

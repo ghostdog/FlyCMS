@@ -13,7 +13,7 @@ class Model_Template extends Model_FlyOrm {
 
 //width: 325
 //height: 249
-    public function __construct($model, $id = null) {
+    public function __construct($id = null) {
         $this->templates_dir = MODPATH.'templates/views/';
         $this->allowed_archive_ext = Kohana::config('templates.allowed_archive_ext');
         $this->allowed_img_ext = Kohana::config('templates.allowed_img_ext');
@@ -48,6 +48,10 @@ class Model_Template extends Model_FlyOrm {
         return false;
     }
 
+    public function get_all_templates() {
+        return $this->find_all()->as_array('name');
+    }
+
     public function get_tpl_errors() {
         return $this->errors;
     }
@@ -66,6 +70,7 @@ class Model_Template extends Model_FlyOrm {
                     $img_processor = Image::factory($tpl_path.'/'.$img);
                     $img_processor->resize(self::$thumb_img_h, self::$thumb_img_w);
                     $img_processor->save();
+                    $this->has_img = 1;
                 }
             }
         }

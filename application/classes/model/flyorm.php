@@ -21,11 +21,5 @@ class Model_FlyOrm extends ORM {
 		if ($exists)
 			$array->error($target, 'unique');
     }
-
-    public function get_validator() {
-        return $this->_validate;
-    }
-
-
 }
 ?>
