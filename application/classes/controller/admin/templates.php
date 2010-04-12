@@ -12,6 +12,7 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
     public function action_index() {
         $this->template->content->tpl_content = View::factory('tpl_list');
         Fire::log($this->model->get_all_templates());
+        Fire::log($this->model->as_array());
     }
 
     public function action_add() {

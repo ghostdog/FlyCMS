@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access');
 
-class Model_Template extends Model_FlyOrm {
-
+class Model_Template extends Model_Fly {
+ 
     private $templates_dir = '';
     private $allowed_archive_ext = array();
     private $allowed_img_ext = array();
@@ -10,20 +10,22 @@ class Model_Template extends Model_FlyOrm {
     private static $thumb_img_w = 375;
     private static $thumb_img_h = 325;
     private static $thumb_img_name = 'example';
+    private static $error_msg_filename = 'templates';
 
 //width: 325
 //height: 249
-    public function __construct($id = null) {
+    public function __construct() {
+        $this->create_dao('template');
         $this->templates_dir = MODPATH.'templates/views/';
         $this->allowed_archive_ext = Kohana::config('templates.allowed_archive_ext');
         $this->allowed_img_ext = Kohana::config('templates.allowed_img_ext');
-        $this->error_msg_filename = 'templates';
-        parent::__construct($id);
+
+        parent::__construct();
     }
 
     public function validate_template(Array $values) {
-        $this->values($values);
-        $this->created = time();
+        $this->set_dao_values($values);
+        $this->dao->created = time();
         $validate = $this->get_data_validator($values);
         if ($validate->check()) {
             $tpl_path = $this->templates_dir.$values['name'];
@@ -49,7 +51,7 @@ class Model_Template extends Model_FlyOrm {
     }
 
     public function get_all_templates() {
-        return $this->find_all()->as_array('name');
+        return $this->find_all()->as_array();
     }
 
     public function get_tpl_errors() {
@@ -82,21 +84,26 @@ class Model_Template extends Model_FlyOrm {
                     ->filters('name', array('trim' => NULL, 'htmlspecialchars' => NULL))
                     ->filters('description', array('trim' => NULL, 'htmlspecialchars' => NULL))
                     ->rules('name', array(
-                                    'not_empty' => array(),
+                                    'not_empty' => NULL,
                                     'min_length' => array(3),
                                     'max_length' => array(50),
                                     'alpha_dash' => array(),
                             ))
                     ->rules('file', array(
-                                'Upload::valid' => array(),
+                                'Upload::valid' => NULL,
                                 'Upload::type' => array($this->allowed_archive_ext),
+                                'Upload::not_empty' => NULL
                               ))
                     ->rule('description', 'max_length', array(255))
                     ->callback('name', array($this, 'is_unique'));
     }
 
     private function upload_exists(Validate & $array) {
-        $array->rules('file', array('Upload::not_empty' => array()));
+        $array->rules('file', array(
+                                'Upload::valid' => NULL,
+                                'Upload::type' => array($this->allowed_archive_ext),
+                                'Upload::not_empty' => NULL
+                              ));
         return $array->check();
     }
     

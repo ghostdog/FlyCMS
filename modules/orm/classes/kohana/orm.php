@@ -124,7 +124,12 @@ class Kohana_ORM {
 	public function __construct($id = NULL)
 	{
 		// Set the object name and plural name
-		$this->_object_name   = strtolower(substr(get_class($this), 6));
+		//$this->_object_name   = strtolower(substr(get_class($this), 6));
+
+                $class_name = get_class($this);
+                $last_ = utf8::strrpos($class_name, '_'); // Magic number is evil
+                $obj_name = utf8::substr($class_name, ++$last_);
+                $this->_object_name = strtolower($obj_name);
 		$this->_object_plural = inflector::plural($this->_object_name);
 
 		if ( ! isset($this->_sorting))
