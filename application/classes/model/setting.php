@@ -2,6 +2,8 @@
 
 class Model_Setting extends Model_FlyOrm {
 
+    protected $_has_one = array('template' => array());
+
     protected $_filters = array
     (
         TRUE       => array('trim' => array()),

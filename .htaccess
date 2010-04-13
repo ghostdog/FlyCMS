@@ -11,7 +11,7 @@ RewriteCond $1 ^(application|system|modules)
 
 # Rewrite to index.php/access_denied/URL
 RewriteRule ^(.*)$ / [PT,L]
-RewriteRule ^(media|images|css) - [PT,L]
+RewriteRule ^(media) - [PT,L]
 
 # Allow these directories and files to be displayed directly:
 # - index.php (DO NOT FORGET THIS!)

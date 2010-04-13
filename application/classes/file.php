@@ -22,7 +22,7 @@ public static function recursive_remove_directory($directory, $empty=FALSE)
 				$path = $directory.'/'.$item;
 				if(is_dir($path))
 				{
-					recursive_remove_directory($path);
+					self::recursive_remove_directory($path);
 				}else{
 					unlink($path);
 				}
@@ -57,7 +57,7 @@ public static function recursive_remove_directory($directory, $empty=FALSE)
         }
     }
 
-    public static function search_dir_files_by_names($dir_path, array $file_names) {
+    public static function search_by_names($dir_path, array $file_names) {
         $dir_files = self::list_dir_filenames($dir_path);
         $files_found = array();
         foreach($dir_files as $file) {
@@ -68,10 +68,21 @@ public static function recursive_remove_directory($directory, $empty=FALSE)
         else return $files_found;
     }
 
-    public static function search_dir_files_by_ext($dir_path, array $extensions) {
+    public static function search_img_by_name($name, $dir_path) {
+        $extensions = array('png', 'jpg', 'gif');
+        $regex = '/'.$name.'\.['.implode('|', $extensions).']/i';
+        $dir_files = self::list_dir_filenames($dir_path);
+        foreach($dir_files as $file) {
+            if (preg_match($regex, $file))
+                    return $file;
+        }
+        return false;
+    }
+
+    public static function search_by_ext($dir_path, array $extensions) {
         $dir_files = self::list_dir_filenames($dir_path);
         foreach ($dir_files as $file) {
-                $ext = self::get_filename_ext($file);
+                $ext = self::get_ext($file);
                 if (in_array($ext, $extensions))
                         $result[] = $file;
         }
@@ -79,12 +90,12 @@ public static function recursive_remove_directory($directory, $empty=FALSE)
         else return $result;
     }
 
-    public static function remove_filename_ext($file_name) {
+    public static function remove_ext($file_name) {
         $splitted = explode('.', $file_name);
         return $splitted[0];
     }
 
-    public static function get_filename_ext($file_name) {
+    public static function get_ext($file_name) {
          $splitted = explode('.', $file_name);
          return $splitted[1];
     }

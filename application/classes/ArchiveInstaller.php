@@ -2,15 +2,14 @@
 
 abstract class ArchiveInstaller {
 
-    public static $upload_path = '';
-    public static $temp_path = '';
+    protected $upload_path = '';
+    protected $temp_path = '';
 
     public function __construct() {
-        self::$upload_path = DOCROOT.'upload/';
-        self::$temp_path = DOCROOT.'tmp/';
-        fire::log(self::$upload_path, 'upload_path');
+        $this->upload_path = DOCROOT.'upload/';
+        $this->temp_path = DOCROOT.'tmp/';
     }
-    
+
     abstract public function validate(Validate $validate, array $required_content);
 
     abstract public function install($path);
