@@ -42,7 +42,7 @@ public static function recursive_remove_directory($directory, $empty=FALSE)
 
 
     public static  function list_dir_filenames($dir_path) {
-        $di = new DirectoryIterator($dir_path);
+        $di = new DirectoryIterator(DOCROOT.$dir_path);
         foreach($di as $file) {
             if ($file->isFile())
                     $files[] = $file->getFilename();
@@ -51,7 +51,7 @@ public static function recursive_remove_directory($directory, $empty=FALSE)
     }
 
     public static function remove_dir($dir_path) {
-        $di = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir_path));
+        $di = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(DOCROOT.$dir_path));
         foreach ($di as $file) {
                 unlink($file->getPathname());
         }
@@ -96,6 +96,7 @@ public static function recursive_remove_directory($directory, $empty=FALSE)
     }
 
     public static function get_ext($file_name) {
+         fire::log($file_name);
          $splitted = explode('.', $file_name);
          return $splitted[1];
     }

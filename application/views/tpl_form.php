@@ -1,6 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access'); ?>
 <p><?php echo req ?> pola wymagane</p>
-<p><em><?php echo misc::print_if($msg); ?></em></p>
 <?php
     echo form::open('admin/templates/add', array('enctype' => 'multipart/form-data'));
     echo form::fieldset('Dodaj Szablon');

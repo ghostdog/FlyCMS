@@ -53,15 +53,5 @@ class Model_Setting extends Model_FlyOrm {
                 )
 	);
 
-//	protected $_callbacks = array
-//	(
-//		'username'			=> array('username_available'),
-//		'email'					=> array('email_available'),
-//	);
-
-        protected $_has_one = array('template' => array());
-
-
-    
 }
 ?>

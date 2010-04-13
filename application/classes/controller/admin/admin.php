@@ -3,8 +3,13 @@
 	class Controller_Admin_Admin extends Controller_Fly {
 
 		public $template = 'template';
-                
+                protected $msg_key = '';
                 protected $model;
+
+                protected function load($id) {
+                    $this->model->find($id);
+                    return $this->model->loaded();
+                }
   
                 protected function set_page_title($title) {
 			$this->template->page_title = $title;
@@ -22,8 +27,10 @@
                     $this->template->content->$var_name = $value;
                 }
 
-                protected function set_success_msg($msg_id) {
-                    $this->template->content->msg = Kohana::message('success', $msg_id);
+                protected function set_msg($msg_name, $is_success = true) {
+                    if ($is_success) $msg_file = 'success';
+                    else $msg_file = 'fail';
+                    $this->template->content->msg = Kohana::message($msg_file, $this->msg_key.'.'.$msg_name);
                 }
 
                 protected function set_form_vals(Array $values) {

@@ -17,9 +17,21 @@ class Model_FlyOrm extends ORM {
     }
     
     public function is_unique(Validate $array, $target) {
-                $exists = (bool) $this->where($target, '=', $array[$target])->count_all();
+                $exists = (bool) $this->where($target, '=', $array[$target])->and_where('id', '!=', $this->id)->count_all();
 		if ($exists)
 			$array->error($target, 'unique');
+    }
+
+    public function is_saved() {
+        return $this->_saved;
+    }
+
+    public function is_loaded() {
+        return $this->_loaded;
+    }
+
+    public function find_all_except_this() {
+        return $this->where('id', '!=', $this->id)->find_all();
     }
 }
 ?>

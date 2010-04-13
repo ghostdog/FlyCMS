@@ -1,5 +1,12 @@
-<?php define('APP_NAME', 'FlyCMS');
-      define('req', '<em class="required">*</em>')
+<?php
+    define('APP_NAME', 'FlyCMS');
+    define('req', '<em class="required">*</em>');
+    define('IMGS_PATH', 'media/img/tpl_examples/');
+
+    function get_tpl_img($tpl_name) {
+        $img_file = file::search_img_by_name($tpl_name, IMGS_PATH);
+        return html::image(IMGS_PATH.$img_file, array('alt' => 'Miniaturka obrazka szablonu'));
+    }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

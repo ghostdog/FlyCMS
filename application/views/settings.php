@@ -1,10 +1,6 @@
 <p><?php echo req ?> pola wymagane</p>
 <p><em><?php echo misc::print_if($msg); ?></em></p>
 <?php
-//    if (! isset($settings)) {
-//      $settings = misc::empty_assoc_array_from_keys('title', 'subtitle', 'template', 'header_on',
-//                                                    'footer_on', 'sidebar', 'keywords', 'description');
-//    }
     if (isset($_POST['settings_submit'])) $settings = arr::merge($settings, $_POST);
     
     echo form::open('admin/settings/save');
@@ -22,9 +18,25 @@
                                     poniżej nazwy strony, w zależności od ustawionego szablonu');
     echo form::close_fieldset();
     echo form::fieldset('Szablon witryny');
-    echo form::select_w_label('template_id', 'Wybierz szablon', $settings['template_id'], array(0 => 'blank'));
-    echo html::anchor('admin/template/add', 'Dodaj nowy');
-    echo html::anchor('admin/template/preview', 'Podglądnij');
+   // echo form::select_w_label('template_id', 'Wybierz szablon', $settings['template_id'], $templates);
+?>
+   <div id="templates-chooser">
+       <em>Wybierz globalny szablon</em>
+       <ul>
+           <?php foreach ($templates as $tpl): ?>
+           <li>
+               <?php 
+                    echo get_tpl_img($tpl->name);
+                    echo html::anchor('admin/templates/preview/'.$tpl->id, 'Podglądnij');
+                    echo form::hidden($tpl->name, $tpl->id);
+               ?>
+           </li>
+           <?php endforeach ?>
+       </ul>
+   </div>
+<?php
+    echo html::anchor('admin/templates/add', 'Dodaj nowy');
+
     echo form::close_fieldset();
 
     echo form::fieldset('Elementy witryny');

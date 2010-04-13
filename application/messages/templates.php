@@ -6,7 +6,7 @@ return array(
             'min_length' => 'Minimalna długość nazwy szablonu to :param1 znaki',
             'max_length' => 'Maksymalna długość nazwy szablonu to :param1 znaki',
             'not_empty' => 'Musisz podać nazwę szablonu.',
-            'alpha_dash' => 'Nazwa szablonu może składać się z liter, cyfr, znaku podkreślnika i myślnika, bez białych znaków',
+            'standard_text' => 'Nazwa szablonu może składać się z liter, cyfr, znaku podkreślnika, myślnika i białych znaków.',
             'unique' => 'Istnieje już szablon z taką nazwą. Musisz podać inną.',
         ),
 

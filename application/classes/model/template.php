@@ -4,10 +4,10 @@ class Model_Template extends Model_FlyOrm {
 
     protected $_belongs_to = array('setting' => array());
 
-    private $templates_dir = '';
-    private $allowed_archive_ext = array();
-    private $allowed_img_ext = array();
-    private $errors = array();
+    private $templates_dir;
+    private $allowed_archive_ext;
+    private $allowed_img_ext;
+    private $errors;
     private static $required_files = array('header.php', 'content.php', 'footer.php', 'sidebar.php');
     private static $thumb_img_w = 425;
     private static $thumb_img_h = 375;
@@ -16,7 +16,7 @@ class Model_Template extends Model_FlyOrm {
 //width: 325
 //height: 249
     public function __construct($id = null) {
-        $this->templates_dir = MODPATH.'templates/views/';
+        $this->templates_dir = 'modules/templates/views/';
         $this->allowed_archive_ext = Kohana::config('templates.allowed_archive_ext');
         $this->allowed_img_ext = Kohana::config('templates.allowed_img_ext');
         $this->error_msg_filename = 'templates';
@@ -25,8 +25,8 @@ class Model_Template extends Model_FlyOrm {
 
     public function validate_template(Array $values) {
         $this->values($values);
-        $this->created = time();
         $validate = $this->get_data_validator($values);
+        $this->created = time();
         if ($validate->check()) {
             $tpl_path = $this->templates_dir.$values['name'];
             if (file_exists($tpl_path)) {
@@ -46,8 +46,34 @@ class Model_Template extends Model_FlyOrm {
                 }
         }
         $this->errors = $validate->errors($this->error_msg_filename); 
-        fire::log($this->errors);
         return false;
+    }
+
+    public function remove_template($id) {
+        if ($this->count_all() < 2) return false;
+        $name = $this->name;
+        parent::delete($id);
+        if ( empty($this->name)) return false;
+        return file::recursive_remove_directory('modules/templates/views/'.$name);
+
+    }
+
+    public function set_template_global() {
+        $settings = ORM::factory('setting')->find();
+        $settings->template_id = $this->id;
+        $settings->save();
+        $old_global = $this->get_global_template();
+        if ($old_global->is_loaded()) {
+            $old_global->is_global = 0;
+            $old_global->save();
+        }
+        $this->is_global = 1;
+        $this->save();
+        return $settings->is_saved();
+    }
+
+    public function get_global_template() {
+        return ORM::factory('template')->where('is_global', '=', 1)->and_where('id', '!=', $this->id)->find();
     }
 
     public function get_templates() {
@@ -79,7 +105,6 @@ class Model_Template extends Model_FlyOrm {
         }
     }
 
-
     private function get_data_validator(array $values) {
             return Validate::factory($values)
                     ->filters('name', array('trim' => NULL))
@@ -88,7 +113,7 @@ class Model_Template extends Model_FlyOrm {
                                     'not_empty' => array(),
                                     'min_length' => array(3),
                                     'max_length' => array(50),
-                                    'alpha_dash' => array(),
+                                    'standard_text' => array(),
                             ))
                     ->rules('file', array(
                                 'Upload::valid' => array(),

@@ -2,13 +2,8 @@
 
 abstract class ArchiveInstaller {
 
-    protected $upload_path = '';
-    protected $temp_path = '';
-
-    public function __construct() {
-        $this->upload_path = DOCROOT.'upload/';
-        $this->temp_path = DOCROOT.'tmp/';
-    }
+    public static $upload_dir = 'upload/';
+    public static $temp_dir = 'tmp/';
 
     abstract public function validate(Validate $validate, array $required_content);
 

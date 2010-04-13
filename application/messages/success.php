@@ -2,8 +2,13 @@
 
     return array(
 
-        'settings' => 'Ustawienia zapisane z powodzeniem.',
-        'templates' => 'Szablon zapisany z powodzeniem.'
+        'settings' => array('save' => 'Ustawienia zapisane z powodzeniem.'),
+        'templates' => array(
+            'add' => 'Szablon zapisany z powodzeniem.',
+            'edit' => 'Szablon edytowany z powodzeniem.',
+            'remove' => 'Szablon usunięty z powodzeniem.',
+            'global' => 'Szablon został ustawiony jako globalny',
+        )
     )
 
 ?>
