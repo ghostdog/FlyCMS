@@ -6,7 +6,10 @@ class Model_Setting extends Model_FlyOrm {
 
     protected $_filters = array
     (
-        TRUE       => array('trim' => array()),
+        TRUE       => array('trim' => NULL),
+        'keywords' => array('htmlspecialchars' => NULL),
+        'description' => array('htmlspecialchars' => NULL),
+        'author' => array('htmlspecialchars' => NULL),
     );
 
 
@@ -50,6 +53,9 @@ class Model_Setting extends Model_FlyOrm {
                 (
                         'max_length'          => array(255),
                        
+                ),
+                'author' =>  array(
+                    'max_length' => array(50),
                 )
 	);
 

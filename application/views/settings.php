@@ -4,7 +4,7 @@
     if (isset($_POST['settings_submit'])) $settings = arr::merge($settings, $_POST);
     
     echo form::open('admin/settings/save');
-    echo form::fieldset('Nagłówek');
+    echo form::fieldset('Nagłówek'.req);
     echo form::cluetip('title', 'Nazwa strony może składać się z maksymalnie 50 znaków.');
     echo form::text_w_label('title', 'Nazwa strony', $settings['title']);
     echo form::error($errors['title']);
@@ -16,6 +16,7 @@
     echo form::help('subtitle', 'Opis strony powinienen zawierać krótki opis zawartości strony.
                                     Zwykle znajduje się poniżej nazwy strony, wyświetlany mniejszą czcionką, 
                                     poniżej nazwy strony, w zależności od ustawionego szablonu');
+    echo form::text_w_label('author', 'Autor strony');
     echo form::close_fieldset();
     echo form::fieldset('Szablon witryny');
    // echo form::select_w_label('template_id', 'Wybierz szablon', $settings['template_id'], $templates);

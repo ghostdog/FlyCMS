@@ -1,4 +1,5 @@
-<?php defined('SYSPATH') or die('No direct script accesss');
+<?php
+defined('SYSPATH') or die('No direct script accesss');
 
 class Controller_Admin_Templates extends Controller_Admin_Admin {
 

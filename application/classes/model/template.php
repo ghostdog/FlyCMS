@@ -12,7 +12,6 @@ class Model_Template extends Model_FlyOrm {
     private static $thumb_img_w = 425;
     private static $thumb_img_h = 375;
     private static $thumb_img_name = 'example';
-
 //width: 325
 //height: 249
     public function __construct($id = null) {
@@ -143,5 +142,6 @@ class Model_Template extends Model_FlyOrm {
             return date("Y-m-d H:i:s", $value);
         else return $value;
     }
+    
 }
 ?>

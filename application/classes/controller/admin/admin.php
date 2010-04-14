@@ -6,6 +6,8 @@
                 protected $msg_key = '';
                 protected $model;
 
+
+                
                 protected function load($id) {
                     $this->model->find($id);
                     return $this->model->loaded();
