@@ -40,7 +40,7 @@ class Model_Setting extends Model_FlyOrm {
 		(
 			'validate::digit'	=> NULL,
 		),
-		'column'                     => array
+		'sidebar_on'                     => array
 		(
 			'validate::digit'	=> NULL,
 		),

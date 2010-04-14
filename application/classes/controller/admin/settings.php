@@ -7,7 +7,7 @@ class Controller_Admin_Settings extends Controller_Admin_Admin {
         $this->msg_key = 'settings';
         $this->set_page_title('Ustawienia globalne');
         $this->load_page_content('settings');
-        $this->model = ORM::factory('setting', 1);
+        $this->model = Model::factory('setting')->find();
     }
 
     public function action_index() {
@@ -21,9 +21,9 @@ class Controller_Admin_Settings extends Controller_Admin_Admin {
     }
 
     public function after() {
-        $settings = $this->model->as_array();
-        $this->set_content_var('settings', $settings);
-        $this->set_content_var('templates', ORM::factory('template')->find_all());
+        if ($_POST) $this->model->values($_POST);
+        $this->set_content_var('settings', $this->model);
+        $this->set_content_var('templates', Model::factory('template')->get_templates());
         parent::after();
     }
 }
