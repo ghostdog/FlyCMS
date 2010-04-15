@@ -37,5 +37,9 @@ class Model_FlyOrm extends ORM {
     public function get_validate() {
         return $this->_validate;
     }
+
+    public function get_callbacks() {
+        return $this->_callbacks;
+    }
 }
 ?>

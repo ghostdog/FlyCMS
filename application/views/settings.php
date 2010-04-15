@@ -21,7 +21,7 @@
         $tpls[$tpl->id] = $tpl->name;
     }
     echo form::select_w_label('template_id', 'Wybierz szablon', $settings->template_id, $tpls);
-    echo html::anchor(set_controller_action('templates', 'add'), 'Dodaj nowy');
+    echo html::anchor(set_controller('templates', 'add'), 'Dodaj nowy');
     echo form::close_fieldset();
 
     echo form::fieldset('Elementy witryny');

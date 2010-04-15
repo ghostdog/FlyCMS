@@ -94,29 +94,10 @@ Kohana::modules(array(
 #
 Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
 		->defaults(array(
-		'directory' => 'admin',
-		//'controller' => 'asdf',
-		//'action' => 'blub',
+		'directory' => 'admin'
 ));
 
-Route::set('pages', 'pages/<action>(/<id>)')
-            ->defaults(array(
-                'directory' => 'admin',
-                'controller' => 'pages',
-));
-
-Route::set('templates', 'templates/<action>(/<id>)')
-            ->defaults(array(
-                'directory' => 'admin',
-                'controller' => 'templates',
-            ));
-Route::set('settings', 'settings/<action>(/<id>)')
-            ->defaults(array(
-                'controller' => 'settings',
-            ));
- 
- 
- Route::set('default', '(<controller>(/<action>(/<id>)))')
+Route::set('default', '(<controller>(/<action>(/<id>)))')
 	->defaults(array(
 		'controller' => 'welcome',
 		'action'     => 'index',
