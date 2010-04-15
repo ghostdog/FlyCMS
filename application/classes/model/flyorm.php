@@ -31,7 +31,11 @@ class Model_FlyOrm extends ORM {
     }
 
     public function find_all_except_this() {
-        return $this->where('id', '!=', $this->id)->find_all();
+        return ORM::factory($this->_object_name)->where('id', '!=', $this->id)->find_all();
+    }
+
+    public function get_validate() {
+        return $this->_validate;
     }
 }
 ?>

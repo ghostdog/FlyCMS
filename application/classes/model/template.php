@@ -107,7 +107,7 @@ class Model_Template extends Model_FlyOrm {
     private function get_data_validator(array $values) {
             return Validate::factory($values)
                     ->filters('name', array('trim' => NULL))
-                    ->filters('description', array('trim' => NULL, 'htmlspecialchars' => NULL))
+                    ->filters('description', array('trim' => NULL, 'html::chars' => NULL))
                     ->rules('name', array(
                                     'not_empty' => array(),
                                     'min_length' => array(3),

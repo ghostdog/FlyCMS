@@ -7,9 +7,11 @@ class Model_Setting extends Model_FlyOrm {
     protected $_filters = array
     (
         TRUE       => array('trim' => NULL),
-        'keywords' => array('htmlspecialchars' => NULL),
-        'description' => array('htmlspecialchars' => NULL),
-        'author' => array('htmlspecialchars' => NULL),
+        'keywords' => array('html::chars' => NULL),
+        'description' => array('html::chars' => NULL),
+        'author' => array('html::chars' => NULL),
+        'title' => array('html::chars' => NULL),
+        'subtitle' => array('html::chars' => NULL),
     );
 
 
@@ -30,19 +32,19 @@ class Model_Setting extends Model_FlyOrm {
 		'template_id'	=> array
 		(
 			'not_empty'             => NULL,
-                        'validate::digit'  => NULL,
+                        'digit'  => NULL,
 		),
 		'header_on'                     => array
 		(
-			'validate::digit'	=> NULL,
+			'digit'	=> NULL,
 		),
 		'footer_on'                     => array
 		(
-			'validate::digit'	=> NULL,
+			'digit'	=> NULL,
 		),
 		'sidebar_on'                     => array
 		(
-			'validate::digit'	=> NULL,
+			'digit'	=> NULL,
 		),
 		'keywords'                     => array
 		(

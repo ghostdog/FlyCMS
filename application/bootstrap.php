@@ -98,6 +98,22 @@ Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
 		//'controller' => 'asdf',
 		//'action' => 'blub',
 ));
+
+Route::set('pages', 'pages/<action>(/<id>)')
+            ->defaults(array(
+                'directory' => 'admin',
+                'controller' => 'pages',
+));
+
+Route::set('templates', 'templates/<action>(/<id>)')
+            ->defaults(array(
+                'directory' => 'admin',
+                'controller' => 'templates',
+            ));
+Route::set('settings', 'settings/<action>(/<id>)')
+            ->defaults(array(
+                'controller' => 'settings',
+            ));
  
  
  Route::set('default', '(<controller>(/<action>(/<id>)))')

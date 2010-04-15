@@ -12,7 +12,7 @@
     echo form::error($errors['file']);
     echo '</div>';
     echo form::cluetip('description', 'Treść podpowiedzi');
-    echo form::tarea_w_label('description', 'Opis szablonu', $template->description);
+    echo form::tarea_w_label('description', 'Opis szablonu', html::decode_chars($template->description));
     echo form::error($errors['description']);
     echo form::submit('template_submit', 'Dodaj Szablon');
     echo form::close();
