@@ -5,6 +5,7 @@
 		public $template = 'template';
                 protected $msg_key = '';
                 protected $model;
+                private $msg_file_name = 'messages';
 
 
                 
@@ -29,21 +30,14 @@
                     $this->template->content->$var_name = $value;
                 }
 
-                protected function set_msg($msg_name, $is_success = true) {
-                    if ($is_success) $msg_file = 'success';
-                    else $msg_file = 'fail';
-                    $this->template->content->msg = Kohana::message($msg_file, $this->msg_key.'.'.$msg_name);
-                }
+                protected function set_msg($msg_name, $is_success) {
+                    if ($is_success) $msg_key_suffix = '.success.';
+                    else $msg_key_suffix = '.fail.';
+                    fire::log(Kohana::message($this->msg_file_name,
+                            $this->msg_key.$msg_key_suffix.$msg_name), 'message');
+                    $this->template->content->msg = Kohana::message($this->msg_file_name,
+                            $this->msg_key.$msg_key_suffix.$msg_name);
 
-                protected function set_form_vals(Array $values) {
-                    $this->template->content->values = $values;
-                }
-
-                protected function set_form_errors(Array $errors) {
-                    if (isset($this->template->content->errors))
-                            $this->template->content->errors =
-                                arr::merge($this->template->content->errors, $errors);
-                    else $this->template->content->errors = $errors;
                 }
 
 		protected function is_ajax() {

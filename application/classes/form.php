@@ -57,4 +57,10 @@ class Form extends Kohana_Form {
        return $output .= '</div>';
    }
 
+   public static function submit_div($name, $value, $attr = array()) {
+       $submit = form::submit($name, $value, $attr);
+       return '<div class="submit">'.$submit.'</div>';
+
+   }
+
 }
