@@ -74,15 +74,11 @@ Kohana::modules(array(
 	// 'pagination' => MODPATH.'pagination', // Paging of results
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
            'image' => MODPATH.'image',
-	   'formo' => MODPATH.'formo',
            'firephp' => MODPATH.'firephp',
-           'flyform' => MODPATH.'flyform', 
            'database'   => MODPATH.'database',   // Database acces
            'orm'        => MODPATH.'orm',        // Object Relationship Mapping
            'templates'  => MODPATH.'templates',
            'unittest'   =>MODPATH.'unittest',
-           'templates' =>MODPATH.'templates',
-
 	));
 
 //Kohana::$log->attach(new FirePHP_Log_File(APPPATH.'logs'));

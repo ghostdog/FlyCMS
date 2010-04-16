@@ -33,11 +33,13 @@
                 protected function set_msg($msg_name, $is_success) {
                     if ($is_success) $msg_key_suffix = '.success.';
                     else $msg_key_suffix = '.fail.';
-                    fire::log(Kohana::message($this->msg_file_name,
-                            $this->msg_key.$msg_key_suffix.$msg_name), 'message');
-                    $this->template->content->msg = Kohana::message($this->msg_file_name,
+                    $this->template->msg = Kohana::message($this->msg_file_name,
                             $this->msg_key.$msg_key_suffix.$msg_name);
 
+                }
+
+                protected function set_form_errors(array $errors) {
+                    $this->template->content->errors = $errors;
                 }
 
 		protected function is_ajax() {

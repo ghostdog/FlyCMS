@@ -1,10 +1,9 @@
 <p><?php echo req ?> pola wymagane</p>
-<p><em><?php echo misc::print_if($msg); ?></em></p>
 <?php    
     echo form::open('admin/settings/save');
-    echo form::fieldset('Nagłówek'.req);
+    echo form::fieldset('Nagłówek');
     echo form::cluetip('title', 'Nazwa strony może składać się z maksymalnie 50 znaków.');
-    echo form::text_w_label('title', 'Nazwa strony', html::decode_chars($settings->title));
+    echo form::text_w_label('title'.req, 'Nazwa strony', html::decode_chars($settings->title));
     echo form::error($errors['title']);
     echo form::help('title', 'Nazwa strony wyświetlana jest w graficznym nagłówku każdej strony.
                                     Nie jest tym samym co tytuł strony....');

@@ -4,6 +4,8 @@ class Model_Setting extends Model_FlyOrm {
 
     protected $_has_one = array('template' => array());
 
+    protected $error_msg_filename = 'settings';
+
     protected $_filters = array
     (
         TRUE       => array('trim' => NULL),
@@ -25,7 +27,6 @@ class Model_Setting extends Model_FlyOrm {
 		),
                 'subtitle'			=> array
 		(
-			'not_empty'		=> NULL,
 			'min_length'		=> array(3),
 			'max_length'		=> array(50),
 		),

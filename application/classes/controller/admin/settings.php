@@ -17,7 +17,7 @@ class Controller_Admin_Settings extends Controller_Admin_Admin {
     public function action_save() {
         $saved = $this->model->save_if_valid($_POST);
         $this->set_msg('save', $saved);
-        if (! $saved) $this->set_content_var('errors', $this->model->get_errors('validate'));
+        if (! $saved) $this->set_form_errors($this->model->get_errors('validate'));
     }
 
     public function after() {

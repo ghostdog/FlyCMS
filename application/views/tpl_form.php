@@ -1,4 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access'); ?>
+<p><em><?php echo misc::print_if($msg); ?></em></p>
 <p><?php echo req ?> pola wymagane</p>
 <?php
     echo form::open('admin/templates/add', array('enctype' => 'multipart/form-data'));

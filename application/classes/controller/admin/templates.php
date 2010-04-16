@@ -1,5 +1,4 @@
-<?php
-defined('SYSPATH') or die('No direct script accesss');
+<?php defined('SYSPATH') or die('No direct script accesss');
 
 class Controller_Admin_Templates extends Controller_Admin_Admin {
 
@@ -8,7 +7,6 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
         $this->msg_key = 'templates';
         $this->model = new Model_Template();
         $this->set_page_title('Szablony');
-        $this->load_page_content('tpl_main');
     }
 
     public function action_index() {
@@ -16,13 +14,13 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
     }
 
     public function action_add() {
-       $this->model->values($_POST);
        $form = View::factory('tpl_form')->set('template', $this->model);
-       $this->set_content_var('tpl_content', $form);
+       $this->set_page_content($form);
        if ($_POST) {
+           $this->model->values($_POST);
            $is_valid = $this->model->validate_template(arr::merge($_POST, $_FILES));
            if ($is_valid) $this->model->save();
-           else $this->template->content->tpl_content->errors = $this->model->get_errors();
+           else $this->set_form_errors($this->model->get_errors());
            $this->set_msg('add', $is_valid);
         }
     }
@@ -58,7 +56,7 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
 
     private function set_list_view() {
         $tpl_list = View::factory('tpl_list')->set('templates', $this->model->get_templates());
-        $this->set_content_var('tpl_content', $tpl_list);
+        $this->set_page_content($tpl_list);
     }
 
 }
