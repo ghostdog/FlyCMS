@@ -1,7 +1,8 @@
 <p><?php echo req ?> pola wymagane</p>
 <?php    
     echo form::open('admin/settings/save');
-    echo form::fieldset('Nagłówek');
+    echo '<div id="column1">';
+    echo form::fieldset('Nagłówek', array('id' => 'site-title'));
     echo form::cluetip('title', 'Nazwa strony może składać się z maksymalnie 50 znaków.');
     echo form::text_w_label('title'.req, 'Nazwa strony', html::decode_chars($settings->title));
     echo form::error($errors['title']);
@@ -15,21 +16,8 @@
                                     poniżej nazwy strony, w zależności od ustawionego szablonu');
     echo form::text_w_label('author', 'Autor strony', html::decode_chars($settings->author));
     echo form::close_fieldset();
-    echo form::fieldset('Szablon witryny');
-    foreach($templates as $tpl) {
-        $tpls[$tpl->id] = $tpl->name;
-    }
-    echo form::select_w_label('template_id', 'Wybierz szablon', $settings->template_id, $tpls);
-    echo html::anchor(set_controller('templates', 'add'), 'Dodaj nowy');
-    echo form::close_fieldset();
 
-    echo form::fieldset('Elementy witryny');
-    echo form::check_w_label('header_on', 'Nagłówek', $settings->header_on);
-    echo form::check_w_label('footer_on', 'Stopka', $settings->footer_on);
-    echo form::select('sidebar_on', array(1 => 'Lewa', 2 => 'Prawa', 0 => 'Brak'), $settings->sidebar_on);
-    echo form::close_fieldset();
-    
-    echo form::fieldset('Meta dane');
+    echo form::fieldset('Meta dane', array('id' => 'site-meta'));
     echo form::cluetip('keywords-tip', 'Słowa kluczowe to maksymalnie 255 znaków. Rozdziel poszczególne frazy przecinkiem.');
     echo form::text_w_label('keywords', 'Słowa kluczowe', html::decode_chars($settings->keywords));
     echo form::error($errors['keywords']);
@@ -39,9 +27,28 @@
     echo form::error($errors['description']);
     echo form::help('description-help', 'Treść panelu pomocy dla opisu stron');
     echo form::close_fieldset();
-    
+    echo '</div>';
+    echo '<div id="column2">';
+    echo form::fieldset('Wygląd', array('id' => 'site-template'));
+    foreach($templates as $tpl) {
+        $tpls[$tpl->id] = $tpl->name;
+    }
+    echo '<div class="input-wrap">';
+    echo form::label('template_id', 'Wybierz szablon');
+    echo form::select('template_id', $tpls, $settings->template_id, array('id' => 'template_id'));
+    echo '</div>';
+    echo html::anchor(set_controller('templates', 'add'), 'Dodaj nowy');
+    echo html::anchor(set_controller('templates', 'preview'), 'Podglądnij');
+    echo form::check_w_label('header_on', 'Nagłówek', $settings->header_on);
+    echo form::check_w_label('footer_on', 'Stopka', $settings->footer_on);
+    echo form::select_w_label('sidebar_on', 'Kolumna boczna', $settings->sidebar_on, array(1 => 'Lewa', 2 => 'Prawa', 0 => 'Brak'));
+    echo form::close_fieldset();
+
+    echo '<div class="submit">';
     echo form::submit('settings-submit', 'Zapisz ustawienia');
     echo html::anchor('#', 'Wyczyść');
+    echo '</div>';
+    echo '</div>';
     echo form::close();
 
 ?>

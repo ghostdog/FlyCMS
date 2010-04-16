@@ -14,6 +14,11 @@
         if (! is_null($id)) $uri_segments['id'] = $id;
         return Route::get('admin')->uri($uri_segments);
     }
+
+    function load_style() {
+        $curr_controller = Request::instance()->controller;
+        return html::style('media/css/'.$curr_controller.'.css');
+    }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -21,6 +26,7 @@
 <head>
 <title><?php misc::print_if($page_title, APP_NAME)?></title>
 <?php echo html::meta('text/html; charset=utf-8', html::EQV_CONTENT);
+      echo load_style();
       echo html::style('media/css/main.css');
       echo html::script('media/js/jquery-1.3.2.min.js');
       echo html::script('media/js/jquery.rollover_menu.js');
@@ -100,6 +106,7 @@
        if (msg.text().length > 0)
             msg.fadeIn(1200);
         msg.click(function() { msg.fadeOut(1000)})
+        $('.cluetip, .help').hide();
     })
 </script>
 </body>

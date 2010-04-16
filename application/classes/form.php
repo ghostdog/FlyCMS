@@ -3,7 +3,7 @@
 class Form extends Kohana_Form {
 
     public static function fieldset($legend = '', $attr = array()) {
-        $output = '<fieldset'.html::attributes($attr).'>';
+        $output = '<fieldset '.html::attributes($attr).'>';
         if (! empty($legend)) $output .= '<legend>'.$legend.'</legend>';
         return $output;
    }
