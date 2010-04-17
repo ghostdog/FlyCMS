@@ -21,14 +21,14 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
            $is_valid = $this->model->validate_template(arr::merge($_POST, $_FILES));
            if ($is_valid) $this->model->save();
            else $this->set_form_errors($this->model->get_errors());
-           $this->set_msg('add', $is_valid);
+           $this->set_msg($is_valid);
         }
     }
 
     public function action_remove($id) {
         if ($this->load($id)) {
             $is_removed = $this->model->remove_template($id);
-            $this->set_msg('remove', $is_removed);
+            $this->set_msg($is_removed);
          }
         $this->set_list_view();
 
@@ -49,7 +49,7 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
     public function action_global($id) {
         if ($this->load($id)) {
             $is_saved = $this->model->set_template_global();
-                $this->set_msg('global', $is_saved);
+                $this->set_msg($is_saved);
         }
         $this->set_list_view();
     }

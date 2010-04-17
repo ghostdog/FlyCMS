@@ -12,7 +12,7 @@ class Model_FlyOrm extends ORM {
         if ($this->values($values)->check()) {
             $this->save();
             return true;
-        }
+        } else $this->reload();
         return false;
     }
     

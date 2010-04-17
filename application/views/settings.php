@@ -1,10 +1,10 @@
-<p><?php echo req ?> pola wymagane</p>
+<p style="padding: 1em 0 0 2em"><?php echo req ?> pola wymagane</p>
 <?php    
     echo form::open('admin/settings/save');
     echo '<div id="column1">';
     echo form::fieldset('Nagłówek', array('id' => 'site-title'));
     echo form::cluetip('title', 'Nazwa strony może składać się z maksymalnie 50 znaków.');
-    echo form::text_w_label('title'.req, 'Nazwa strony', html::decode_chars($settings->title));
+    echo form::text_w_label('title', 'Nazwa strony'.req, html::decode_chars($settings->title));
     echo form::error($errors['title']);
     echo form::help('title', 'Nazwa strony wyświetlana jest w graficznym nagłówku każdej strony.
                                     Nie jest tym samym co tytuł strony....');
@@ -37,16 +37,20 @@
     echo form::label('template_id', 'Wybierz szablon');
     echo form::select('template_id', $tpls, $settings->template_id, array('id' => 'template_id'));
     echo '</div>';
-    echo html::anchor(set_controller('templates', 'add'), 'Dodaj nowy');
-    echo html::anchor(set_controller('templates', 'preview'), 'Podglądnij');
+    echo html::anchor(set_controller('templates', 'add'), 'Dodaj nowy', array('id' => 'add-anchor'));
+    echo html::anchor(set_controller('templates', 'preview'), 'Podglądnij', array('id' => 'preview-anchor'));
     echo form::check_w_label('header_on', 'Nagłówek', $settings->header_on);
     echo form::check_w_label('footer_on', 'Stopka', $settings->footer_on);
-    echo form::select_w_label('sidebar_on', 'Kolumna boczna', $settings->sidebar_on, array(1 => 'Lewa', 2 => 'Prawa', 0 => 'Brak'));
+    echo '<div class="input-wrap">';
+    echo form::label('sidebar_on', 'Kolumna boczna');
+    echo form::select('sidebar_on', array(1 => 'Lewa', 2 => 'Prawa', 0 => 'Brak') , $settings->sidebar_on, array('id' => 'sidebar_on'));
+    echo '</div>';
     echo form::close_fieldset();
 
     echo '<div class="submit">';
     echo form::submit('settings-submit', 'Zapisz ustawienia');
-    echo html::anchor('#', 'Wyczyść');
+    echo form::input('reset', 'Przywróć', array('type' => 'reset'));
+    echo html::anchor('', 'Wyczyść' , array('class' => 'reset'));
     echo '</div>';
     echo '</div>';
     echo form::close();

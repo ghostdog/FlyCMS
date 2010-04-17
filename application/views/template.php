@@ -64,7 +64,7 @@
 <div id="content-wrap">
 <h1><?php misc::print_if($page_title) ?></h1>
 	<div id="content">
-            <em class="msg  success"><?php echo misc::print_if($msg); ?></em>
+            <em class="msg <?php if($result) echo 'success'; else echo 'error' ?>"><?php echo misc::print_if($msg); ?></em>
             <?php echo $content; ?>
 	</div>
 </div>
@@ -76,12 +76,34 @@
 </div>
 </div>
 <script type="text/javascript">
-    $(document).ready(function() {
+ $(document).ready(function() {
+    $.fn.clearForm = function() {
+      return this.each(function() {
+     var type = this.type, tag = this.tagName.toLowerCase();
+     if (tag == 'form')
+       return $(':input',this).clearForm();
+     if (type == 'text' || type == 'password' || tag == 'textarea')
+       this.value = '';
+     else if (type == 'checkbox' || type == 'radio')
+       this.checked = false;
+     else if (tag == 'select')
+       this.selectedIndex = -1;
+      });
+    };
 
-      $.fn.tagName = function() {
+     $.fn.tagName = function() {
         if (this.get(0) !== undefined)
             return this.get(0).tagName.toLowerCase();
         return '';
+      }
+      $.fn.findParentByTag = function(tagName) {
+           var inv = $(this),
+               isFound = false,
+               parent = inv.parent();
+           while (parent.tagName() != tagName ) {
+                parent = parent.parent();
+           }
+           return parent;
       }
 
       var menuTop = $('#menu-bar').offset().top + $('#menu-bar').outerHeight();
@@ -107,6 +129,16 @@
             msg.fadeIn(1200);
         msg.click(function() { msg.fadeOut(1000)})
         $('.cluetip, .help').hide();
+
+          $('.reset').each(function() {
+                var invoker =$(this);
+                var targetForm = invoker.findParentByTag('form');
+                invoker.click(function(evt) {
+                   evt.preventDefault();
+                   targetForm.clearForm();
+                })
+          })
+
     })
 </script>
 </body>

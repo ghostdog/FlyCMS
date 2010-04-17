@@ -30,7 +30,9 @@
                     $this->template->content->$var_name = $value;
                 }
 
-                protected function set_msg($msg_name, $is_success) {
+                protected function set_msg($is_success) {
+                    $this->template->result = $is_success;
+                    $msg_name = $this->request->action;
                     if ($is_success) $msg_key_suffix = '.success.';
                     else $msg_key_suffix = '.fail.';
                     $this->template->msg = Kohana::message($this->msg_file_name,
