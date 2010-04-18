@@ -30,6 +30,7 @@
       echo html::style('media/css/main.css');
       echo html::script('media/js/jquery-1.3.2.min.js');
       echo html::script('media/js/jquery.rollover_menu.js');
+      echo html::script('media/js/jquery.inputtip.js');
 ?>
 </head>
 <body>
@@ -64,10 +65,13 @@
 <div id="content-wrap">
 <h1><?php misc::print_if($page_title) ?></h1>
 	<div id="content">
-            <em class="msg <?php if($result) echo 'success'; else echo 'error' ?>"><?php echo misc::print_if($msg); ?></em>
+            <em class="msg <?php if (isset($result)) if($result) echo 'success'; else echo 'error' ?>"><?php echo misc::print_if($msg); ?></em>
             <?php echo $content; ?>
 	</div>
 </div>
+
+
+
 <div id="footer">
 <ul>
     <li><?php echo html::anchor('','Strona Główna')?></li>
@@ -77,6 +81,18 @@
 </div>
 <script type="text/javascript">
  $(document).ready(function() {
+    makeTips();
+    
+     Function.prototype.method = function(name, func) {
+         this.prototype[name] = func;
+         return this;
+     };
+
+     String.method('trim', function() {
+       return this.replace(/^\s+|\s+$/g, '');
+     });
+   
+
     $.fn.clearForm = function() {
       return this.each(function() {
      var type = this.type, tag = this.tagName.toLowerCase();
@@ -95,7 +111,8 @@
         if (this.get(0) !== undefined)
             return this.get(0).tagName.toLowerCase();
         return '';
-      }
+      };
+
       $.fn.findParentByTag = function(tagName) {
            var inv = $(this),
                isFound = false,
@@ -104,7 +121,44 @@
                 parent = parent.parent();
            }
            return parent;
-      }
+      };
+      
+      $.fn.showIfHasContent = function(fn) {
+          $(this).each(function() {
+              var subject = $(this).hide();
+              if (subject.text().length > 0) {
+                  fn(subject);
+              }
+          });
+          return this;
+      
+      };
+
+      $('.msg').showIfHasContent(function(subject) {
+            subject.fadeIn(1000).click(function() { $(this).fadeOut(1000)});
+      });
+
+      $('.input-error').showIfHasContent(function(subject) {
+            subject.show();
+            var coords = subject.offset();
+            subject.outerHeight();
+            subject.outerWidth();
+            var mask = $('<div/>').css({
+                'position' : 'absolute',
+                'z-index:' : '99',
+                'top' : coords.top - 6,
+                'left' : coords.left,
+                'height' : subject.outerHeight(),
+                'width' : subject.outerWidth(),
+                'background' : '#fff'
+            }).appendTo($('body'));
+            mask.hide('slow');
+
+      });
+
+        $('.help').hide();
+
+       
 
       var menuTop = $('#menu-bar').offset().top + $('#menu-bar').outerHeight();
       $('#menu').find('li:has(ul)').each(function() {
@@ -124,12 +178,7 @@
                     evt.stopPropagation();
                 })
          })
-       var msg = $('.msg').hide();
-       if (msg.text().length > 0)
-            msg.fadeIn(1200);
-        msg.click(function() { msg.fadeOut(1000)})
-        $('.cluetip, .help').hide();
-
+      
           $('.reset').each(function() {
                 var invoker =$(this);
                 var targetForm = invoker.findParentByTag('form');
@@ -138,6 +187,10 @@
                    targetForm.clearForm();
                 })
           })
+
+       
+
+     
 
     })
 </script>

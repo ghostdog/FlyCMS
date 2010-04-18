@@ -5,7 +5,6 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
     public function before() {
         parent::before();
         $this->msg_key = 'templates';
-        $this->model = new Model_Template();
         $this->set_page_title('Szablony');
     }
 

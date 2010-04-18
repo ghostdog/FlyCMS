@@ -3,17 +3,21 @@
 	class Controller_Admin_Admin extends Controller_Fly {
 
 		public $template = 'template';
-                protected $msg_key = '';
                 protected $model;
+                protected $msg_key = '';
                 private $msg_file_name = 'messages';
-
-
                 
+               public function before() {
+                    parent::before();
+                    $curr_controller = $this->request->controller;
+                    $this->model = Model::factory(Inflector::singular($curr_controller));
+                }
+
                 protected function load($id) {
                     $this->model->find($id);
                     return $this->model->loaded();
                 }
-  
+
                 protected function set_page_title($title) {
 			$this->template->page_title = $title;
 		}

@@ -27,7 +27,6 @@ class Model_Setting extends Model_FlyOrm {
 		),
                 'subtitle'			=> array
 		(
-			'min_length'		=> array(3),
 			'max_length'		=> array(50),
 		),
 		'template_id'	=> array

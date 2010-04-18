@@ -12,7 +12,7 @@ class Form extends Kohana_Form {
        return '</fieldset>';
    }
    public static function cluetip($id, $value) {
-       return '<div id="'.$id.'-tip" class="cluetip">'.$value.'</div>';
+       return '<div id="'.$id.'-tip" class="tip">'.$value.'</div>';
    }
 
    public static function help($id, $value) {
@@ -21,7 +21,7 @@ class Form extends Kohana_Form {
    }
 
    public static function error(& $error = '') {
-        return (! empty($error)) ? '<strong class="error">'.$error.'</strong>' : '';
+        return (! empty($error)) ? '<strong class="input-error">'.$error.'</strong>' : '';
    }
 
    public static function text_w_label($id, $label, $value = null , $attr = array()) {
