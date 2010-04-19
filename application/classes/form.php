@@ -16,8 +16,10 @@ class Form extends Kohana_Form {
    }
 
    public static function help($id, $value) {
-       $output = html::anchor('#'.$id.'-help', 'Co to jest?');
-       return $output .= '<div id="'.$id.'-help" class="help">'.$value.'</div>';
+       $output = html::anchor('#'.$id.'-help', 'Co to jest?', array('class' => 'help-invoker open'));
+       return $output .= '<div id="'.$id.'-help" class="help"><p>'
+                            .html::image('media/css/img/content/medium_help_icon.png', array('alt' => 'image icon'))
+                            .$value.'</p></div>';
    }
 
    public static function error(& $error = '') {
