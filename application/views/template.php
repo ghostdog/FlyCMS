@@ -29,7 +29,6 @@
       echo load_style();
       echo html::style('media/css/main.css');
       echo html::script('media/js/jquery-1.3.2.min.js');
-      echo html::script('media/js/jquery.rollover_menu.js');
       echo html::script('media/js/jquery.inputtip.js');
 ?>
 </head>
@@ -45,12 +44,7 @@
     </div>
     <div id="menu-bar">
         <ul id="menu">
-           <li><?php echo html::anchor(set_controller('templates'),'Szablony') ?>
-               <ul class="submenu">
-                   <li class="first-submenu"><?php echo html::anchor(set_controller('templates', 'add'), 'Nowy szablon') ?></li>
-                   <li><?php echo html::anchor(set_controller('templates'), 'Dostępne szablony') ?></li>
-                </ul>
-           </li>
+           <li><?php echo html::anchor(set_controller('templates'),'Szablony') ?></li>
            <li><?php echo html::anchor(set_controller('settings'),'Ustawienia', array('class' => 'active')) ?></li>
         </ul>
         <?php echo form::open() ?>
@@ -69,9 +63,6 @@
             <?php echo $content; ?>
 	</div>
 </div>
-
-
-
 <div id="footer">
 <ul>
     <li><?php echo html::anchor('','Strona Główna')?></li>
@@ -199,7 +190,6 @@
                 function() {
                     invoker.removeClass('open').addClass('close');
                     helpSource.show('fast');
-
                 },
                 function() {
                     invoker.removeClass('close').addClass('open');

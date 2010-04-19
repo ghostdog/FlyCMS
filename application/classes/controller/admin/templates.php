@@ -7,7 +7,6 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
         $this->msg_key = 'templates';
         $this->set_page_title('Szablony');
         $this->load_page_content('templates');
-        $this->set_content_var('templates', $this->model->get_templates());
         $this->set_content_var('template', $this->model);
     }
 
@@ -22,7 +21,7 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
            if ($is_valid) $this->model->save();
            else $this->set_form_errors($this->model->get_errors());
            $this->set_msg($is_valid);
-        }
+           }
     }
 
     public function action_remove($id) {
@@ -49,6 +48,11 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
             $is_saved = $this->model->set_template_global();
                 $this->set_msg($is_saved);
         }
+    }
+
+    public function after() {
+        $this->set_content_var('templates', $this->model->get_templates());
+        parent::after();
     }
 
 }

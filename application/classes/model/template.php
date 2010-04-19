@@ -9,8 +9,8 @@ class Model_Template extends Model_FlyOrm {
     private $allowed_img_ext;
     private $errors;
     private static $required_files = array('header.php', 'content.php', 'footer.php', 'sidebar.php');
-    private static $thumb_img_w = 425;
-    private static $thumb_img_h = 375;
+    private static $thumb_img_w = 225;
+    private static $thumb_img_h = 175;
     private static $thumb_img_name = 'example';
 //width: 325
 //height: 249
@@ -97,7 +97,7 @@ class Model_Template extends Model_FlyOrm {
                     $img_lib = Image::factory($tpl_path.'/'.$img);
                     $img_lib->resize(self::$thumb_img_h, self::$thumb_img_w)->sharpen(10);
                     $save_path = DOCROOT.'media/img/tpl_examples/'.$tpl_name.'.'.file::get_ext($img);
-                    $img_lib->save($save_path);
+                    $img_lib->save($save_path, 100);
                     $this->has_img = 1;
                 }
             }
