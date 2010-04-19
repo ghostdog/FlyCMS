@@ -81,8 +81,7 @@
 </div>
 <script type="text/javascript">
  $(document).ready(function() {
-    makeTips();
-    
+ 
      Function.prototype.method = function(name, func) {
          this.prototype[name] = func;
          return this;
@@ -133,6 +132,9 @@
           return this;
       
       };
+
+         makeTips();
+    
 
       $('.msg').showIfHasContent(function(subject) {
             subject.fadeIn(1000).click(function() { $(this).fadeOut(1000)});
@@ -189,7 +191,24 @@
           })
 
        
+    $('.help-invoker').each(function() {
+        var invoker = $(this),
+            helpId = invoker.attr('href'),
+            helpSource = $(helpId).hide();
+            invoker.toggle(
+                function() {
+                    invoker.removeClass('open').addClass('close');
+                    helpSource.show('fast');
 
+                },
+                function() {
+                    invoker.removeClass('close').addClass('open');
+                    helpSource.hide('fast');
+                    return false;
+                }
+            );
+
+    })
      
 
     })
