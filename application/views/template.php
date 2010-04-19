@@ -58,7 +58,7 @@
 </div>
 <div id="content-wrap">
 <h1><?php misc::print_if($page_title) ?></h1>
-	<div id="content">
+	<div id="page-content">
             <em class="msg <?php if (isset($result)) if($result) echo 'success'; else echo 'error' ?>"><?php echo misc::print_if($msg); ?></em>
             <?php echo $content; ?>
 	</div>
