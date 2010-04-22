@@ -2,7 +2,7 @@
 
 class Model_Template extends Model_FlyOrm {
 
-    protected $_belongs_to = array('setting' => array());
+    protected $_belongs_to = array('setting' => array(), 'pages' => array());
 
     private $templates_dir;
     private $allowed_archive_ext;

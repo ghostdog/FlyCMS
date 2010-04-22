@@ -27,5 +27,4 @@ class Controller_Admin_Settings extends Controller_Admin_Admin {
         parent::after();
     }
 }
-
 ?>

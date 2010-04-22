@@ -8,12 +8,21 @@
         return html::image(IMGS_PATH.$img_file, array('alt' => 'Miniaturka obrazka szablonu'));
     }
 
+    function create_link($name, $controller_name, $action_name = null, $id = null, $attr = null) {
+        $uri = set_controller($controller_name, $action_name, $id);
+        if (Request::instance()->controller == $controller_name) {
+           (! isset($attr['class'])) ? $attr['class'] = 'active' : $attr['class'] .= ' active';
+        }
+        echo html::anchor($uri, $name, $attr);
+    }
+
     function set_controller($controller_name, $action_name = null, $id = null) {
         $uri_segments = array('controller' => $controller_name);
         if (! is_null($action_name)) $uri_segments['action'] = $action_name;
         if (! is_null($id)) $uri_segments['id'] = $id;
         return Route::get('admin')->uri($uri_segments);
     }
+
 
     function load_style() {
         $curr_controller = Request::instance()->controller;
@@ -26,9 +35,9 @@
 <head>
 <title><?php misc::print_if($page_title, APP_NAME)?></title>
 <?php echo html::meta('text/html; charset=utf-8', html::EQV_CONTENT);
-      echo load_style();
       echo html::style('media/css/main.css');
-      echo html::script('media/js/jquery-1.3.2.min.js');
+      echo load_style();
+      echo html::script('media/js/jquery.min.js');
       echo html::script('media/js/jquery.inputtip.js');
 ?>
 </head>
@@ -44,8 +53,9 @@
     </div>
     <div id="menu-bar">
         <ul id="menu">
-           <li><?php echo html::anchor(set_controller('templates'),'Szablony') ?></li>
-           <li><?php echo html::anchor(set_controller('settings'),'Ustawienia', array('class' => 'active')) ?></li>
+           <li><?php create_link('Strony', 'pages') ?></li>
+           <li><?php create_link('Szablony', 'templates') ?></li>
+           <li><?php create_link('Ustawienia', 'settings') ?></li>
         </ul>
         <?php echo form::open() ?>
         <ul id="search">

@@ -41,6 +41,9 @@
                     else $msg_key_suffix = '.fail.';
                     $this->template->msg = Kohana::message($this->msg_file_name,
                             $this->msg_key.$msg_key_suffix.$msg_name);
+                    fire::log(Kohana::message($this->msg_file_name,
+                            $this->msg_key.$msg_key_suffix.$msg_name), 'message');
+                    fire::log($this->msg_key.$msg_key_suffix.$msg_name, 'key');
 
                 }
 

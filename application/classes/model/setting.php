@@ -36,15 +36,15 @@ class Model_Setting extends Model_FlyOrm {
 		),
 		'header_on'                     => array
 		(
-			'digit'	=> NULL,
+			'range'	=> array(0, 1),
 		),
 		'footer_on'                     => array
 		(
-			'digit'	=> NULL,
+			'range'	=> array(0, 1),
 		),
 		'sidebar_on'                     => array
 		(
-			'digit'	=> NULL,
+			'range'	=> array(0, 1),
 		),
 		'keywords'                     => array
 		(
