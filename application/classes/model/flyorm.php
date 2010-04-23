@@ -30,6 +30,15 @@ class Model_FlyOrm extends ORM {
         return $this->_loaded;
     }
 
+    public function _delete($id) {
+        $this->find($id);
+        if ($this->_loaded) {
+            parent::delete();
+            return true;
+        }
+        return false;
+    }
+
     public function find_all_except_this() {
         return ORM::factory($this->_object_name)->where('id', '!=', $this->id)->find_all();
     }
