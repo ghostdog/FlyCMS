@@ -48,13 +48,10 @@ class Model_Template extends Model_FlyOrm {
         return false;
     }
 
-    public function remove_template($id) {
+    public function _delete($id) {
         if ($this->count_all() < 2) return false;
-        $name = $this->name;
-        parent::delete($id);
-        if ( empty($this->name)) return false;
-        return file::recursive_remove_directory('modules/templates/views/'.$name);
-
+        file::recursive_remove_directory('modules/templates/views/'.$this->name);
+        return parent::_delete($id);
     }
 
     public function set_template_global() {

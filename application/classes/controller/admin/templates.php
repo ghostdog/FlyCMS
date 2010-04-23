@@ -16,19 +16,19 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
 
     public function action_add() {
        if ($_POST) {
-           $this->model->values($_POST);
-           $is_valid = $this->model->validate_template(arr::merge($_POST, $_FILES));
-           if ($is_valid) $this->model->save();
-           else $this->set_form_errors($this->model->get_errors());
-           $this->set_msg($is_valid);
+               $this->model->values($_POST);
+               $is_valid = $this->model->validate_template(arr::merge($_POST, $_FILES));
+               if ($is_valid) $this->model->save();
+               else $this->load_form_errors();
+               $this->set_msg($is_valid);
            }
     }
 
     public function action_remove($id) {
-        if ($this->load($id)) {
-            $is_removed = $this->model->remove_template($id);
+            $is_removed = $this->model->_delete($id);
             $this->set_msg($is_removed);
-         }
+            $this->redirect('templates');
+         
     }
 
     public function action_preview($id) {

@@ -63,7 +63,7 @@
         <?php echo form::open() ?>
         <ul id="search">
             <li><?php echo form::label('search_fld', 'Wyszukaj stronę: ') ?></li>
-            <li><?php echo form::input('search_fld', null,  array('id' => 'search_fld')) ?></li>
+            <li><?php echo form::input('search_fld', null,  array('id' => 'search_fld', 'style' => 'width: 15em')) ?></li>
             <li><?php echo form::image('search_submit', 'Wyszukaj', array('src' => url::base().'media/img/search_btn.png')) ?></li>
        </ul>
         <?php echo form::close() ?>
@@ -72,7 +72,7 @@
 <div id="content-wrap">
 <h1><?php misc::print_if($page_title) ?></h1>
 	<div id="page-content">
-            <em class="msg <?php if (isset($result)) if($result) echo 'success'; else echo 'error' ?>"><?php echo misc::print_if($msg); ?></em>
+            <em class="msg <?php if (isset($is_success)) if($is_success) echo 'success'; else echo 'error' ?>"><?php echo misc::print_if($msg); ?></em>
             <?php echo $content; ?>
 	</div>
 </div>
@@ -136,31 +136,28 @@
           return this;
       
       };
-
-         makeTips();
-    
-
+      makeTips();
       $('.msg').showIfHasContent(function(subject) {
             subject.fadeIn(1000).click(function() { $(this).fadeOut(1000)});
       });
-
-      $('.input-error').showIfHasContent(function(subject) {
-            subject.show();
-            var coords = subject.offset();
-            subject.outerHeight();
-            subject.outerWidth();
-            var mask = $('<div/>').css({
-                'position' : 'absolute',
-                'z-index:' : '99',
-                'top' : coords.top - 6,
-                'left' : coords.left,
-                'height' : subject.outerHeight(),
-                'width' : subject.outerWidth(),
-                'background' : '#fff'
-            }).appendTo($('body'));
-            mask.hide('slow');
-
-      });
+//
+//      $('.input-error').showIfHasContent(function(subject) {
+//            subject.show();
+//            var coords = subject.offset();
+//            subject.outerHeight();
+//            subject.outerWidth();
+//            var mask = $('<div/>').css({
+//                'position' : 'absolute',
+//                'z-index:' : '99',
+//                'top' : coords.top - 4,
+//                'left' : coords.left,
+//                'height' : subject.outerHeight(),
+//                'width' : subject.outerWidth(),
+//                'background' : '#fff'
+//            }).appendTo($('body'));
+//            mask.hide('slow');
+//
+//      });
 
        // $('.help').hide();
 

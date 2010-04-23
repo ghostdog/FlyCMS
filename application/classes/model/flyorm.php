@@ -33,10 +33,12 @@ class Model_FlyOrm extends ORM {
     public function _delete($id) {
         $this->find($id);
         if ($this->_loaded) {
-            parent::delete();
+            $this->delete();
             return true;
         }
-        return false;
+        else {
+            return false;
+        }
     }
 
     public function find_all_except_this() {

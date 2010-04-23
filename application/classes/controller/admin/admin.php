@@ -13,17 +13,27 @@
                     $curr_controller = $this->request->controller;
                     $this->model = Model::factory(Inflector::singular($curr_controller));
                     $this->session = Session::instance();
-                    if (($msg = $this->session->get('msg'))) {
-                            $this->template->msg = $msg;
-                            $this->template->result = $this->session->get('is_success');
-                            $this->session->delete('msg')->delete('is_success');
-                    }
+   
                 }
 
-                protected function load($id) {
-                    $this->model->find($id);
-                    return $this->model->loaded();
+                public function after() {
+                    if (($msg = $this->session->get('msg'))) {
+                            $this->template->set('msg', $msg)
+                                           ->set('is_success', $this->session->get('is_success'));
+                            $this->session->delete('msg')
+                                          ->delete('is_success');
+                    }
+                    parent::after();
                 }
+
+                private function get_msg_if_exists() {
+                    return $this->session->get('msg');
+                }
+
+//                protected function load($id) {
+//                    $this->model->find($id);
+//                    return $this->model->loaded();
+//                }
 
                 protected function set_page_title($title) {
 			$this->template->page_title = $title;
@@ -41,30 +51,39 @@
                     $this->template->content->$var_name = $value;
                 }
 
-                protected function set_msg($is_success, $use_session = false) {
-                    $this->template->result = $is_success;
+                protected function set_msg($is_success) {
                     $msg_name = $this->request->action;
-                    if ($is_success) $msg_key_suffix = '.success.';
-                    else $msg_key_suffix = '.fail.';
-                    $msg = Kohana::message($this->msg_file_name, $this->msg_key.$msg_key_suffix.$msg_name);
-                    if (! $use_session) {
-                        $this->template->msg = $msg;
-                    } else {
-                        $this->session->set('msg', $msg)->set('is_success', $is_success);
+                    if ($is_success) {
+                        $msg_key_suffix = '.success.';
                     }
-
+                    else {
+                        $msg_key_suffix = '.fail.';
+                    }
+                    $msg = Kohana::message($this->msg_file_name, $this->msg_key.$msg_key_suffix.$msg_name);
+                    $this->session->set('msg', $msg)
+                                  ->set('is_success', $is_success);
                 }
 
                 protected function set_form_errors(array $errors) {
                     $this->template->content->errors = $errors;
                 }
 
+                protected function load_form_errors() {
+                    $this->template->content->errors = $this->model->get_errors();
+                }
+
+               protected function redirect($controller, $action = null) {
+                    $route = Route::get('admin');
+                    $segments['controller'] = $controller;
+                    if (! is_null($action)) {
+                        $segments['action'] = $action;
+                    }
+                    $this->request->redirect($route->uri($segments));
+                }
+
 		protected function is_ajax() {
 			return $this->request->is_ajax;
 		}
-
-                
-                
 			
 	}
 ?>
