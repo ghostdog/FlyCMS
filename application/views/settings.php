@@ -3,24 +3,24 @@
     echo form::open('admin/settings/save', array('id' => 'settings_frm'));
     echo '<div id="column1">';
     echo form::fieldset('Nagłówek', array('id' => 'site-title'));
-    echo form::text_w_label('title', 'Nazwa'.req, html::decode_chars($settings->title));
+    echo form::text_w_label('title', 'Nazwa'.req, html::chars($settings->title));
     echo form::error($errors['title']);
     echo form::help('title', 'Nazwa strony wyświetlana jest w graficznym nagłówku każdej strony.
                                     Nie jest tym samym co tytuł strony....');
-    echo form::text_w_label('subtitle', 'Podpis', html::decode_chars($settings->subtitle));
+    echo form::text_w_label('subtitle', 'Podpis', html::chars($settings->subtitle));
     echo form::error($errors['subtitle']);
     echo form::help('subtitle', 'Opis strony powinienen zawierać krótki opis zawartości strony.
                                     Zwykle znajduje się poniżej nazwy strony, wyświetlany mniejszą czcionką, 
                                     poniżej nazwy strony, w zależności od ustawionego szablonu');
-    echo form::text_w_label('author', 'Autor strony', html::decode_chars($settings->author));
+    echo form::text_w_label('author', 'Autor strony', html::chars($settings->author));
     echo form::close_fieldset();
 
     echo form::fieldset('Meta dane', array('id' => 'site-meta'));
-    echo form::text_w_label('keywords', 'Słowa kluczowe', html::decode_chars($settings->keywords));
+    echo form::text_w_label('keywords', 'Słowa kluczowe', html::chars($settings->keywords));
     echo form::error($errors['keywords']);
     echo form::cluetip('keywords', 'Rozdziel poszczególne frazy przecinkiem.');
     echo form::help('keywords', 'Treść pomocy dla słów kluczowych');
-    echo form::tarea_w_label('description', 'Opis stron', html::decode_chars($settings->description));
+    echo form::tarea_w_label('description', 'Opis stron', html::chars($settings->description));
     echo form::error($errors['description']);
     echo form::help('description-help', 'Treść panelu pomocy dla opisu stron');
     echo form::close_fieldset();

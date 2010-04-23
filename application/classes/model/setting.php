@@ -9,11 +9,6 @@ class Model_Setting extends Model_FlyOrm {
     protected $_filters = array
     (
         TRUE       => array('trim' => NULL),
-        'keywords' => array('html::chars' => NULL),
-        'description' => array('html::chars' => NULL),
-        'author' => array('html::chars' => NULL),
-        'title' => array('html::chars' => NULL),
-        'subtitle' => array('html::chars' => NULL),
     );
 
 
