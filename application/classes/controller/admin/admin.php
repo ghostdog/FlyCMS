@@ -4,6 +4,7 @@
 
 		public $template = 'template';
                 protected $model;
+                protected $session;
                 protected $msg_key = '';
                 private $msg_file_name = 'messages';
                 
@@ -11,6 +12,12 @@
                     parent::before();
                     $curr_controller = $this->request->controller;
                     $this->model = Model::factory(Inflector::singular($curr_controller));
+                    $this->session = Session::instance();
+                    if (($msg = $this->session->get('msg'))) {
+                            $this->template->msg = $msg;
+                            $this->template->result = $this->session->get('is_success');
+                            $this->session->delete('msg')->delete('is_success');
+                    }
                 }
 
                 protected function load($id) {
@@ -34,16 +41,17 @@
                     $this->template->content->$var_name = $value;
                 }
 
-                protected function set_msg($is_success) {
+                protected function set_msg($is_success, $use_session = false) {
                     $this->template->result = $is_success;
                     $msg_name = $this->request->action;
                     if ($is_success) $msg_key_suffix = '.success.';
                     else $msg_key_suffix = '.fail.';
-                    $this->template->msg = Kohana::message($this->msg_file_name,
-                            $this->msg_key.$msg_key_suffix.$msg_name);
-                    fire::log(Kohana::message($this->msg_file_name,
-                            $this->msg_key.$msg_key_suffix.$msg_name), 'message');
-                    fire::log($this->msg_key.$msg_key_suffix.$msg_name, 'key');
+                    $msg = Kohana::message($this->msg_file_name, $this->msg_key.$msg_key_suffix.$msg_name);
+                    if (! $use_session) {
+                        $this->template->msg = $msg;
+                    } else {
+                        $this->session->set('msg', $msg)->set('is_success', $is_success);
+                    }
 
                 }
 
@@ -54,6 +62,8 @@
 		protected function is_ajax() {
 			return $this->request->is_ajax;
 		}
+
+                
                 
 			
 	}

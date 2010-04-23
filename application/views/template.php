@@ -10,8 +10,11 @@
 
     function create_link($name, $controller_name, $action_name = null, $id = null, $attr = null) {
         $uri = set_controller($controller_name, $action_name, $id);
-        if (Request::instance()->controller == $controller_name) {
-           (! isset($attr['class'])) ? $attr['class'] = 'active' : $attr['class'] .= ' active';
+        $request = Request::instance();
+        if ($request->controller == $controller_name) {
+            if ($request->action !== 'edit') {
+                    (! isset($attr['class'])) ? $attr['class'] = 'active' : $attr['class'] .= ' active';
+            }
         }
         echo html::anchor($uri, $name, $attr);
     }
