@@ -38,6 +38,7 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
     public function action_global($id) {
             $is_saved = $this->model->set_template_global($id);
             $this->set_msg($is_saved);
+            $this->redirect('templates');
         
     }
 

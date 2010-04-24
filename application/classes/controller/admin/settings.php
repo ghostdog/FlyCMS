@@ -10,9 +10,7 @@ class Controller_Admin_Settings extends Controller_Admin_Admin {
         $this->model = Model::factory('setting')->find();
     }
 
-    public function action_index() {
-        
-    }
+    public function action_index() {}
 
     public function action_save() {
         $saved = $this->model->save_if_valid($_POST);

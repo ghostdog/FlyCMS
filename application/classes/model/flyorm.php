@@ -52,5 +52,14 @@ class Model_FlyOrm extends ORM {
     public function get_callbacks() {
         return $this->_callbacks;
     }
+
+    protected function get_config($key) {
+        $model_name = preg_replace('/Model_/', '', get_class($this));
+        return Kohana::config(Inflector::plural($model_name).'.'.$key);
+    }
+
+    protected function get_error_msg($key) {
+        return Kohana::message($this->error_msg_filename, $key);
+    }
 }
 ?>

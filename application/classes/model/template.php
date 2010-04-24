@@ -17,8 +17,8 @@ class Model_Template extends Model_FlyOrm {
 //height: 249
     public function __construct($id = null) {
         $this->templates_dir = 'modules/templates/views/';
-        $this->allowed_archive_ext = Kohana::config('templates.allowed_archive_ext');
-        $this->allowed_img_ext = Kohana::config('templates.allowed_img_ext');
+        $this->allowed_archive_ext = $this->get_config('allowed_archive_ext');
+        $this->allowed_img_ext = $this->get_config('allowed_img_ext');
         $this->error_msg_filename = 'templates';
         parent::__construct($id);
     }
@@ -41,7 +41,7 @@ class Model_Template extends Model_FlyOrm {
                         $this->create_thumb_img_if_exists($tpl_path, $values['name']);
                         return true;
                     } else {
-                        $validate->error('file', Kohana::message($this->error_msg_filename, 'file.invalid'));
+                        $validate->error('file', $this->get_error_msg('file.invalid'));
                     }
                 } else {
                     if ($this->upload_exists($validate)) {

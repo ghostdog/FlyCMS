@@ -111,20 +111,22 @@
     };
 
      $.fn.tagName = function() {
+        //console.log(this.get(0), 'this.get(0)');
         if (this.get(0) !== undefined)
             return this.get(0).tagName.toLowerCase();
         return '';
       };
 
-      $.fn.findParentByTag = function(tagName) {
-           var inv = $(this),
-               isFound = false,
-               parent = inv.parent();
-           while (parent.tagName() != tagName ) {
-                parent = parent.parent();
-           }
-           return parent;
-      };
+//      $.fn.findParentByTag = function(tagName) {
+//           var inv = $(this),
+//               isFound = false,
+//               parent = inv.parent();
+//
+//           while (parent.tagName() !== tagName ) {
+//                parent = parent.parent();
+//           }
+//           return parent;
+//      };
       
       $.fn.showIfHasContent = function(fn) {
           $(this).each(function() {
@@ -184,7 +186,7 @@
       
           $('.reset').each(function() {
                 var invoker =$(this);
-                var targetForm = invoker.findParentByTag('form');
+                var targetForm = invoker.parents('form');
                 invoker.click(function(evt) {
                    evt.preventDefault();
                    targetForm.clearForm();
