@@ -2,7 +2,8 @@
 
 class Model_Template extends Model_FlyOrm {
 
-    protected $_belongs_to = array('setting' => array(), 'pages' => array());
+    protected $_belongs_to = array('page' => array());
+    protected $_has_one = array('setting' => array());
 
     private $templates_dir;
     private $allowed_archive_ext;
@@ -20,6 +21,13 @@ class Model_Template extends Model_FlyOrm {
         $this->allowed_img_ext = Kohana::config('templates.allowed_img_ext');
         $this->error_msg_filename = 'templates';
         parent::__construct($id);
+    }
+
+    public function __get($name) {
+        $value = parent::__get($name);
+        if ($name == 'created')
+            return date("Y-m-d H:i:s", $value);
+        else return $value;
     }
 
     public function validate_template(Array $values) {
@@ -54,9 +62,12 @@ class Model_Template extends Model_FlyOrm {
         return parent::_delete($id);
     }
 
-    public function set_template_global() {
+    public function set_template_global($id) {
+        $this->find($id);
+        if (! $this->is_loaded())
+                return false;
         $settings = ORM::factory('setting')->find();
-        $settings->template_id = $this->id;
+        $settings->template = $this;
         $settings->save();
         $old_global = $this->get_global_template();
         if ($old_global->is_loaded()) {
@@ -65,11 +76,7 @@ class Model_Template extends Model_FlyOrm {
         }
         $this->is_global = 1;
         $this->save();
-        return $settings->is_saved();
-    }
-
-    public function get_global_template() {
-        return ORM::factory('template')->where('is_global', '=', 1)->and_where('id', '!=', $this->id)->find();
+        return true;
     }
 
     public function get_templates() {
@@ -132,13 +139,9 @@ class Model_Template extends Model_FlyOrm {
                     return $installer->install($tpl_path);
             return false;
     }
-    
-    public function __get($name) {
-        $value = parent::__get($name);
-        if ($name == 'created')
-            return date("Y-m-d H:i:s", $value);
-        else return $value;
+
+    private function get_global_template() {
+        return ORM::factory('template')->where('is_global', '=', 1)->and_where('id', '!=', $this->id)->find();
     }
-    
 }
 ?>

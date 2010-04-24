@@ -26,10 +26,6 @@
                     parent::after();
                 }
 
-                private function get_msg_if_exists() {
-                    return $this->session->get('msg');
-                }
-
 //                protected function load($id) {
 //                    $this->model->find($id);
 //                    return $this->model->loaded();

@@ -2,7 +2,7 @@
 
 class Model_Setting extends Model_FlyOrm {
 
-    protected $_has_one = array('template' => array());
+    protected $_belongs_to = array('template' => array());
 
     protected $error_msg_filename = 'settings';
 

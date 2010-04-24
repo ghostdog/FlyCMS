@@ -32,22 +32,13 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
     }
 
     public function action_preview($id) {
-        if ($this->load($id)) {
-            $tpl_name = $this->model->name;
-            $this->template = View::factory('front_template');
-            $path = $this->model->name.'/';
-            $this->template->header = View::factory($path.'header');
-            $this->template->content = View::factory($path.'content');
-            $this->template->sidebar = View::factory($path.'sidebar');
-            $this->template->footer = View::factory($path.'footer');
-        }
+            //TODO
     }
 
     public function action_global($id) {
-        if ($this->load($id)) {
-            $is_saved = $this->model->set_template_global();
-                $this->set_msg($is_saved);
-        }
+            $is_saved = $this->model->set_template_global($id);
+            $this->set_msg($is_saved);
+        
     }
 
     public function after() {
