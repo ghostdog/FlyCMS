@@ -31,14 +31,27 @@ class Model_FlyOrm extends ORM {
     }
 
     public function _delete($id) {
-        $this->find($id);
-        if ($this->_loaded) {
-            $this->delete();
-            return true;
+        if (is_array($id)) {
+                $sql = DB::delete($this->_table_name)->where('id', 'IN', $id);
+                return $this->execute($sql);
+
+        } else {
+            $this->find($id);
+            if ($this->_loaded) {
+                $this->delete();
+                return true;
+            }
         }
-        else {
-            return false;
-        }
+        return false;
+    }
+
+    public function get_paginated_result($pagination) {
+                $count = $this->count_all();
+                $pagination->total_items = $count;
+                return $this->order_by('id', 'ASC')
+                            ->limit($pagination->items_per_page)
+                            ->offset($pagination->offset)
+                            ->find_all();
     }
 
     public function find_all_except_this() {
@@ -61,5 +74,15 @@ class Model_FlyOrm extends ORM {
     protected function get_error_msg($key) {
         return Kohana::message($this->error_msg_filename, $key);
     }
+
+    protected function execute($sql) {
+        try {
+            $result = $sql->execute();
+        } catch (Database_Exception $ex) {
+              return FALSE;
+        }
+        return $result;
+    }
+
 }
 ?>

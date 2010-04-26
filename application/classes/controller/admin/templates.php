@@ -4,7 +4,6 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
 
     public function before() {
         parent::before();
-        $this->msg_key = 'templates';
         $this->set_page_title('Szablony');
         $this->load_page_content('templates');
         $this->set_content_var('template', $this->model);
@@ -24,7 +23,7 @@ class Controller_Admin_Templates extends Controller_Admin_Admin {
            }
     }
 
-    public function action_remove($id) {
+    public function action_delete($id) {
             $is_removed = $this->model->_delete($id);
             $this->set_msg($is_removed);
             $this->redirect('templates');

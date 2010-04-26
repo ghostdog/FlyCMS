@@ -4,7 +4,6 @@ class Controller_Admin_Settings extends Controller_Admin_Admin {
 
     public function before() {
         parent::before();
-        $this->msg_key = 'settings';
         $this->set_page_title('Ustawienia globalne');
         $this->load_page_content('settings');
         $this->model = Model::factory('setting')->find();

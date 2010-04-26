@@ -62,8 +62,19 @@
         </ul>
         <?php echo form::open() ?>
         <ul id="search">
-            <li><?php echo form::label('search_fld', 'Wyszukaj stronę: ') ?></li>
-            <li><?php echo form::input('search_fld', null,  array('id' => 'search_fld', 'style' => 'width: 15em')) ?></li>
+            <li><?php echo form::label('search_fld', 'Wyszukaj stronę: ', array('style' => 'display: none')) ?></li>
+            <li>
+                <?php
+                 echo form::cluetip('search_fld', 'Wpisz tytuł strony...');
+                 echo form::input('search_fld', null,  array('id' => 'search_fld', 'style' => 'width: 15em'))
+                ?>
+                <ul class="poka-yoke">
+                    <li class="first-poka"><a href="">Link 1</a></li>
+                    <li><a href="">Link 1</a></li>
+                    <li><a href="">Link 1</a></li>
+                    <li><a href="">Link 1</a></li>
+                </ul>
+            </li>
             <li><?php echo form::image('search_submit', 'Wyszukaj', array('src' => url::base().'media/img/search_btn.png')) ?></li>
        </ul>
         <?php echo form::close() ?>

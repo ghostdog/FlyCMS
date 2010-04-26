@@ -79,6 +79,7 @@ Kohana::modules(array(
            'orm'        => MODPATH.'orm',        // Object Relationship Mapping
            'templates'  => MODPATH.'templates',
            'unittest'   =>MODPATH.'unittest',
+           'pagination' =>MODPATH.'pagination',
 	));
 
 //Kohana::$log->attach(new FirePHP_Log_File(APPPATH.'logs'));
@@ -90,7 +91,7 @@ Kohana::modules(array(
 #
 Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
 		->defaults(array(
-		'directory' => 'admin'
+		'directory' => 'admin',
 ));
 
 Route::set('default', '(<controller>(/<action>(/<id>)))')

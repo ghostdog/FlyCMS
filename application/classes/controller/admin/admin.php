@@ -5,8 +5,6 @@
 		public $template = 'template';
                 protected $model;
                 protected $session;
-                protected $msg_key = '';
-                private $msg_file_name = 'messages';
                 
                public function before() {
                     parent::before();
@@ -36,7 +34,7 @@
 		}
 		
 		protected function load_page_content($view) {
-			$this->template->content = View::factory($view);
+                        $this->template->set('content', View::factory($view));
 		}
 
                 protected function set_page_content($content) {
@@ -44,18 +42,25 @@
                 }
 
                 protected function set_content_var($var_name, $value) {
-                    $this->template->content->$var_name = $value;
+                    $this->template->content->set($var_name, $value);
                 }
 
-                protected function set_msg($is_success) {
+                protected function set_msg($is_success, $group_action = false, $params = array()) {
+                    $msg_group = $this->request->controller;
                     $msg_name = $this->request->action;
+                    if ($group_action) {
+                        $msg_name = 'group_'.$this->request->action;
+                    }
                     if ($is_success) {
-                        $msg_key_suffix = '.success.';
+                        $msg_type = '.success.';
                     }
                     else {
-                        $msg_key_suffix = '.fail.';
+                        $msg_type = '.fail.';
                     }
-                    $msg = Kohana::message($this->msg_file_name, $this->msg_key.$msg_key_suffix.$msg_name);
+                    $msg = Kohana::message('messages', $msg_group.$msg_type.$msg_name);
+                    if (! empty($params)) {
+                        $msg = $this->set_msg_params($msg, $params);
+                    }
                     $this->session->set('msg', $msg)
                                   ->set('is_success', $is_success);
                 }
@@ -80,6 +85,15 @@
 		protected function is_ajax() {
 			return $this->request->is_ajax;
 		}
+
+                private function set_msg_params($msg, $params) {
+                    $regex = '/:param/';
+                    fire::log($params, 'params');
+                    while (strpos($msg, ':param') !== FALSE) {
+                        $msg = preg_replace($regex, array_shift($params), $msg, 1);
+                    }
+                    return $msg;
+                }
 			
 	}
 ?>
