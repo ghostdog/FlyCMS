@@ -1,0 +1,18 @@
+<?php defined('SYSPATH') or die('No direct script access.'); ?>
+
+2010-04-24 00:17:49 --- ERROR: ErrorException [ 1 ]: Call to undefined method Controller_Admin_Templates::load() ~ APPPATH/classes\controller\admin\templates.php [ 35 ]
+2010-04-24 00:18:05 --- ERROR: ErrorException [ 1 ]: Call to undefined method Controller_Admin_Templates::load() ~ APPPATH/classes\controller\admin\templates.php [ 28 ]
+2010-04-24 00:29:28 --- ERROR: ReflectionException [ 0 ]: Method action_remove delete does not exist ~ SYSPATH/classes\kohana\request.php [ 882 ]
+2010-04-24 00:51:26 --- ERROR: Kohana_Exception [ 0 ]: View variable is not set: conten ~ SYSPATH/classes\kohana\view.php [ 144 ]
+2010-04-24 13:02:55 --- ERROR: Kohana_Exception [ 0 ]: The template property does not exist in the Model_Setting class ~ MODPATH/orm\classes\kohana\orm.php [ 433 ]
+2010-04-24 13:04:22 --- ERROR: ErrorException [ 8 ]: Undefined index: template ~ MODPATH/orm\classes\kohana\orm.php [ 1073 ]
+2010-04-24 13:05:07 --- ERROR: ErrorException [ 8 ]: Undefined index: templates ~ MODPATH/orm\classes\kohana\orm.php [ 1073 ]
+2010-04-24 13:07:51 --- ERROR: Kohana_Exception [ 0 ]: The template property does not exist in the Model_Setting class ~ MODPATH/orm\classes\kohana\orm.php [ 433 ]
+2010-04-24 13:08:01 --- ERROR: Kohana_Exception [ 0 ]: The templates property does not exist in the Model_Setting class ~ MODPATH/orm\classes\kohana\orm.php [ 433 ]
+2010-04-24 13:12:07 --- ERROR: Kohana_Exception [ 0 ]: The templates property does not exist in the Model_Setting class ~ MODPATH/orm\classes\kohana\orm.php [ 433 ]
+2010-04-24 13:12:08 --- ERROR: Kohana_Exception [ 0 ]: The templates property does not exist in the Model_Setting class ~ MODPATH/orm\classes\kohana\orm.php [ 433 ]
+2010-04-24 13:12:08 --- ERROR: Kohana_Exception [ 0 ]: The templates property does not exist in the Model_Setting class ~ MODPATH/orm\classes\kohana\orm.php [ 433 ]
+2010-04-24 13:28:08 --- ERROR: ErrorException [ 2 ]: preg_replace() [function.preg-replace]: Delimiter must not be alphanumeric or backslash ~ APPPATH/classes\model\flyorm.php [ 57 ]
+2010-04-24 13:28:30 --- ERROR: ErrorException [ 8 ]: Undefined variable: modelName ~ APPPATH/classes\model\flyorm.php [ 58 ]
+2010-04-24 20:04:20 --- ERROR: ReflectionException [ 0 ]: Method action_preview does not exist ~ SYSPATH/classes\kohana\request.php [ 882 ]
+2010-04-24 21:34:48 --- ERROR: Kohana_Exception [ 0 ]: View variable is not set: content ~ SYSPATH/classes\kohana\view.php [ 144 ]

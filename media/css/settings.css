@@ -1,0 +1,26 @@
+textarea, input[type="text"] { width: 96% }
+textarea { height: 10em }
+
+input[type="reset"] { background: transparent; border: none; color: #369 }
+input[type="reset"]:hover { color: #06f; text-decoration: underline; }
+
+.input-wrap {width: 100%;  }
+ 
+
+#site-title, #site-meta, #site-template, .submit, #column1 { float: left; clear: left; }
+#column1, #column2 { padding: 1em 1%; width: 48%; padding: 1em 1%; width: 48%; }
+#column2 { float: right;}
+#column1 div { width: 100% }
+#column2 select {
+     width: 100%;
+     clear: both;
+     background: url('img/content/text_bg.png') repeat-x top left;
+     -moz-border-radius: 4px; -webkit-border-radius: 4px;
+     border: 1px solid #999;
+     text-align: center;
+     height: 2.4em;
+     padding-top: .5em
+}
+#preview-anchor, #add_anchor { display: inline;  float: left; clear: none; margin-bottom: 2.9em; margin-left: .3em }
+#add-anchor { margin-left: .6em }
+#footer_on { margin-bottom: .5em }

@@ -1,0 +1,81 @@
+.input-wrap input[type="text"], .input-wrap textarea { width: 96% }
+#title-and-content div, #metas .input-wrap { width: 100% }
+#title-and-content { float: left; }
+#title-and-content input[type="text"], #title-and-content .input-wrap textarea { width: 98%; }
+
+#metas { float: left; width: 42%; margin-right: 2% }
+#appearence{ float: right; width: 43%;  }
+#appearence div { width: 100% }
+#appearence label { float: left !important}
+#page-content .submit { float: right;}
+#page-content .input-wrap-label-right { margin-top: 1em }
+#page-content #title-and-content a { margin-right: 1em }
+#page-content .submit:last-child { float: left }
+.create { background: url('img/content/info_bg.png') repeat-x top left; margin-right: 1em }
+.remove {
+    background: url(img/content/no_bg.png) repeat-x top left !important;
+    background-color: #600 !important;
+  
+}
+.create, .remove {
+      padding: .6em; font-size: 110%;
+-moz-border-radius: 4px; -webkit-border-radius: 4px; color: #fff !important; float: right; width: 10em; text-align: center; }
+.create:hover, .remove:hover{ text-decoration: none !important; }
+.condition-submit {
+    background: none !important;
+    color: red !important;
+    font-weight: bold;
+    width: 5em !important;
+}
+.items-count-chooser label {
+    padding: 0.4em 0.4em 0.3em 1em !important;
+}
+
+.items-count-chooser select {
+    margin-right: .5em;
+}
+
+table { 
+    float: left;
+    width: 100%;
+    border: 1px solid #666;
+    border-top-color: #999;
+    margin-top: .5em;
+}
+caption, td {
+    padding: .5em;
+}
+th { padding: 1em 1.5em }
+caption {
+    text-align: left;
+    color: #036;
+    font-weight: bold;
+    font-size: 120%;
+}
+table a { margin-left: .5em; }
+table th {  }
+table th, table td {
+    text-align: center;
+    border-bottom: 1px solid #b5b5b5;
+}
+/*table tr:last-child td {
+    border-bottom: none;
+}*/
+
+table tr { color: #333; }
+table .name {text-align: left; width: 60% }
+table em { font-size: 110%; font-style: normal; padding: 0 0 .5em 1em; }
+table div { text-align: center; }
+table .mark { padding-right: .2em }
+thead tr, tfoot tr { color: #fff; }
+thead, tfoot { background-color: #000;  background: url(img/content/thead_bg.png) repeat-x top left; }
+tfoot th { border: none; }
+tbody tr { cursor: pointer; }
+tbody tr.odd { background: #e6e6e6 }
+tbody tr.even { background: #f1f1f1 }
+tbody tr.marked { background: #fff; }
+tbody tr:hover { background: #fff }
+
+  
+
+
