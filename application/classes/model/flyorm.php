@@ -34,7 +34,6 @@ class Model_FlyOrm extends ORM {
         if (is_array($id)) {
                 $sql = DB::delete($this->_table_name)->where('id', 'IN', $id);
                 return $this->execute($sql);
-
         } else {
             $this->find($id);
             if ($this->_loaded) {
@@ -45,25 +44,12 @@ class Model_FlyOrm extends ORM {
         return false;
     }
 
-    public function get_paginated_result($pagination) {
-                $count = $this->count_all();
-                $pagination->total_items = $count;
-                return $this->order_by('id', 'ASC')
-                            ->limit($pagination->items_per_page)
-                            ->offset($pagination->offset)
-                            ->find_all();
-    }
-
     public function find_all_except_this() {
         return ORM::factory($this->_object_name)->where('id', '!=', $this->id)->find_all();
     }
 
     public function get_validate() {
         return $this->_validate;
-    }
-
-    public function get_callbacks() {
-        return $this->_callbacks;
     }
 
     protected function get_config($key) {

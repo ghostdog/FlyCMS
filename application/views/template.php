@@ -42,6 +42,7 @@
       echo load_style();
       echo html::script('media/js/jquery.min.js');
       echo html::script('media/js/jquery.inputtip.js');
+      echo html::script('media/js/jquery.counter.js');
 ?>
 </head>
 <body>
@@ -57,25 +58,21 @@
     <div id="menu-bar">
         <ul id="menu">
            <li><?php create_link('Strony', 'pages') ?></li>
+           <li><?php create_link('Nawigacja', 'menus') ?></li>
            <li><?php create_link('Szablony', 'templates') ?></li>
            <li><?php create_link('Ustawienia', 'settings') ?></li>
         </ul>
-        <?php echo form::open() ?>
+        <?php echo form::open('admin/pages/search', array('method' => 'GET', 'id' => 'search-frm')) ?>
         <ul id="search">
-            <li><?php echo form::label('search_fld', 'Wyszukaj stronę: ', array('style' => 'display: none')) ?></li>
+            <li><?php echo form::label('search-fld', 'Wyszukaj stronę: ', array('style' => 'display: none')) ?></li>
             <li>
                 <?php
-                 echo form::cluetip('search_fld', 'Wpisz tytuł strony...');
-                 echo form::input('search_fld', null,  array('id' => 'search_fld', 'style' => 'width: 15em'))
+                 echo form::cluetip('search-fld', 'Wpisz tytuł strony');
+                 echo form::input('search', null,  array('id' => 'search-fld', 'style' => 'width: 15em'))
                 ?>
-                <ul class="poka-yoke">
-                    <li class="first-poka"><a href="">Link 1</a></li>
-                    <li><a href="">Link 1</a></li>
-                    <li><a href="">Link 1</a></li>
-                    <li><a href="">Link 1</a></li>
-                </ul>
             </li>
-            <li><?php echo form::image('search_submit', 'Wyszukaj', array('src' => url::base().'media/img/search_btn.png')) ?></li>
+            <li><?php echo form::image('search-submit', 'Wyszukaj',
+                                        array('src' => url::base().'media/img/search_btn.png' )) ?></li>
        </ul>
         <?php echo form::close() ?>
     </div>
@@ -152,6 +149,18 @@
       makeTips();
       $('.msg').showIfHasContent(function(subject) {
             subject.fadeIn(1000).click(function() { $(this).fadeOut(1000)});
+      });
+      $('#search-fld').keyup(function(evt) {
+          
+      })
+
+      $('#search-frm').submit(function() {
+          var textField = $('#search-fld');
+          if (textField.val().length == 0) {
+              textField.val('Musisz podać szukany tytuł');
+              textField.css('color', '#999');
+              return false;
+          }
       });
 //
 //      $('.input-error').showIfHasContent(function(subject) {

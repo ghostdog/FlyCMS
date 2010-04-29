@@ -52,3 +52,13 @@
     echo form::close();
    
 ?>
+<script type="text/javascript">
+$(document).ready(function(){
+
+     $('#title').counter({maxLength : 50});
+     $('#subtitle').counter({maxLength : 50});
+     $('#author').counter({maxLength : 50});
+     $('#keywords').counter({maxLength : 255});
+     $('#description').counter({maxLength : 255});
+});
+</script>

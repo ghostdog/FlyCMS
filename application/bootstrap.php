@@ -80,6 +80,7 @@ Kohana::modules(array(
            'templates'  => MODPATH.'templates',
            'unittest'   =>MODPATH.'unittest',
            'pagination' =>MODPATH.'pagination',
+           'mptt'       =>MODPATH.'mptt',
 	));
 
 //Kohana::$log->attach(new FirePHP_Log_File(APPPATH.'logs'));
