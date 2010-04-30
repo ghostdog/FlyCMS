@@ -1,5 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access');
-    echo form::open('admin/menugroups/add');
+    echo form::open('admin/menus/add');
  ?>
 <h3>Co mam utworzyć?:</h3>
 <div style="margin: .5em 0 .5em 0">

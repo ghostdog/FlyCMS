@@ -5,18 +5,18 @@
 <div class="input-wrap" style="width: 100%">
 <?php
     echo form::label('group-name', 'Nazwa grupy'.req);
-    echo form::input('name[]', $group->name, array('id' => 'group-name'));
+    echo form::input('group[name]', $group->name, array('id' => 'group-name'));
 ?>
 </div>
 <div class="input-wrap-label-right" style="margin-left: 1em">
 <?php
     echo form::label('group-status', 'Globalna', array('style' => 'margin: -.2em 0 0 0'));
-    echo form::checkbox('is_global', 1, (empty($group->is_global)) ? TRUE : $group->is_global, array('id' => 'group-status'));
+    echo form::checkbox('group[global]', 1, (empty($group->is_global)) ? TRUE : $group->is_global, array('id' => 'group-status'));
 ?>
 </div>
 </div>
 <?php echo form::fieldset('Położenie grupy', array('class' => 'location-chooser')) ?>
-<div class="input-wrap-label-right">
+<div class="select-wrap">
 <?php
     $locations = array(-1 => '', 0 => 'Nagłówek', 1 => 'Kolumna boczna', 2 => 'Zawartość strony');
     $order = array();
@@ -24,13 +24,13 @@
         $order[] = $i;
     }
     echo form::label('group-location', 'Lokalizacja'.req);
-    echo form::select('location[]', $locations, (empty($group->location)) ? -1 : $group->location, array('id' => 'group-location'));
+    echo form::select('group[location]', $locations, (empty($group->location)) ? -1 : $group->location, array('id' => 'group-location'));
 ?>
 </div>
-<div class="input-wrap-label-right" style="float: right; clear: none; ">
+<div class="select-wrap" style="float: right; clear: none; ">
 <?php
     echo form::label('group-order', 'Pierwszeństwo');
-    echo form::select('order[]', $order, $group->order, array('id' => 'group-order', 'class' => 'order-chooser'));
+    echo form::select('group[order]', $order, $group->order, array('id' => 'group-order', 'class' => 'order-chooser'));
 ?>
 </div>
 <?php

@@ -75,7 +75,5 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
         }
         parent::after();
      }
-
-    
 }
 ?>

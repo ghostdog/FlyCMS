@@ -4,6 +4,7 @@ for ($i = 0; $i < 100; $i++) {
 }
 
 $i = 0;
+fire::log($items, 'items');
 foreach($items as $item) :
     $i++;
     echo form::fieldset((empty($item->name)) ? 'Odnośnik '.$i : $item->name, array('id' => 'item'.$i, 'class' => 'item'));
@@ -16,13 +17,14 @@ foreach($items as $item) :
     echo form::input('name[]', $item->name, array('id' => 'item-name'.$i, 'class' => 'text-name'));
 ?>
     </div>
-    <div class="item-type-chooser">
-    <h3>Określ typ odnośnika:</h3>
+    <div class="item-type-chooser select-wrap" style="width: 49%">
 <?php
-    echo form::label('item-inner'.$i, 'Wewnętrzny');
-    echo form::radio('type.'.$i.'[]', 0, $item->type, array('id' => 'item-inner'.$i));
-    echo form::label('item-outer'.$i, 'Zewnętrzny');
-    echo form::radio('type.'.$i.'[]', 1, $item->type, array('id' => 'item-outer'.$i));
+    echo form::label('type-chooser'.$i, 'Typ odnośnika');
+    echo form::select('type[]', array(0 => 'Wewnętrzny', 1 => 'Zewnętrzny'),
+                                    $item->type, array('id' => 'type-chooser'.$i, 'style' => 'width: 10em;'));
+//    echo form::radio('type.'.$i.'[]', 0, (isset($item->type)) ? $item->type : false, array('id' => 'item-inner'.$i));
+//    echo form::label('item-outer'.$i, 'Zewnętrzny');
+//    echo form::radio('type.'.$i.'[]', 1, (isset($item->type)) ? $item->type : false, array('id' => 'item-outer'.$i));
 ?>
     </div>
     <div class="input-wrap">
@@ -43,24 +45,22 @@ foreach($items as $item) :
 <?php
     echo form::fieldset('Położenie odnośnika', array('class' => 'item-location location-chooser'));
 ?>
-<div class="input-wrap-label-right item-group">
-<?php
-    echo form::label('item-group'.$i, 'Grupa odnośników');
-    echo form::select('item-group[]', array('1' => 'Grupa 1'), $item->group_id, array('id' => 'item-group'.$i));
-?>
-</div>
-<div class="input-wrap-label-right item-parent">
-<?php
-    echo form::label('item-parent'.$i, 'Odnośnik nadrzędny');
-    echo form::select('parent[]', array('1' => 'Nadrzędny 1'), $item->parent, array('id' => 'item-parent'.$i));
-?>
-</div>
-<div class="input-wrap-label-right item-order">
-<?php
-    echo form::label('item-order'.$i, 'Pierwszeństwo');
-    echo form::select('order[]', $item->order, null, array('id' => 'item-order'.$i));
-?>
-</div>
+<table cellspacing="0">
+<tr class="select-wrap item-group">
+    <td><?php echo form::label('item-group'.$i, 'Grupa odnośników'); ?></td>
+    <td><?php echo form::select('item-group[]',
+            array('1' => 'Grupa 1'), $item->group_id, array('id' => 'item-group'.$i)); ?></td>
+</tr>
+<tr class="select-wrap item-parent">
+    <td><?php echo form::label('item-parent'.$i, 'Odnośnik nadrzędny'); ?></td>
+    <td><?php echo form::select('parent[]', array('1' => 'Nadrzędny 1'),
+                        $item->parent, array('id' => 'item-parent'.$i));?></td>
+</tr>
+<tr class="select-wrap item-order">
+    <td><?php echo form::label('item-order'.$i, 'Pierwszeństwo'); ?></td>
+    <td><?php echo form::select('order[]',$order, $item->order, null, array('id' => 'item-order'.$i));?></td>
+</tr>
+</table>
 <?php
     echo form::close_fieldset();
     echo form::close_fieldset();

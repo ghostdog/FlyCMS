@@ -122,9 +122,17 @@ select {
 .input-error { color: #f00; padding: 1em 1em; float: left; clear: left; }
 /*.input-error strong { background: url(img/content/small_error_icon.png) no-repeat top left;
                       padding: .4em .4em .4em 2.3em } */
-.input-wrap input, .input-wrap select { float: left; clear: left }
+.input-wrap input { float: left; clear: left }
 .input-wrap textarea { float: left; clear: left;}
 .input-wrap-label-right { margin-bottom: 1em; }
+.select-wrap {
+
+}
+.select-wrap input {
+ }
+ .select-wrap label {
+     margin-right: .5em;
+}
 
 .help { margin: 0 0 1em 0; clear: both; }
 .help img  { float:left; margin:.5em;}

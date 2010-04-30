@@ -9,6 +9,13 @@
                 public function __construct(Request $req) {
                     parent::__construct($req);
                     $this->session = Session::instance();
+                    if (Request::$is_ajax OR $this->request !== Request::instance()) {
+                        $this->auto_render = FALSE;
+                    }
+                }
+
+                public function action_ajax_query() {
+                    
                 }
 
                 public function after() {
@@ -50,10 +57,6 @@
 
                 protected function set_form_errors(array $errors) {
                     $this->template->content->errors = $errors;
-                }
-
-                protected function load_form_errors() {
-                    $this->template->content->errors = $this->model->get_errors();
                 }
 
                protected function redirect($controller, $action = null) {
