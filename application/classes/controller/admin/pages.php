@@ -2,33 +2,25 @@
 
 class Controller_Admin_Pages extends Controller_Admin_Admin {
 
-    public function before() {
-        parent::before();
-        $this->set_page_title('Edytor stron');
+     private $page;
 
-    }
-
-     public function after() {
-        if ($_POST && $this->request->action != 'delete') {
-            $is_saved = $this->model->save_if_valid($_POST);
-            $this->set_msg($is_saved);
-            if (! $is_saved) {
-                $this->load_form_errors();
-            } 
-        }
-        parent::after();
+     public function before() {
+         parent::before();
+         $this->page = ORM::factory('page');
      }
 
     public function action_index() {
-        $this->load_pages_list();
+        $finder = new Finder($this->page);
+        $this->load_page_content('pages')
+                ->set('pages', $finder->find_all())
+                ->set('pagination', $finder->get_links());
     }
 
     public function action_search() {
-        $finder = new Finder($this->model);
+        $finder = new Finder($this->page);
         $this->load_page_content('pages')
              ->set('pages', $finder->find_by_value('title', $_GET['search']))
              ->set('pagination', $finder->get_links());
-        
     }
 
     public function action_add() {
@@ -36,34 +28,28 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
      }
 
      public function action_edit($id) {
-        $this->model->find($id);
+        $this->page->find($id);
          $this->load_page_form();
      }
 
      public function action_delete($id = NULL) {
          if ($_POST) {
-              $delete_count = $this->model->_delete($_POST['pages']);
-              if ($delete_count > 0) {
-                  $this->set_msg(TRUE, TRUE, array($delete_count));
-              } else {
-                  $this->set_msg(FALSE, TRUE);
-              } 
+              $is_success = $this->page->_delete($_POST['pages']);
          } else {
              if ($id == NULL) {
-                 $is_success = FALSE;
+                 $is_success = false;
              }
              else {
-                 $is_success = $this->model->_delete($id);
+                 $is_success = $this->page->_delete($id);
              }
-             $this->set_msg($is_success);
          }
-         $this->redirect('pages');
-         //$this->redirect2prev_uri();
-         
+         $this->set_msg($is_success);
+         $this->redirect('pages');         
      }
+     
      private function load_page_form() {
          $this->load_page_content('page_form')
-              ->bind('page', $this->model)
+              ->bind('page', $this->page)
               ->bind('action', $action)
               ->set('templates', ORM::factory('template')->get_templates());
 
@@ -73,14 +59,23 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
          }
      }
 
-     private function load_pages_list() {
-        //$items_per_page = (isset($_GET['items_per_page'])) ? intval($_GET['items_per_page']) : 10;
-        $this->set_page_title('Twoje strony');
-        $finder = new Finder($this->model);
-        $this->load_page_content('pages')
-                ->set('pages', $finder->find_all())
-                ->set('pagination', $finder->get_links());
+     public function after() {
+        $action = $this->request->action;
+        if ($_POST && $action != 'delete') {
+            $is_saved = $this->page->save_if_valid($_POST);
+            $this->set_msg($is_saved);
+            if (! $is_saved) {
+                $this->set_form_errors($this->page->get_errors());
+            }
+        }
+        if ($action == 'index') {
+            $this->set_page_title('Twoje strony');
+        } else {
+            $this->set_page_title('Edytor stron');
+        }
+        parent::after();
      }
+
     
 }
 ?>

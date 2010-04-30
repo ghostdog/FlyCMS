@@ -13,14 +13,12 @@ class Model_Template extends Model_FlyOrm {
     private static $thumb_img_w = 225;
     private static $thumb_img_h = 175;
     private static $thumb_img_name = 'example';
-//width: 325
-//height: 249
+
     public function __construct($id = null) {
         $this->templates_dir = 'modules/templates/views/';
         $this->allowed_archive_ext = $this->get_config('allowed_archive_ext');
         $this->allowed_img_ext = $this->get_config('allowed_img_ext');
-        $this->error_msg_filename = 'templates';
-        parent::__construct($id);
+        parent::__construct('templates', $id);
     }
 
     public function __get($name) {
@@ -52,7 +50,7 @@ class Model_Template extends Model_FlyOrm {
                     }
                 }
         }
-        $this->errors = $validate->errors($this->error_msg_filename); 
+        $this->errors = $validate->errors($this->errors_filename);
         return false;
     }
 

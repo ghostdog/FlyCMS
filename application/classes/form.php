@@ -64,5 +64,21 @@ class Form extends Kohana_Form {
        return '<div class="submit">'.$submit.'</div>';
 
    }
+   
+   public static function value($field_name, $default = null) {
+       if (isset($_POST[$field_name])) {
+           return $_POST[$field_name];
+       } else return $default;
+   }
+
+   public static function radioChecked($field_name, $value, $default = FALSE) {
+       if (isset($_POST[$field_name])) {
+            if ($_POST[$field_name] ==  $value)
+                return TRUE;
+       }
+       return $default;
+   }
+
+
 
 }

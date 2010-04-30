@@ -1,37 +1,38 @@
 <?php defined('SYSPATH') or die('No direct script access');
-    echo form::open('admin/menus/add');
+    echo form::open('admin/menugroups/add');
  ?>
 <h3>Co mam utworzyć?:</h3>
 <div style="margin: .5em 0 .5em 0">
 <?php
     echo form::label('item', 'Pojedyncze odnośniki menu');
-    echo form::radio('type[]', 'item', FALSE, array('id' => 'item'));
+    echo form::radio('menu_type', 'item', form::radioChecked('menu_type', 'item'), array('id' => 'item'));
     echo form::label('group', 'Nową grupę odnośników', array('style' => 'margin-left: 1em'));
-    echo form::radio('type[]', 'group', FALSE, array('id' => 'group'));
+    echo form::radio('menu_type', 'group', form::radioChecked('menu_type', 'group'), array('id' => 'group'));
 ?>
 <h3 id="req-text" style="float: left; clear: both; margin: .5em;">
     <em class="required">*</em> - elementy obowiązkowe</h3>
 <?php
-    echo View::factory('menu/group_frm');
+    echo View::factory('menu/group_frm', array('group' => $group));
 ?>
 </div>
 <div id="quantity-chooser" style="float: left; clear: left;">
     <h3 style="margin-top: .5em">Ile odnośników mam utworzyć?:</h3>
 <?php
-    for ($i = 1; $i < 11; $i++) {
-        $values[$i] = $i ;
+    for ($i = 0; $i < 10;) {
+        $values[++$i] = $i ;
     }
-    echo form::select('items-quantity', $values, null,
+    echo form::select('items_quantity', $values, form::value('items_quantity'),
                        array('id' => 'items-quantity-chooser',
                            'style' => 'margin-left: 1em;
                                       width: 10em;
                       '));
 
+    echo form::submit('quantity_submit','Odśwież', array('style' => 'margin-left: 1em; width: 5em'));
 ?>
 </div>
 <div id="items-wrap">
 <?php
-    echo View::factory('menu/item_frm', array('items_count' => 2));
+    echo View::factory('menu/item_frm', array('items_count' => $items_count, 'items' => $items));
 ?>
 </div>
 <div id="safe-btn" style="float: right">
@@ -49,6 +50,7 @@ echo html::script('media/js/group.editor.js');
 ?>
 <script type="text/javascript">
 
+
         var Editor = function() {
                 this.items = new ItemsEditor($('.item'));
                 this.group = new GroupEditor();
@@ -62,9 +64,9 @@ echo html::script('media/js/group.editor.js');
         };
         Editor.prototype.init = function() {
             if (this.isGroupRadioChecked()) {
-
+                    this.groupRadio.trigger('click');
             } else if (this.isItemRadioChecked()) {
-
+                    this.itemRadio.trigger('click');
             } else {
                 this.quantityChooser.hide();
                 this.group.hide();
@@ -82,9 +84,7 @@ echo html::script('media/js/group.editor.js');
         Editor.prototype.addListeners = function() {
                 var that = this;
                 this.groupRadio.click(function() {
-                    that.group.clear();
                     that.group.show('fast');
-                    that.items.clearAll();
                     that.items.disableInputs();
                     showCommonElements();
                 });
@@ -103,9 +103,15 @@ echo html::script('media/js/group.editor.js');
         };
 
         $(document).ready(function() {
-            console.log('ready');
             var editor = new Editor();
-        })
+
+
+            $('#clearer').click(function(evt) {
+                evt.preventDefault();
+                editor.items.clearAll();
+                editor.group.clear();
+            });
+        });
                
  
 

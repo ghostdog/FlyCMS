@@ -2,7 +2,7 @@
 
 class Model_Page extends Model_FlyOrm {
 
-    protected $_has_many = array('templates' => array());
+    protected $_has_many = array('templates' => array(), 'menugroups' => array('through' => 'pagemenu'));
 
     protected $_rules = array(
 
@@ -56,8 +56,7 @@ class Model_Page extends Model_FlyOrm {
     );
 
     public function __construct($id = null) {
-        $this->error_msg_filename = 'pages';
-        parent::__construct();
+        parent::__construct('pages', $id);
     }
 
     public function get_pages() {

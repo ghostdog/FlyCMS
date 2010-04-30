@@ -16,6 +16,18 @@
                 'global' => 'Szablon został ustawiony jako globalny',
             )
         ),
+        'menugroups' => array(
+            'fail' => array(
+                'add' => 'Próba dodania grupy odnośników nie powiodła się.',
+                'edit' => 'Próba edycji grupy odnośników nie powiodła się.',
+                'delete' => 'Próba usunięcia grupy odnośników nie powiodła się.',
+            ),
+            'success' => array(
+                'add' => 'Grupa odnośników dodana z powodzeniem.',
+                'edit' => 'Grupa odnośników edytowana z powodzeniem.',
+                'delete' => 'Usunięcie grupy odnośników powiodło się.'
+            )
+        ),
 
         'settings' => array(
             'fail' => array(

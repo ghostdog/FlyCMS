@@ -2,30 +2,29 @@
 
 class Controller_Admin_Settings extends Controller_Admin_Admin {
 
+    private $settings;
+
     public function before() {
         parent::before();
+        $this->settings = ORM::factory('setting')->find();
         $this->set_page_title('Ustawienia globalne');
-        $this->load_page_content('settings');
-        $this->model = Model::factory('setting')->find();
+        $this->load_page_content('settings')
+             ->bind('settings', $this->settings)
+             ->set('templates', ORM::factory('template')->get_templates());
     }
 
     public function action_index() {}
 
     public function action_save() {
-        $saved = $this->model->save_if_valid($_POST);
-        $this->set_msg($saved);
-        if (! $saved) {
-            $this->load_form_errors();
-        } else {
-            $this->redirect('settings');
+        if ($_POST) {
+            $saved = $this->settings->save_if_valid($_POST);
+            $this->set_msg($saved);
+            if (! $saved) {
+                $this->set_form_errors($this->settings->get_errors());
+            } else {
+                $this->redirect('settings');
+            }
         }
-    }
-
-    public function after() {
-        if ($_POST) $this->model->values($_POST);
-        $this->set_content_var('settings', $this->model);
-        $this->set_content_var('templates', Model::factory('template')->get_templates());
-        parent::after();
     }
 }
 ?>

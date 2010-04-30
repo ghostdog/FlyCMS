@@ -1,33 +1,34 @@
 <?php defined('SYSPATH') or die('No direct script access');
-    for ($i = 0; $i < 100; $i++) {
-        $order[] = $i;
-    }
-    for ($i = 0; $i < $items_count;) :
-        fire::log($items_count, 'items_count');
-        $i++;
-        echo form::fieldset('Odnośnik '.$i, array('id' => 'item1', 'class' => 'item'));
+for ($i = 0; $i < 100; $i++) {
+    $order[] = $i;
+}
+
+$i = 0;
+foreach($items as $item) :
+    $i++;
+    echo form::fieldset((empty($item->name)) ? 'Odnośnik '.$i : $item->name, array('id' => 'item'.$i, 'class' => 'item'));
         
 ?>
     <div class="item-props-wrap">
     <div class="input-wrap">
 <?php
     echo form::label('item-name'.$i, 'Nazwa odnośnika');
-    echo form::input('name[]', 'Nazwa odnośnika', array('id' => 'item-name'.$i, 'class' => 'text-name'));
+    echo form::input('name[]', $item->name, array('id' => 'item-name'.$i, 'class' => 'text-name'));
 ?>
     </div>
     <div class="item-type-chooser">
     <h3>Określ typ odnośnika:</h3>
 <?php
     echo form::label('item-inner'.$i, 'Wewnętrzny');
-    echo form::radio('internal.'.$i.'[]', 0, TRUE, array('id' => 'item-inner'.$i));
+    echo form::radio('type.'.$i.'[]', 0, $item->type, array('id' => 'item-inner'.$i));
     echo form::label('item-outer'.$i, 'Zewnętrzny');
-    echo form::radio('internal.'.$i.'[]', 1, FALSE, array('id' => 'item-outer'.$i));
+    echo form::radio('type.'.$i.'[]', 1, $item->type, array('id' => 'item-outer'.$i));
 ?>
     </div>
     <div class="input-wrap">
 <?php
     echo form::label('link'.$i, 'Adres docelowy');
-    echo form::input('link[]', 'Strona docelowy', array('id' => 'link'.$i, 'class' => 'text-link'));
+    echo form::input('link[]', $item->link, array('id' => 'link'.$i, 'class' => 'text-link'));
 ?>
     <a href="#page-list1" class="page-list-caller">Wyświetl listę dostępnych stron</a>
 
@@ -35,7 +36,7 @@
 <div class="input-wrap">
 <?php
     echo form::label('title'.$i, 'Atrybut "title"');
-    echo form::input('title[]', 'Jakaś tam wartość', array('id' => 'title'.$i, 'class' => 'text-link'));
+    echo form::input('title[]', $item->title, array('id' => 'title'.$i, 'class' => 'text-link'));
 ?>
 </div>
 </div>
@@ -45,30 +46,23 @@
 <div class="input-wrap-label-right item-group">
 <?php
     echo form::label('item-group'.$i, 'Grupa odnośników');
-    echo form::select('item-group[]', array('1' => 'Grupa 1'), null, array('id' => 'item-group'.$i));
+    echo form::select('item-group[]', array('1' => 'Grupa 1'), $item->group_id, array('id' => 'item-group'.$i));
 ?>
 </div>
 <div class="input-wrap-label-right item-parent">
 <?php
     echo form::label('item-parent'.$i, 'Odnośnik nadrzędny');
-    echo form::select('parent[]', array('1' => 'Nadrzędny 1'), null, array('id' => 'item-parent'.$i));
+    echo form::select('parent[]', array('1' => 'Nadrzędny 1'), $item->parent, array('id' => 'item-parent'.$i));
 ?>
 </div>
 <div class="input-wrap-label-right item-order">
 <?php
     echo form::label('item-order'.$i, 'Pierwszeństwo');
-    echo form::select('order[]', $order, null, array('id' => 'item-order'.$i));
+    echo form::select('order[]', $item->order, null, array('id' => 'item-order'.$i));
 ?>
 </div>
 <?php
-    echo form::hidden('type[]', 'item');
     echo form::close_fieldset();
-?>
-<?php
     echo form::close_fieldset();
-    endfor;
+endforeach;
 ?>
-<script type="text/javascript">
-
-
-</script>

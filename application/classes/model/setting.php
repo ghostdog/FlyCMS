@@ -4,8 +4,6 @@ class Model_Setting extends Model_FlyOrm {
 
     protected $_belongs_to = array('template' => array());
 
-    protected $error_msg_filename = 'settings';
-
     protected $_filters = array
     (
         TRUE       => array('trim' => NULL),
@@ -55,6 +53,10 @@ class Model_Setting extends Model_FlyOrm {
                     'max_length' => array(50),
                 )
 	);
+
+        public function  __construct($id = null) {
+            parent::__construct('settings', $id);
+        }
 
 }
 ?>

@@ -2,10 +2,15 @@
 
 class Model_FlyOrm extends ORM {
 
-    protected $error_msg_filename = '';
+    protected $errors_filename = '';
+
+    public function  __construct($errors_filename, $id = null) {
+        $this->errors_filename = $errors_filename;
+        parent::__construct($id);
+    }
 
     public function get_errors() {
-        return $this->_validate->errors($this->error_msg_filename);
+        return $this->_validate->errors($this->errors_filename);
     }
 
     public function save_if_valid(Array $values) {

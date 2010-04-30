@@ -58,7 +58,7 @@
     <div id="menu-bar">
         <ul id="menu">
            <li><?php create_link('Strony', 'pages') ?></li>
-           <li><?php create_link('Nawigacja', 'menus') ?></li>
+           <li><?php create_link('Nawigacja', 'menugroups') ?></li>
            <li><?php create_link('Szablony', 'templates') ?></li>
            <li><?php create_link('Ustawienia', 'settings') ?></li>
         </ul>
