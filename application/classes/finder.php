@@ -1,12 +1,6 @@
-<?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
+<?php defined('SYSPATH') or die('No direct script access');
 /**
  * Description of searchhelper
- *
  * @author Marek
  */
 class Finder {
@@ -22,10 +16,6 @@ class Finder {
         );
     }
 
-    public function find_by_value_in_field($field2findIn, $value) {
-        
-    }
-
     public function find_all() {
         $count = $this->model->count_all();
         return $this->get_result($count);
@@ -35,7 +25,9 @@ class Finder {
         $value = '%'.$value.'%';
         $count = $this->model->where($field, 'LIKE', $value)->count_all();
         $this->model->where($field, 'LIKE', $value);
-        return $this->get_result($count);
+        if (Request::$is_ajax) {
+
+        } else return $this->get_result($count);
     }
 
     public function get_links() {

@@ -11,11 +11,18 @@
                     $this->session = Session::instance();
                     if (Request::$is_ajax OR $this->request !== Request::instance()) {
                         $this->auto_render = FALSE;
+                        $this->is_ajax = TRUE;
                     }
-                }
 
-                public function action_ajax_query() {
-                    
+//                    FirePHP_Profiler::instance()
+//                        ->group('KO3 FirePHP Application Profiler')
+//                        ->post()
+//                        ->get()
+//                        ->database()
+//                        ->benchmark()
+//
+//                        ->groupEnd();
+
                 }
 
                 public function after() {
@@ -67,11 +74,7 @@
                     }
                     $this->request->redirect($route->uri($segments));
                 }
-
-		protected function is_ajax() {
-			return $this->request->is_ajax;
-		}
-
+                
                 private function set_msg_params($msg, $params) {
                     $regex = '/:param/';
                     while (strpos($msg, ':param') !== FALSE) {

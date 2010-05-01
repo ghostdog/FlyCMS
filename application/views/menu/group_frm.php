@@ -33,6 +33,21 @@
     echo form::select('group[order]', $order, $group->order, array('id' => 'group-order', 'class' => 'order-chooser'));
 ?>
 </div>
+<table id="groups" cellspacing="2">
+    <caption>Grupy aktywne w tej lokalizacji</caption>
+    <thead>
+        <tr>
+            <th>Nazwa grupy</th>
+            <th>Pierwszeństwo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Grupa 1</td>
+            <td>98</td>
+        </tr>
+    </tbody>
+</table>
 <?php
     echo form::close_fieldset();
     echo form::close_fieldset();

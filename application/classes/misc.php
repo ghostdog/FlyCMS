@@ -18,6 +18,17 @@
                     }
                     return $result;
                 }
+
+                public static function db_result_to_json(Database_Result $result, Array $columns) {
+                    $result = $result->as_array();
+                    foreach ($result as $r) {
+                        foreach($columns as $col) {
+                            $temp[$col] = $r->$col;
+                        }
+                        $output[] = $temp;
+                    }
+                     return json_encode($output);
+                }
 	}
 
 ?>
