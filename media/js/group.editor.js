@@ -14,11 +14,10 @@ var GroupEditor = function() {
         this.pageList.hide();
     } else {
         this.pageList.show();
-        //this.getPages();
+        this.getPages();
     }
 };
 GroupEditor.prototype.addListeners = function() {
-
     this.pageList.find('tr').click(function() {
         $(this).find(':input').each(function() {
             var input = $(this);
@@ -59,8 +58,9 @@ GroupEditor.prototype.addListeners = function() {
 };
 GroupEditor.prototype.getPages = function(resultPageId) {
     var caption = this.pageList.find('caption').text('Pobieranie listy stron...'),
-        action = '/kohana/admin/pages/ajax_get_pages' + (resultPageId == undefined) ? '' : '?page='+resultPageId;
-    $.getJSON(action, function(data, status) {
+        action = '/kohana/admin/pages/ajax_get_pages',
+        query =  (resultPageId == undefined) ? '' : 'page='+resultPageId;
+    $.getJSON(action, query, function(data, status) {
         console.log(data, 'data');
         caption.text('Wybierz strony, na których ma pojawić się grupa.');
     });

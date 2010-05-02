@@ -13,6 +13,7 @@
                     if (Request::$is_ajax OR $this->request !== Request::instance()) {
                         $this->auto_render = FALSE;
                         $this->is_ajax = TRUE;
+                        fire::log('is ajax!!!!!!');
                         header('content-type: application/json');
 
                     }

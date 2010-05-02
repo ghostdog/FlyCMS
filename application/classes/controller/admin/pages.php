@@ -49,11 +49,11 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
          
      }
 
-     public function ajax_get_pages() {
+     public function action_ajax_get_pages() {
          $finder = new Finder($this->page, 10);
-         $pages = $finder->find_limit();
+         $pages = $finder->find_w_limit();
          echo json_encode(misc::get_raw_db_result($pages, array('id', 'title')));
-         echo json_encode($finder->get_pagination_link());
+         echo $finder->get_pagination_links();
      }
 
      public function after() {
