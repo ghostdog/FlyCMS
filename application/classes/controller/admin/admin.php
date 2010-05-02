@@ -16,8 +16,6 @@
                         header('content-type: application/json');
 
                     }
-                   fire::log($_SERVER['REQUEST_URI'], 'uri');
-
 //                    FirePHP_Profiler::instance()
 //                        ->group('KO3 FirePHP Application Profiler')
 //                        ->post()
@@ -82,14 +80,5 @@
                 protected function redirect_to_prev_uri() {
                     $this->request->reditect($this->session->get('prev_uri'));
                 }
-//
-//                private function set_msg_params($msg, $params) {
-//                    $regex = '/:param/';
-//                    while (strpos($msg, ':param') !== FALSE) {
-//                        $msg = preg_replace($regex, array_shift($params), $msg, 1);
-//                    }
-//                    return $msg;
-//                }
-			
 	}
 ?>

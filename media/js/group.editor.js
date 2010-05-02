@@ -14,6 +14,7 @@ var GroupEditor = function() {
         this.pageList.hide();
     } else {
         this.pageList.show();
+        //this.getPages();
     }
 };
 GroupEditor.prototype.addListeners = function() {
@@ -41,12 +42,11 @@ GroupEditor.prototype.addListeners = function() {
             that.groupsTable.show();
             if (that.groups[location] == undefined) {
             var caption = that.groupsTable.find('caption');
-            caption.data('text', caption.text());
             caption.text('Pobieranie informacji...');
             $.getJSON('/kohana/admin/menus/ajax_groups_by_location','location='+location,
                         function(data, status) {
                             that.groups[location] = data;
-                            caption.text(caption.data('text'));
+                            caption.text('Grupy aktywne w tej lokalizacji.');
                             that.populateGroupTableRows(location);
                         });
             } else {
@@ -57,6 +57,14 @@ GroupEditor.prototype.addListeners = function() {
          }
     });
 };
+GroupEditor.prototype.getPages = function(resultPageId) {
+    var caption = this.pageList.find('caption').text('Pobieranie listy stron...'),
+        action = '/kohana/admin/pages/ajax_get_pages' + (resultPageId == undefined) ? '' : '?page='+resultPageId;
+    $.getJSON(action, function(data, status) {
+        console.log(data, 'data');
+        caption.text('Wybierz strony, na których ma pojawić się grupa.');
+    });
+}
 GroupEditor.prototype.populateGroupTableRows = function(location) {
     if (location !== this.currentLocation) {
         var groups = this.groups[location],

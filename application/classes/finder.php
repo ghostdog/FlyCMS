@@ -1,13 +1,9 @@
-<?php defined('SYSPATH') or die('No direct script access');
-/**
- * Description of searchhelper
- * @author Marek
- */
-class Finder {
+<?php 
 
+class Finder {
+    
     private $model;
     private $pagination;
-
 
     public function   __construct(ORM $model, $items_per_page = 15) {
         $this->model = $model;
@@ -40,8 +36,5 @@ class Finder {
                     ->offset($this->pagination->offset)
                     ->find_all();
     }
-
-
-
 }
 ?>

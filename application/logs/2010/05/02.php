@@ -8,3 +8,4 @@
 2010-05-02 14:48:08 --- ERROR: ErrorException [ 1 ]: Call to undefined method Misc::db_result_to_json() ~ APPPATH/classes\controller\admin\menus.php [ 45 ]
 2010-05-02 15:53:13 --- ERROR: ErrorException [ 8 ]: Undefined variable: content ~ APPPATH/views\template.php [ 84 ]
 2010-05-02 15:54:15 --- ERROR: ErrorException [ 8 ]: Undefined variable: content ~ APPPATH/views\template.php [ 84 ]
+2010-05-02 17:13:31 --- ERROR: ReflectionException [ 0 ]: Method action_ugjgyuuy does not exist ~ SYSPATH/classes\kohana\request.php [ 882 ]
