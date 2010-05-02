@@ -65,14 +65,14 @@ $(document).ready(function() {
         } else {
            target.attr("disabled", "disabled");
            input.removeAttr('checked');
-           target.css('background', '#e5e5e5');
+           target.css('background', '#f1f1f1');
         }
         input.change(
              function() {
                  var invoker = $(this);
                  if (invoker.hasClass("toggleon")) {
                      invoker.removeAttr("checked").removeClass("toggleon");
-                       target.attr("disabled", "disabled").css("background", "#e5e5e5")
+                       target.attr("disabled", "disabled").css("background", "#f1f1f1")
                   } else {
                      invoker.attr("checked","checked").addClass("toggleon");
                      target.removeAttr("disabled").css('background', target.data('bg')).focus();

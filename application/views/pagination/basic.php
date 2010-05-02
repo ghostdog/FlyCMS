@@ -41,6 +41,6 @@
 		<a title="Ostatnia" href="<?php echo $page->url($last_page) ?>"><?php echo $last_enabled ?></a>
 	<?php else: ?>
 		<?php echo $last_disabled ?>
-	<?php endif; fire::log(Request::instance()->uri(), 'uri') ?>
+	<?php endif; ?>
 
 </p><!-- .pagination -->

@@ -9,10 +9,14 @@
                 public function __construct(Request $req) {
                     parent::__construct($req);
                     $this->session = Session::instance();
+                    $this->session->set('prev_uri', $_SERVER['REQUEST_URI']);
                     if (Request::$is_ajax OR $this->request !== Request::instance()) {
                         $this->auto_render = FALSE;
                         $this->is_ajax = TRUE;
+                        header('content-type: application/json');
+
                     }
+                   fire::log($_SERVER['REQUEST_URI'], 'uri');
 
 //                    FirePHP_Profiler::instance()
 //                        ->group('KO3 FirePHP Application Profiler')
@@ -73,6 +77,10 @@
                         $segments['action'] = $action;
                     }
                     $this->request->redirect($route->uri($segments));
+                }
+
+                protected function redirect_to_prev_uri() {
+                    $this->request->reditect($this->session->get('prev_uri'));
                 }
                 
                 private function set_msg_params($msg, $params) {

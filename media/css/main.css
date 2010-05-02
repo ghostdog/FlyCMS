@@ -234,8 +234,12 @@ select {
 #page-content p { font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif; }
 
 
-#footer {  background: url('img/foot_bg.png') repeat-x top left;}
-#footer ul { width: 13%; margin-right: 43.5%; margin-left: 43.5%; padding: 1em 0 .3em; text-align: center }
+#footer {  
+    background: url('img/foot_bg.png') repeat-x top left;
+    
+   
+}
+#footer ul { width: 13%; margin-right: 43.5%; margin-left: 43.5%; padding: 1em 0 .3em; text-align: center;  }
 
 
 

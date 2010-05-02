@@ -11,8 +11,38 @@
 <div class="input-wrap-label-right" style="margin-left: 1em">
 <?php
     echo form::label('group-status', 'Globalna', array('style' => 'margin: -.2em 0 0 0'));
-    echo form::checkbox('group[global]', 1, (empty($group->is_global)) ? TRUE : $group->is_global, array('id' => 'group-status'));
+    echo form::checkbox('group[global]', 1, (empty($group->is_global)) ? FALSE : $group->is_global, array('id' => 'group-status'));
 ?>
+</div>
+<div id="page-list" style="width: 100%;">
+<table id="pages" cellspacing="2">
+    <caption>Zaznacz strony, na których ma pojawić się grupa.</caption>
+    <thead>
+        <tr>
+            <th>Nazwa</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Jakaś tam strona</td>
+            <td><input type="checkbox"/></td>
+        </tr>
+    </tbody>
+</table>
+<div id="pagination-icon">
+<?php
+            echo html::image('media/img/first_disabled.png', array('id' => 'first-disabled'));
+            echo html::image('media/img/first_enabled.png', array('id' => 'first-enabled'));
+            echo html::image('media/img/last_disabled.png', array('id' => 'last-disabled'));
+            echo html::image('media/img/last_enabled.png', array('id' => 'last-enabled'));
+            echo html::image('media/img/next_enabled.png', array('id' => 'next-enabled'));
+            echo html::image('media/img/next_disabled.png', array('id' => 'next-disabled'));
+            echo html::image('media/img/prev_disabled.png', array('id' => 'prev-disabled'));
+            echo html::image('media/img/prev_enabled.png', array('id' => 'prev-enabled'));
+
+?>
+</div>
 </div>
 </div>
 <?php echo form::fieldset('Położenie grupy', array('class' => 'location-chooser')) ?>
@@ -37,15 +67,11 @@
     <caption>Grupy aktywne w tej lokalizacji</caption>
     <thead>
         <tr>
-            <th>Nazwa grupy</th>
+            <th>Nazwa</th>
             <th>Pierwszeństwo</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>Grupa 1</td>
-            <td>98</td>
-        </tr>
     </tbody>
 </table>
 <?php

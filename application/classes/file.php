@@ -96,7 +96,6 @@ public static function recursive_remove_directory($directory, $empty=FALSE)
     }
 
     public static function get_ext($file_name) {
-         fire::log($file_name);
          $splitted = explode('.', $file_name);
          return $splitted[1];
     }
