@@ -1,6 +1,5 @@
 var GroupEditor = function() {
     this.body = $('#menu-group');
-    this.isVisible = true;
     this.groupProperties = ['name', 'order'];
     this.groups = [];
     this.currentLocation = -1;
@@ -10,7 +9,12 @@ var GroupEditor = function() {
     this.statusSwitcher = $('#group-status');
     this.addListeners();
     this.chooser.trigger('change');
-    this.statusSwitcher.trigger('click');
+
+    if (this.statusSwitcher.attr('checked') == true) {
+        this.pageList.hide();
+    } else {
+        this.pageList.show();
+    }
 };
 GroupEditor.prototype.addListeners = function() {
 
@@ -24,11 +28,10 @@ GroupEditor.prototype.addListeners = function() {
     this.statusSwitcher.click(function() {
         var switcher = $(this),
             checked = switcher.attr('checked');
-            console.log(checked, 'checked');
         if (checked) {
             that.pageList.slideUp('fast');
         } else  {
-            that.pageList.show();
+            that.pageList.slideDown('fast');
         }
     })
     this.chooser.change(function() {
@@ -44,8 +47,6 @@ GroupEditor.prototype.addListeners = function() {
                         function(data, status) {
                             that.groups[location] = data;
                             caption.text(caption.data('text'));
-                            console.log('sukces');
-                            console.log(that.groups[location]);
                             that.populateGroupTableRows(location);
                         });
             } else {

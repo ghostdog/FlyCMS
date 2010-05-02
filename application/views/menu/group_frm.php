@@ -11,7 +11,7 @@
 <div class="input-wrap-label-right" style="margin-left: 1em">
 <?php
     echo form::label('group-status', 'Globalna', array('style' => 'margin: -.2em 0 0 0'));
-    echo form::checkbox('group[global]', 1, $group->is_global, array('id' => 'group-status'));
+    echo form::checkbox('group[global]', 1, (isset($group->is_global)) ? $group->is_global : FALSE, array('id' => 'group-status'));
 ?>
 </div>
 <div id="page-list" style="width: 100%;">
@@ -65,7 +65,7 @@
 ?>
 </div>
 <table id="groups" cellspacing="2">
-    <caption>Grupy aktywne w tej lokalizacji</caption>
+    <caption>Grupy obecne w tej lokalizacji</caption>
     <thead>
         <tr>
             <th>Nazwa</th>

@@ -15,8 +15,14 @@
     echo form::text_w_label('title', 'Tytuł strony', html::chars($page->title));
     echo form::error($errors['title']);
     echo form::help('title', 'Treść panelu pomocy dla tytułu');
-
-
+?>
+<div class="input-wrap-label-right" style="width: 16.5em; margin-left: 1em">
+<?php
+    echo form::label('is_main', 'Ustaw stronę jako główną');
+    echo form::checkbox('is_main',1, ($page->is_main) ? TRUE : FALSE, array('id' => 'is_main'));
+?>
+</div>
+<?php
     //echo form::cluetip('content', 'Treść podpowiedzi dla zawartości strony');
     echo form::error($errors['content']);
     echo form::tarea_w_label('content', 'Edytor zawartości', html::chars($page->content));

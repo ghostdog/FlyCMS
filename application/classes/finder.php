@@ -16,28 +16,26 @@ class Finder {
         );
     }
 
-    public function find_all() {
+    public function find_w_limit($order_by = 'id', $asc = 1) {
         $count = $this->model->count_all();
-        return $this->get_result($count);
+        return $this->get_result($count, $order_by, $asc);
     }
 
     public function find_by_value($field, $value) {
         $value = '%'.$value.'%';
         $count = $this->model->where($field, 'LIKE', $value)->count_all();
         $this->model->where($field, 'LIKE', $value);
-        if (Request::$is_ajax) {
-
-        } else return $this->get_result($count);
+        return $this->get_result($count);
     }
 
-    public function get_links() {
+    public function get_pagination_links() {
         return $this->pagination->render();
     }
 
-    private function get_result($count) {
+    private function get_result($count, $order_by = 'id', $asc = TRUE) {
         $this->pagination->total_items = $count;
         return $this->model
-                    ->order_by('id', 'ASC')
+                    ->order_by($order_by, ($asc) ? 'ASC' : 'DESC')
                     ->limit($this->pagination->items_per_page)
                     ->offset($this->pagination->offset)
                     ->find_all();

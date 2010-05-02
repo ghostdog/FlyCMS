@@ -42,9 +42,11 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
 
     public function action_ajax_groups_by_location() {
         $location = intval($_GET['location']);
-        echo misc::db_result_to_json($this->group->get_groups_by_location($location),
-                                         array('name', 'order','is_global'));
+        echo json_encode(misc::get_raw_db_result($this->group->get_groups_by_location($location),
+                                         array('name', 'order','is_global')));
     }
+
+    
 
     public function action_ajax_get_pages() {
         

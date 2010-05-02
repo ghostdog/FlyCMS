@@ -28,6 +28,7 @@ input[type="submit"] {
     color: #fff; margin-right: .3em
 
 }
+
 input[type="submit"] { width: 10em }
 textarea { height: 10em }
 select {
@@ -128,8 +129,6 @@ select {
 .select-wrap {
 
 }
-.select-wrap input {
- }
  .select-wrap label {
      margin-right: .5em;
 }
@@ -158,7 +157,6 @@ select {
     margin-bottom: -.3em;
 }
 
-#page-content { min-height: 400px; }
 #page-content input[type="text"] { height: 2.4em;  }
 #page-content input[type="text"]:focus, textarea:focus { border: 1px solid #39f; background: url(img/content/text_focus_bg.png) repeat-x bottom left }
 #page-content input[type="text"], textarea { background: url('img/content/text_bg.png') repeat-x top left;
@@ -229,6 +227,7 @@ select {
     -webkit-border-radius: 8px;
     background: url(img/content/content_top_shadow.png) repeat-x top left;
     background-color: #FFF;
+    min-height: 420px;
 }
 
 #page-content p { font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif; }

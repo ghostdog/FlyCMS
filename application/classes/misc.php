@@ -19,7 +19,7 @@
                     return $result;
                 }
 
-                public static function db_result_to_json(Database_Result $result, Array $columns) {
+                public static function get_raw_db_result(Database_Result $result, Array $columns) {
                     $result = $result->as_array();
                     foreach ($result as $r) {
                         foreach($columns as $col) {
@@ -27,7 +27,7 @@
                         }
                         $output[] = $temp;
                     }
-                     return json_encode($output);
+                     return $output;
                 }
 	}
 

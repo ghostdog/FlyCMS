@@ -2,6 +2,10 @@
 
 class Model_Page extends Model_FlyOrm {
 
+    public static $ERROR_MAIN_DELETE = 'Nie możesz usunąć strony głównej. Musisz najpierw określić inną jako główną.';
+
+    public static $ERROR_DELETE = 'Nie udało się usunąć stron(y).';
+    
     protected $_has_many = array('templates' => array(), 'menugroups' => array('through' => 'pagemenu'));
 
     protected $_rules = array(
@@ -35,6 +39,9 @@ class Model_Page extends Model_FlyOrm {
                'sidebar_on' => array(
                    'digit' => array(),
                ),
+               'is_main' => array(
+                   'digit' => array(),
+               ),
                'content' => array(
                    'not_empty' => array(),
                    'min_length' => array(10),
@@ -55,13 +62,15 @@ class Model_Page extends Model_FlyOrm {
         'link' => array('is_unique'),
     );
 
+    private $result = array('msg' => '', 'is_success' => NULL);
+
     public function __construct($id = null) {
         parent::__construct('pages', $id);
     }
 
     public function get_pages() {
        // $global_settings = Model::factory('setting');
-        $pages = $this->find_all();
+        $pages = $this->order_by('is_main', 'DESC')->find_all();
         foreach($pages as $page) {
            // $this->set_global_data_if_required($page, $global_settings);
         }
@@ -70,8 +79,19 @@ class Model_Page extends Model_FlyOrm {
 
     public function save() {
         $this->create_link();
-        if (! $this->_loaded) $this->created = time();
-        else $this->last_modified = time();
+        if (! $this->_loaded) {
+            $this->created = time();
+        }
+        else {
+            $this->last_modified = time();
+        }
+        if ($this->is_main) {
+            $old_main = $this->get_main_page();
+            if ($old_main->is_loaded()) {
+                $old_main->is_main = 0;
+                $old_main->save();
+            }
+        }
         return parent::save();
     }
 
@@ -88,11 +108,45 @@ class Model_Page extends Model_FlyOrm {
         return parent::values($values);
     }
 
+    public function _delete($id) {
+        $this->set_result('Strona(y) usunięte z powodzeniem.');
+        if (is_array($id)) {
+                $pages = ORM::factory('page')->where('id', 'IN', $id)->find_all();
+                foreach ($pages as $page) {
+                  if ($page->is_main) {
+                        $this->set_result(self::$ERROR_MAIN_DELETE, FALSE);
+                  } else {
+                      $page->delete();
+                  }
+                }
+        } else {
+            $this->find($id);
+            if ($this->_loaded) {
+                if ($this->is_main) {
+                    $this->set_result(self::$ERROR_MAIN_DELETE,
+                                      FALSE);
+                } else {
+                    $this->delete();
+                }
+            } else {
+                $this->set_result(self::$ERROR_DELETE, FALSE);
+            }
+        }
+    }
+
+    public function get_result_status() {
+        return $this->result;
+    }
+
     public function __get($name) {
         $value = parent::__get($name);
         if ($name == 'created' || $name == 'last_modified')
             return date("Y-m-d H:i:s", $value);
         else return $value;
+    }
+
+    public function get_main_page() {
+        return ORM::factory('page')->where('is_main', '=', 1)->find();
     }
 
     public function has_keywords() {
@@ -133,6 +187,11 @@ class Model_Page extends Model_FlyOrm {
         $link = preg_replace('/\s+/', '-', $link);
         $link = preg_replace('/^(-*)|(-*$)/', '', $link);
         $this->link = strtolower($link);
+    }
+
+    private function set_result($msg, $is_success = TRUE) {
+        $this->result['msg'] = $msg;
+        $this->result['is_success'] = $is_success;
     }
 
     private function set_global_data_if_required($page, $global) {

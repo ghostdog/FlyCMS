@@ -12,15 +12,15 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
     public function action_index() {
         $finder = new Finder($this->page);
         $this->load_page_content('pages')
-                ->set('pages', $finder->find_all())
-                ->set('pagination', $finder->get_links());
+                ->set('pages', $finder->find_w_limit('is_main', FALSE))
+                ->set('pagination', $finder->get_pagination_links());
     }
 
     public function action_search() {
         $finder = new Finder($this->page);
         $this->load_page_content('pages')
              ->set('pages', $finder->find_by_value('title', $_GET['search']))
-             ->set('pagination', $finder->get_links());
+             ->set('pagination', $finder->get_pagination_links());
     }
 
     public function action_add() {
@@ -34,29 +34,26 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
 
      public function action_delete($id = NULL) {
          if ($_POST) {
-              $is_success = $this->page->_delete($_POST['pages']);
+              $this->page->_delete($_POST['pages']);
          } else {
              if ($id == NULL) {
-                 $is_success = false;
+                 $this->redirect_to_prev_uri();
              }
              else {
-                 $is_success = $this->page->_delete($id);
+                 $this->page->_delete($id);
              }
          }
-         $this->set_msg($is_success);
-         $this->redirect('pages');         
+         
+         $this->set_msg_from_result($this->page->get_result_status());
+         $this->redirect('pages');
+         
      }
-     
-     private function load_page_form() {
-         $this->load_page_content('page_form')
-              ->bind('page', $this->page)
-              ->bind('action', $action)
-              ->set('templates', ORM::factory('template')->get_templates());
 
-         $action = $this->request->action;
-         if ($action == 'edit') {
-             $action .= '/'.$this->request->param('id');
-         }
+     public function ajax_get_pages() {
+         $finder = new Finder($this->page, 10);
+         $pages = $finder->find_limit();
+         echo json_encode(misc::get_raw_db_result($pages, array('id', 'title')));
+         echo json_encode($finder->get_pagination_link());
      }
 
      public function after() {
@@ -74,6 +71,23 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
             $this->set_page_title('Edytor stron');
         }
         parent::after();
+     }
+
+     private function load_page_form() {
+         $this->load_page_content('page_form')
+              ->bind('page', $this->page)
+              ->bind('action', $action)
+              ->set('templates', ORM::factory('template')->get_templates());
+
+         $action = $this->request->action;
+         if ($action == 'edit') {
+             $action .= '/'.$this->request->param('id');
+         }
+     }
+
+     private function set_msg_from_result($result) {
+         $this->session->set('msg', $result['msg'])
+                       ->set('is_success', $result['is_success']);
      }
 }
 ?>

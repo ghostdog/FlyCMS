@@ -1,5 +1,5 @@
 <?php defined('SYSPATH') or die('No direct script access');
-   create_link('Dodaj nową', 'pages', 'add', null, array('class' => 'create'));
+   create_link('Dodaj nową', 'pages', 'add', null, array('class' => 'create', 'style' => 'float: left; margin-left: 1em'));
    echo '<div class="items-count-chooser">';
    $attr = array('method' => 'get');
        $all_pages = html::anchor('admin/pages', 'Wyświetl listę wszystkich stron', array('style' => 'margin-left: 1em'));
@@ -44,7 +44,7 @@
         <tr title="Kliknij aby zaznaczyć">
             <td class="mark"><?php echo form::checkbox('pages[]', $id) ?>
             </td>
-            <td class="name"><em><?php echo $page->title ?></em>
+            <td class="name"><em><?php if($page->is_main) { echo '<strong>(Strona główna)</strong> '.$page->title; } else echo $page->title; ?></em>
                 <div>
                     <?php
                      create_link('Podglądnij', 'pages', 'preview', $id, array('title' => 'Podglądnij'));
