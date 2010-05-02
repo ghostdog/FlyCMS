@@ -88,7 +88,7 @@ select {
 }
 .last-item { border: none !important; }
 .msg { display: block;  width: 50%; margin-left: 25%; margin-right: 25%; text-align: center; -moz-border-radius: 6px;
-	  -webkit-border-radius: 6px; padding: .6em; color: #FFF; font-weight: bold; font-style: normal; cursor: pointer; margin-top: 1em; }
+	  -webkit-border-radius: 6px; padding: .7em; color: #FFF; font-weight: bold; font-style: normal; cursor: pointer; margin-top: 1em; }
 .msg.success {
     background: url(img/content/success_bg.png) repeat-x top left;
     background-color: #030;

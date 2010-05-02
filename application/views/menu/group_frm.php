@@ -11,22 +11,23 @@
 <div class="input-wrap-label-right" style="margin-left: 1em">
 <?php
     echo form::label('group-status', 'Globalna', array('style' => 'margin: -.2em 0 0 0'));
-    echo form::checkbox('group[global]', 1, (empty($group->is_global)) ? FALSE : $group->is_global, array('id' => 'group-status'));
+    echo form::checkbox('group[global]', 1, $group->is_global, array('id' => 'group-status'));
 ?>
 </div>
 <div id="page-list" style="width: 100%;">
 <table id="pages" cellspacing="2">
-    <caption>Zaznacz strony, na których ma pojawić się grupa.</caption>
+    <caption>Wybierz strony, na których ma pojawić się grupa.</caption>
     <thead>
         <tr>
             <th>Nazwa</th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>Jakaś tam strona</td>
-            <td><input type="checkbox"/></td>
+        </tr>
+      <tr>
+            <td>Jakaś tam strona</td>
         </tr>
     </tbody>
 </table>
@@ -59,7 +60,7 @@
 </div>
 <div class="select-wrap" style="float: right; clear: none; ">
 <?php
-    echo form::label('group-order', 'Pierwszeństwo');
+    echo form::label('group-order', 'Kolejność');
     echo form::select('group[order]', $order, $group->order, array('id' => 'group-order', 'class' => 'order-chooser'));
 ?>
 </div>
@@ -68,7 +69,8 @@
     <thead>
         <tr>
             <th>Nazwa</th>
-            <th>Pierwszeństwo</th>
+            <th>Kolejność</th>
+            <th>Globalna</th>
         </tr>
     </thead>
     <tbody>
@@ -77,7 +79,6 @@
 <?php
     echo form::close_fieldset();
     echo form::close_fieldset();
-    fire::log($group, 'group');
 ?>
 <script type="text/javascript">
     $('#group-name').counter({maxLength : 100});

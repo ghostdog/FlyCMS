@@ -64,10 +64,10 @@
         </ul>
         <?php echo form::open('admin/pages/search', array('method' => 'GET', 'id' => 'search-frm')) ?>
         <ul id="search">
-            <li><?php echo form::label('search-fld', 'Wyszukaj stronę: ', array('style' => 'display: none')) ?></li>
+            <li><?php echo form::label('search-fld', 'Wyszukaj stronę: ') ?></li>
             <li>
                 <?php
-                 echo form::cluetip('search-fld', 'Wpisz tytuł strony');
+               //  echo form::cluetip('search-fld', 'Wpisz tytuł strony');
                  echo form::input('search', null,  array('id' => 'search-fld', 'style' => 'width: 15em'))
                 ?>
             </li>

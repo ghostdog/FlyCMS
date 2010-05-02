@@ -84,11 +84,6 @@
 <?php echo html::script('media/js/jquery.c-dialog.js') ?>
 <script type="text/javascript">
  $(document).ready(function() {
-//     var currUrl = window.location.search;
-//     if (currUrl.indexOf('items_per_page') != -1) {
-//        var length = currUrl.length;
-//        $('#items_per_page').val(currUrl.substr(length-2, length));
-//     }
      $(':checkbox').removeAttr('checked');
      $('tbody > tr').each(function(index) {
         var tr = $(this);
