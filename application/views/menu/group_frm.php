@@ -14,7 +14,7 @@
     echo form::checkbox('group[global]', 1, (isset($group->is_global)) ? $group->is_global : FALSE, array('id' => 'group-status'));
 ?>
 </div>
-<div id="page-list" style="width: 100%;">
+<div id="pages-data" style="width: 100%;">
 <table id="pages" cellspacing="2">
     <caption>Wybierz strony, na których ma pojawić się grupa.</caption>
     <thead>
@@ -23,15 +23,12 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>Jakaś tam strona</td>
-        </tr>
-      <tr>
-            <td>Jakaś tam strona</td>
-        </tr>
+        
     </tbody>
 </table>
-<div id="pagination-icon">
+<div id="pagination-links">
+</div>
+<div id="pagination-icons">
 <?php
             echo html::image('media/img/first_disabled.png', array('id' => 'first-disabled'));
             echo html::image('media/img/first_enabled.png', array('id' => 'first-enabled'));
@@ -41,7 +38,6 @@
             echo html::image('media/img/next_disabled.png', array('id' => 'next-disabled'));
             echo html::image('media/img/prev_disabled.png', array('id' => 'prev-disabled'));
             echo html::image('media/img/prev_enabled.png', array('id' => 'prev-enabled'));
-
 ?>
 </div>
 </div>

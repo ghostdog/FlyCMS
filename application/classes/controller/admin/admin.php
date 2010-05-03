@@ -4,28 +4,23 @@
 
 		public $template = 'template';
                 protected $session;
-                protected $is_ajax;
+                protected $is_ajax = FALSE;
 
                 public function __construct(Request $req) {
                     parent::__construct($req);
                     $this->session = Session::instance();
                     $this->session->set('prev_uri', $_SERVER['REQUEST_URI']);
-                    if (Request::$is_ajax OR $this->request !== Request::instance()) {
+                    if ( Request::$is_ajax OR $this->request !== Request::instance() ) {
                         $this->auto_render = FALSE;
                         $this->is_ajax = TRUE;
-                        fire::log('is ajax!!!!!!');
-                        header('content-type: application/json');
-
                     }
-//                    FirePHP_Profiler::instance()
-//                        ->group('KO3 FirePHP Application Profiler')
-//                        ->post()
-//                        ->get()
-//                        ->database()
-//                        ->benchmark()
-//
-//                        ->groupEnd();
-
+                    FirePHP_Profiler::instance()
+                        ->group('Profiler')
+                        ->post()
+                        ->get()
+                        ->database()
+                        ->benchmark()
+                        ->groupEnd();
                 }
 
                 public function after() {
@@ -79,7 +74,7 @@
                 }
 
                 protected function redirect_to_prev_uri() {
-                    $this->request->reditect($this->session->get('prev_uri'));
+                    $this->request->redirect($this->session->get('prev_uri'));
                 }
 	}
 ?>

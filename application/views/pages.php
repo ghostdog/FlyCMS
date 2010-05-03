@@ -2,7 +2,7 @@
    create_link('Dodaj nową', 'pages', 'add', null, array('class' => 'create', 'style' => 'float: left; margin-left: 1em'));
    echo '<div class="items-count-chooser">';
    $attr = array('method' => 'get');
-       $all_pages = html::anchor('admin/pages', 'Wyświetl listę wszystkich stron', array('style' => 'margin-left: 1em'));
+       $all_pages = html::anchor('admin/pages', 'Wyświetl listę wszystkich stron', array('style' => 'font-size: 115%; line-height: 2em'));
 //   if (Request::instance()->action == 'search') {
 //       $attr['style'] = 'display: none';
 //       }

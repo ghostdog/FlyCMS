@@ -81,8 +81,7 @@ class Model_Page extends Model_FlyOrm {
         $this->create_link();
         if (! $this->_loaded) {
             $this->created = time();
-        }
-        else {
+        } else {
             $this->last_modified = time();
         }
         if ($this->is_main) {

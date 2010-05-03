@@ -12,7 +12,7 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
     public function action_index() {
         $finder = new Finder($this->page);
         $this->load_page_content('pages')
-                ->set('pages', $finder->find_w_limit('is_main', FALSE))
+                ->set('pages', $finder->find_w_limit(15, 'is_main', FALSE))
                 ->set('pagination', $finder->get_pagination_links());
     }
 
@@ -50,25 +50,28 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
      }
 
      public function action_ajax_get_pages() {
-         $finder = new Finder($this->page, 10);
-         $pages = $finder->find_w_limit();
-         echo json_encode(misc::get_raw_db_result($pages, array('id', 'title')));
-         echo $finder->get_pagination_links();
+         $finder = new Finder($this->page);
+         $pages = $finder->find_w_limit(8);
+         $result = misc::get_raw_db_result($pages, array('id', 'title'));
+         $result['pagination'] = $finder->get_pagination_links();
+         echo json_encode($result);
      }
 
      public function after() {
-        $action = $this->request->action;
-        if ($_POST && $action != 'delete') {
-            $is_saved = $this->page->save_if_valid($_POST);
-            $this->set_msg($is_saved);
-            if (! $is_saved) {
-                $this->set_form_errors($this->page->get_errors());
+        if (! $this->is_ajax) {
+            $action = $this->request->action;
+            if ($_POST && $action != 'delete') {
+                $is_saved = $this->page->save_if_valid($_POST);
+                $this->set_msg($is_saved);
+                if (! $is_saved) {
+                    $this->set_form_errors($this->page->get_errors());
+                }
             }
-        }
-        if ($action == 'index') {
-            $this->set_page_title('Twoje strony');
-        } else {
-            $this->set_page_title('Edytor stron');
+            if ($action == 'index') {
+                $this->set_page_title('Twoje strony');
+            } else {
+                $this->set_page_title('Edytor stron');
+            }
         }
         parent::after();
      }
