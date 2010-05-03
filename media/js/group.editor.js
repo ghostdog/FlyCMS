@@ -4,37 +4,45 @@ var GroupEditor = function() {
     this.currentLocation = -1;
     this.paginationLinks = {};
     this.chooser = $('#group-location');
+    this.activePages = $('#group-pages');
     this.groupsTable = $('#groups').hide();
     this.paginationIcons = $('#pagination-icons').hide();
-    this.pageTable = $('#pages-data');
+    this.pagesTable = $('#pages-data').hide();
     this.statusSwitcher = $('#group-status');
     this.addListeners();
     this.chooser.trigger('change');
 
     if (this.statusSwitcher.attr('checked') == true) {
-        this.pageTable.hide();
+        this.activePages.hide();
     } else {
-        this.pageTable.show();
-        this.getPages();
+        this.activePages.show();
+        
     }
 };
 GroupEditor.prototype.addListeners = function() {
-    this.pageTable.find('tr').click(function() {
-        $(this).find(':input').each(function() {
-            var input = $(this);
-            input.attr('checked', ! input.attr('checked'));
-        });
-    })
     var that = this;
     this.statusSwitcher.click(function() {
         var switcher = $(this),
             checked = switcher.attr('checked');
         if (checked) {
-            that.pageTable.slideUp('fast');
+            that.activePages.hide('fast');
         } else  {
-            that.pageTable.slideDown('fast');
+            that.activePages.show('fast');
         }
-    })
+    });
+    this.activePages.find('#page-list-inv').toggle(
+        function() {
+            var inv = $(this);
+            inv.removeClass('open').addClass('close');
+            that.pagesTable.slideDown('fast');
+            that.getPages();
+        },
+        function () {
+            var inv = $(this);
+            inv.removeClass('close').addClass('open');
+            that.pagesTable.slideUp('fast');
+       }
+    )
     this.chooser.change(function() {
         var chooser = $(this);
         var location = chooser.val();
@@ -61,7 +69,7 @@ GroupEditor.prototype.getPages = function(resultPageId) {
         query =  (resultPageId == undefined) ? '' : 'page='+resultPageId,
         id = resultPageId || 1,
         that = this;
-            var caption = this.pageTable.find('caption').text('Pobieranie listy stron...');
+            var caption = this.pagesTable.find('caption').text('Pobieranie listy stron...');
             $.getJSON(action, query, function(data, status) {
                 that.paginationLinks = data['pagination'];
                 delete data['pagination'];
@@ -94,7 +102,7 @@ GroupEditor.prototype.createPaginationLinks = function() {
      }
        function getPositionButton(position) {
             var is_enabled = links[position + '_page'],
-                src = '/kohana/media/img/' + position + ((is_enabled) ? '_enabled' : '_disabled') + '.png',
+                src = '/kohana/media/img/' + position + ((is_enabled) ? '_enabled' : '_disabled') + '_mini.png',
                 img = $('<img/>')
                         .attr('src', src)
                         .attr('alt', position);
@@ -120,7 +128,8 @@ GroupEditor.prototype.createPaginationLinks = function() {
 };
 
 GroupEditor.prototype.populatePageTableRows = function(pages) {
-        var tbody = this.pageTable.find('tbody');
+        var tbody = this.pagesTable.find('tbody'),
+            that = this;
         tbody.find('tr').remove();
         for(var key in pages) {
             if(pages.hasOwnProperty(key)) {
@@ -132,6 +141,7 @@ GroupEditor.prototype.populatePageTableRows = function(pages) {
                                 console.log($(this).data('id'), 'click id');
                             })
                           );
+                
                 tbody.append(tr);
             }
         }

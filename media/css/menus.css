@@ -90,6 +90,14 @@ input[type=text] {
     width: 40%;
 }
 
+a.open {
+    background: url("img/content/arrow_open.png") no-repeat scroll right top transparent;
+}
+
+a.close {
+    background: url("img/content/arrow_close.png") no-repeat scroll right top transparent;
+}
+
 
 #groups {
     margin: 1em 0 0 3em;
@@ -128,3 +136,22 @@ input[type=text] {
 #groups tbody tr, #pages tbody tr {
     background: #f1f1f1;
 }
+
+#page-list-inv {
+    float: right;
+    clear: both !important;
+    padding: 0 1.5em .2em 0;
+}
+#group-pages {
+    width: 100%;
+    margin-bottom: 1em;
+}
+#group-pages ul {
+    clear: left;
+    margin: .5em 0 0 2em;
+}
+#group-pages ul li {
+    margin: .3em;
+}
+
+
