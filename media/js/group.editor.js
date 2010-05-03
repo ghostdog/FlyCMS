@@ -1,9 +1,7 @@
 var GroupEditor = function() {
     this.body = $('#menu-group');
     this.groups = [];
-    this.pages = [];
     this.currentLocation = -1;
-    this.currentPageList = -1;
     this.paginationLinks = {};
     this.chooser = $('#group-location');
     this.groupsTable = $('#groups').hide();
@@ -59,26 +57,18 @@ GroupEditor.prototype.addListeners = function() {
     });
 };
 GroupEditor.prototype.getPages = function(resultPageId) {
-    var caption = this.pageTable.find('caption').text('Pobieranie listy stron...'),
-        action = '/kohana/admin/pages/ajax_get_pages',
+    var action = '/kohana/admin/pages/ajax_get_pages',
         query =  (resultPageId == undefined) ? '' : 'page='+resultPageId,
         id = resultPageId || 1,
         that = this;
-        if (this.pages[id] == undefined) {
+            var caption = this.pageTable.find('caption').text('Pobieranie listy stron...');
             $.getJSON(action, query, function(data, status) {
                 that.paginationLinks = data['pagination'];
                 delete data['pagination'];
-                that.pages[id] = data;
-                //console.log(data, 'data');
-                console.log(that.paginationLinks, 'links');
-                that.populatePageTableRows(id);
+                that.populatePageTableRows(data);
                 that.createPaginationLinks();
                 caption.text('Wybierz strony, na których ma pojawić się grupa.');
             });
-        } else {
-            that.populatePageTableRows(id);
-            that.createPaginationLinks();
-        }
 }
 GroupEditor.prototype.createPaginationLinks = function() {
     var links = this.paginationLinks,
@@ -88,64 +78,63 @@ GroupEditor.prototype.createPaginationLinks = function() {
     if (links.total_pages == 1) {
         pagination.hide();
     } else {
-        pagination.append(loadPositionButton('first'))
-                  .append(loadPositionButton('prev'));
-   
+        pagination.find('*').remove();
+        pagination.append(getPositionButton('first'))
+                  .append(getPositionButton('prev'));
         for (var i = 0; i < links.total_pages;) {
-                i++;
+                i += 1;
                 if (i != links.current_page) {
                     pagination.append(getAnchor(i, '[' + i + ']'));
                 } else {
                     pagination.append($('<strong/>').text('[' + i + ']'));
                 }
         }
-        pagination.append(loadPositionButton('next'))
-                  .append(loadPositionButton('last')).show();
+        pagination.append(getPositionButton('next'))
+                  .append(getPositionButton('last'));
      }
-       function loadPositionButton(position) {
+       function getPositionButton(position) {
             var is_enabled = links[position + '_page'],
-                buttonType = position + ((is_enabled) ? '-enabled' : '-disabled'),
-                currIcon = $('#'+buttonType);
-           console.log(buttonType, 'buttonType');
-           console.log(currIcon);
+                src = '/kohana/media/img/' + position + ((is_enabled) ? '_enabled' : '_disabled') + '.png',
+                img = $('<img/>')
+                        .attr('src', src)
+                        .attr('alt', position);
            if (is_enabled) {
-               return getAnchor(is_enabled, currIcon);
+               return getAnchor(is_enabled, img);
            } else {
-               return currIcon;
+               return img;
            }
         }
 
         function getAnchor(id, content) {
-           var anchor = $('<a></a>')
-                     .attr('rel', id)
-                     .attr('href', '#')
-                     .text(content)
-                     .click(function(evt) {
-                          evt.preventDefault();
-                          that.getPages(id);
-                  });
-               console.log(anchor, '<a>');
+           var anchor = $('<a>')
+                        .attr('rel', id)
+                        .attr('href', '#')
+                        .html(content)
+                        .click(function(evt) {
+                              evt.preventDefault();
+                              that.getPages(id);
+                         });
+              return anchor;
         }
 
 };
-GroupEditor.prototype.populatePageTableRows = function(currPage) {
-    if (this.currentPageList != currPage) {
-        var pages = this.pages[currPage],
-            tbody = this.pageTable.find('tbody');
 
+GroupEditor.prototype.populatePageTableRows = function(pages) {
+        var tbody = this.pageTable.find('tbody');
         tbody.find('tr').remove();
         for(var key in pages) {
             if(pages.hasOwnProperty(key)) {
                 var tr = $('<tr>');
-                tr.append($('<td/>').text(pages[key].title));
+                tr.append($('<td/>')
+                            .text(pages[key].title)
+                            .data('id', pages[key].id)
+                            .click(function() {
+                                console.log($(this).data('id'), 'click id');
+                            })
+                          );
                 tbody.append(tr);
             }
         }
-        this.currentPageList = currPage;
-    }
-
-
-
 };
 GroupEditor.prototype.populateGroupTableRows = function(location) {
     if (location !== this.currentLocation) {

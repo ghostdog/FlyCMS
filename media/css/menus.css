@@ -99,11 +99,30 @@ input[type=text] {
 #pages {
     clear:left;
     width:100%;
+    text-align: left;
+}
+#pages td {
+    padding: .3em .4em;
 }
 
 #pages tbody tr:hover {
     cursor:pointer;
     background: #d5d5d5;
+  
+}
+
+#pagination-links {
+    padding: .3em;
+    width: 100%;
+    text-align: center;
+}
+
+#pagination-links a {
+    float: none !important;
+}
+
+#pagination-links strong, #pagination-links a {
+    margin: 0 .2em 1em 0;
 }
 
 #groups tbody tr, #pages tbody tr {

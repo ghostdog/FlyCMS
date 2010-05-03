@@ -15,11 +15,11 @@
 ?>
 </div>
 <div id="pages-data" style="width: 100%;">
-<table id="pages" cellspacing="2">
+<table id="pages" cellspacing="1">
     <caption>Wybierz strony, na których ma pojawić się grupa.</caption>
     <thead>
         <tr>
-            <th>Nazwa</th>
+            <th style="padding: .3em .5em">Tytył strony</th>
         </tr>
     </thead>
     <tbody>
@@ -27,19 +27,20 @@
     </tbody>
 </table>
 <div id="pagination-links">
+
 </div>
-<div id="pagination-icons">
+<!--<div id="pagination-icons">
 <?php
-            echo html::image('media/img/first_disabled.png', array('id' => 'first-disabled'));
-            echo html::image('media/img/first_enabled.png', array('id' => 'first-enabled'));
-            echo html::image('media/img/last_disabled.png', array('id' => 'last-disabled'));
-            echo html::image('media/img/last_enabled.png', array('id' => 'last-enabled'));
-            echo html::image('media/img/next_enabled.png', array('id' => 'next-enabled'));
-            echo html::image('media/img/next_disabled.png', array('id' => 'next-disabled'));
-            echo html::image('media/img/prev_disabled.png', array('id' => 'prev-disabled'));
-            echo html::image('media/img/prev_enabled.png', array('id' => 'prev-enabled'));
+            echo html::image('media/img/first_disabled.png', array('class' => 'first-disabled'));
+            echo html::image('media/img/first_enabled.png', array('class' => 'first-enabled'));
+            echo html::image('media/img/last_disabled.png', array('class' => 'last-disabled'));
+            echo html::image('media/img/last_enabled.png', array('class' => 'last-enabled'));
+            echo html::image('media/img/next_enabled.png', array('class' => 'next-enabled'));
+            echo html::image('media/img/next_disabled.png', array('class' => 'next-disabled'));
+            echo html::image('media/img/prev_disabled.png', array('class' => 'prev-disabled'));
+            echo html::image('media/img/prev_enabled.png', array('class' => 'prev-enabled'));
 ?>
-</div>
+</div>-->
 </div>
 </div>
 <?php echo form::fieldset('Położenie grupy', array('class' => 'location-chooser')) ?>
