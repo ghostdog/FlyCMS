@@ -118,6 +118,10 @@
       });
     };
 
+     $.fn.hasElement = function(selector) {
+         return $(this).find(selector).length;
+     };
+
      $.fn.tagName = function() {
         //console.log(this.get(0), 'this.get(0)');
         if (this.get(0) !== undefined)

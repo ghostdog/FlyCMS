@@ -12,7 +12,7 @@
 <h3 id="req-text" style="float: left; clear: both; margin: .5em;">
     <em class="required">*</em> - elementy obowiązkowe</h3>
 <?php
-    echo View::factory('menu/group_frm', array('group' => $group));
+    echo $group;
 ?>
 </div>
 <div id="quantity-chooser" style="float: left; clear: left;">
@@ -32,7 +32,7 @@
 </div>
 <div id="items-wrap">
 <?php
-    echo View::factory('menu/item_frm', array('items_count' => $items_count, 'items' => $items));
+    echo View::factory('menu/item_frm', array('items_count' => $items_count, 'items' => $items, 'groups' => $groups));
 ?>
 </div>
 <div id="safe-btn" style="float: right">
@@ -47,6 +47,7 @@
 echo form::close();
 echo html::script('media/js/items.editor.js');
 echo html::script('media/js/group.editor.js');
+echo html::script('media/js/pagination.js')
 ?>
 <script type="text/javascript">
 
@@ -89,7 +90,7 @@ echo html::script('media/js/group.editor.js');
                     showCommonElements();
                 });
                 this.itemRadio.click(function() {
-                    that.group.hide('fast');
+                    that.group.hide('medium');
                     that.items.showAll();
                     that.items.enableInputs();
                     showCommonElements();

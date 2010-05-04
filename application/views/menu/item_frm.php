@@ -48,12 +48,21 @@ foreach($items as $item) :
 <table cellspacing="0">
 <tr class="select-wrap item-group">
     <td><?php echo form::label('item-group'.$i, 'Grupa odnośników'); ?></td>
-    <td><?php echo form::select('item-group[]',
-            array('1' => 'Grupa 1'), $item->group_id, array('id' => 'item-group'.$i)); ?></td>
+    <td>
+        <?php
+             foreach ($groups as $group) {
+                 $options[$group->id] = $group->name;
+             }
+             echo form::select('item-group[]', $options, $item->group_id, array('id' => 'item-group'.$i));
+            
+        ?>
+    </td>
 </tr>
 <tr class="select-wrap item-parent">
     <td><?php echo form::label('item-parent'.$i, 'Odnośnik nadrzędny'); ?></td>
-    <td><?php echo form::select('parent[]', array('1' => 'Nadrzędny 1'),
+    <td><?php
+        $options = array('-1' => 'Brak');
+        echo form::select('parent[]', $options,
                         $item->parent, array('id' => 'item-parent'.$i));?></td>
 </tr>
 <tr class="select-wrap item-order">

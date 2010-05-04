@@ -62,10 +62,6 @@ class Model_FlyOrm extends ORM {
         return Kohana::config(Inflector::plural($model_name).'.'.$key);
     }
 
-    protected function get_error_msg($key) {
-        return Kohana::message($this->error_msg_filename, $key);
-    }
-
     protected function execute($sql) {
         try {
             $result = $sql->execute();

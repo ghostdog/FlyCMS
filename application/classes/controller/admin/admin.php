@@ -13,6 +13,8 @@
                     if ( Request::$is_ajax OR $this->request !== Request::instance() ) {
                         $this->auto_render = FALSE;
                         $this->is_ajax = TRUE;
+                        $this->request->headers['Content-Type'] = 'application/json';
+
                     }
                     FirePHP_Profiler::instance()
                         ->group('Profiler')

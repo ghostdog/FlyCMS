@@ -56,7 +56,6 @@
 ?>
 
 <script type="text/javascript">
-
 $(document).ready(function() {
     $('#title').counter({maxLength : 100});
     $('.delete').c_dialog();
@@ -86,7 +85,5 @@ $(document).ready(function() {
             }
        );
     });
-
-    
 });
 </script>

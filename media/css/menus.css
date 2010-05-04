@@ -20,14 +20,12 @@ table caption {
     margin: 0 0 .5em 0;
 }
 
-
 label { 
     float: none !important
 }
 input[type=radio] {
     margin-left: .5em;
 }
-
 
 input[type=text] {
     width: 100%;
@@ -83,7 +81,6 @@ input[type=text] {
     width: 10em;
 }
 
-
 .item-type-chooser, .pages-list {
     float: left;
     clear: left;
@@ -97,7 +94,6 @@ a.open {
 a.close {
     background: url("img/content/arrow_close.png") no-repeat scroll right top transparent;
 }
-
 
 #groups {
     margin: 1em 0 0 3em;
@@ -119,18 +115,18 @@ a.close {
   
 }
 
-#pagination-links {
+.pagination-links {
     padding: .3em;
     width: 100%;
     text-align: center;
 }
 
-#pagination-links a {
-    float: none !important;
+.pagination-links a {
+    float: none;
 }
 
-#pagination-links strong, #pagination-links a {
-    margin: 0 .2em 1em 0;
+.pagination-links strong, .pagination-links a {
+    margin: 0 .2em 1em 0 !important;
 }
 
 #groups tbody tr, #pages tbody tr {
@@ -152,6 +148,10 @@ a.close {
 }
 #group-pages ul li {
     margin: .3em;
+}
+
+#group-pages ul li input {
+    margin-left: .5em
 }
 
 

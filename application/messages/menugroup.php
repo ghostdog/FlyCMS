@@ -7,13 +7,15 @@ return array(
             'unique' => 'Istnieje już grupa z taką nazwą. Musisz podać inną.'
         ),
         'location' => array(
-            'range' => 'Podanie lokalizacji grupy jest wymagane.',
+            'range' => 'Musisz podać lokalizację grupy',
         ),
         'is_global' => array(
             'range' => 'Przekazano nie prawidłową wartość określającą status grupy.',
+            'no_pages' => 'W przypadku grupy <u>nie</u> globalnej, musisz wybrać strony, na których ma się ona znajdować.'
         ),
         'order' => array(
-            'digit' => 'Przekazano nie prawidłową wartość pierwszeństwa grupy.',
-        )
+            'digit' => 'Przekazano nie prawidłową wartość kolejności grupy.',
+        ),
+
 )
 ?>

@@ -2,11 +2,9 @@ var GroupEditor = function() {
     this.body = $('#menu-group');
     this.groups = [];
     this.currentLocation = -1;
-    this.paginationLinks = {};
     this.chooser = $('#group-location');
     this.activePages = $('#group-pages');
     this.groupsTable = $('#groups').hide();
-    this.paginationIcons = $('#pagination-icons').hide();
     this.pagesTable = $('#pages-data').hide();
     this.statusSwitcher = $('#group-status');
     this.addListeners();
@@ -26,6 +24,9 @@ GroupEditor.prototype.addListeners = function() {
             checked = switcher.attr('checked');
         if (checked) {
             that.activePages.hide('fast');
+            if (that.pagesTable.css('display') == 'block') {
+                $('#page-list-inv').trigger('click');
+            }
         } else  {
             that.activePages.show('fast');
         }
@@ -33,14 +34,15 @@ GroupEditor.prototype.addListeners = function() {
     this.activePages.find('#page-list-inv').toggle(
         function() {
             var inv = $(this);
-            inv.removeClass('open').addClass('close');
+            inv.removeClass('open').addClass('close')
             that.pagesTable.slideDown('fast');
             that.getPages();
         },
         function () {
             var inv = $(this);
-            inv.removeClass('close').addClass('open');
+            inv.removeClass('close').addClass('open')
             that.pagesTable.slideUp('fast');
+
        }
     )
     this.chooser.change(function() {
@@ -71,16 +73,16 @@ GroupEditor.prototype.getPages = function(resultPageId) {
         that = this;
             var caption = this.pagesTable.find('caption').text('Pobieranie listy stron...');
             $.getJSON(action, query, function(data, status) {
-                that.paginationLinks = data['pagination'];
+                var pagination = data['pagination'];
                 delete data['pagination'];
                 that.populatePageTableRows(data);
-                that.createPaginationLinks();
+                that.createPaginationLinks(pagination);
                 caption.text('Wybierz strony, na których ma pojawić się grupa.');
             });
 }
-GroupEditor.prototype.createPaginationLinks = function() {
-    var links = this.paginationLinks,
-        pagination = $('#pagination-links'),
+GroupEditor.prototype.createPaginationLinks = function(paginationLinks) {
+    var links = paginationLinks,
+        pagination = $('#page-pagination-links'),
         that = this;
 
     if (links.total_pages == 1) {
@@ -115,7 +117,6 @@ GroupEditor.prototype.createPaginationLinks = function() {
 
         function getAnchor(id, content) {
            var anchor = $('<a>')
-                        .attr('rel', id)
                         .attr('href', '#')
                         .html(content)
                         .click(function(evt) {
@@ -126,24 +127,83 @@ GroupEditor.prototype.createPaginationLinks = function() {
         }
 
 };
-
 GroupEditor.prototype.populatePageTableRows = function(pages) {
         var tbody = this.pagesTable.find('tbody'),
             that = this;
         tbody.find('tr').remove();
         for(var key in pages) {
             if(pages.hasOwnProperty(key)) {
-                var tr = $('<tr>');
+                var tr = $('<tr>'),
+                    page = pages[key];
+                tr.data('id', page.id);
                 tr.append($('<td/>')
-                            .text(pages[key].title)
-                            .data('id', pages[key].id)
-                            .click(function() {
-                                console.log($(this).data('id'), 'click id');
-                            })
-                          );
-                
+                            .text(page.title)
+                            .addClass('title')
+                          )
+                  .attr('id', page.id);
+                if (isPageActive(pages[key])) {
+                    markRow(tr);
+                }
                 tbody.append(tr);
             }
+        }
+
+        tbody.find('tr').click(function() {
+            var tr = $(this),
+                id = tr.attr('id');
+            if (isPageInActiveList(id)) {
+                unmarkRow(tr);
+                removePageFromActiveList(id);
+            } else {
+                markRow(tr);
+                addPageToActiveList(id, tr.find('td.title').text());
+            }
+
+           function isPageInActiveList(id) {
+               return that.activePages.find('input#page'+id).length;
+           }
+
+        });
+
+        function removePageFromActiveList(id) {
+            that.activePages.find('#page' + id).parent().remove();
+        }
+
+        function addPageToActiveList(id, title) {
+            that.activePages.find('ul').append(
+                                $('<li/>')
+                                       .append($('<label/>')
+                                               .attr('for','page'+id)
+                                               .text(title)
+                                           )
+                                       .append(
+                                            $('<input/>')
+                                            .attr({
+                                                    'type' : 'checkbox',
+                                                    'name' : 'group[pages][' + id +'][id]                                    ',
+                                                    'value' : id,
+                                                    'checked' : true,
+                                                    'id' : 'page'+id
+                                            })
+                                        )
+                                       .append(
+                                            $('<input/>')
+                                            .attr({
+                                                'type' : 'hidden',
+                                                'name' : 'group[pages][' + id +'][title]',
+                                                'value' : title
+                                            })
+                                        )
+                            )
+        }
+        function isPageActive(page) {
+            return that.activePages.hasElement('#page'+page.id);
+        }
+        function markRow(tr) {
+            tr.css({'background-color' : '#d5d5d5'});
+        }
+        function unmarkRow(tr) {
+            tr.css({'background-color' : '#f1f1f1'});
         }
 };
 GroupEditor.prototype.populateGroupTableRows = function(location) {

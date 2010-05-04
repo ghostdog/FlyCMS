@@ -22,7 +22,7 @@ class Finder {
     public function find_by_value($field, $value) {
         $value = '%'.$value.'%';
         $count = $this->model->where($field, 'LIKE', $value)->count_all();
-       // $this->model->where($field, 'LIKE', $value);
+        $this->model->where($field, 'LIKE', $value);
         return $this->get_result($count);
     }
 

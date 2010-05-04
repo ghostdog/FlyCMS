@@ -19,6 +19,7 @@
                     return $result;
                 }
 
+   
                 public static function get_raw_db_result(Database_Result $result, Array $columns) {
                     $result = $result->as_array();
                     foreach ($result as $r) {

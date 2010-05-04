@@ -9,7 +9,7 @@ class Model_MenuGroup extends Model_FlyOrm {
     );
     protected $_rules = array(
         'name' => array(
-            'not_empty' => NULL,
+            'not_empty' => array(),
             'min_length' => array(2),
             'max_length' => array(100)
         ),
@@ -28,6 +28,8 @@ class Model_MenuGroup extends Model_FlyOrm {
         'name' => array('is_unique'),
     );
 
+    private $pages_id = array();
+
     public function __construct($id = NULL) {
         parent::__construct('menugroup', $id);
     }
@@ -37,6 +39,27 @@ class Model_MenuGroup extends Model_FlyOrm {
         parent::save();
     }
 
+    public function values($data) {
+        if (! isset($data['is_global'])) {
+           if (isset($data['pages'])) {
+               $this->pages_id = $data['pages'];
+           }
+           $data['is_global'] = 0;
+        }
+        parent::values($data);
+    }
+
+    public function check() {
+        $result = parent::check();
+        if (! $this->is_global) {
+            if (empty($this->pages_id)) {
+                $this->get_validate()->error('is_global', 'no_pages');
+                return false;
+            }
+        }
+        return $result;
+    }
+
     public function __get($name) {
         $value = parent::__get($name);
         if ($name == 'created')
@@ -44,8 +67,20 @@ class Model_MenuGroup extends Model_FlyOrm {
         else return $value;
     }
 
-    public function get_groups_by_location($id) {
+    public function get_by_location($id) {
         return $this->where('location', '=', $id)->order_by('order', 'ASC')->find_all();
+    }
+
+    public function get_all_groups() {
+        return $this->find_all();
+    }
+
+    public function get_parent_pages_if_exists() {
+        if (! $this->is_global) {
+            return $this->pages->find_all();
+        } else {
+            return FALSE;
+        }
     }
 }
 ?>

@@ -457,8 +457,7 @@ class Kohana_ORM {
 				$this->_related[$key] = $value;
 			}
 		}
-
-		return $this;
+         	return $this;
 	}
 
 	/**

@@ -6,20 +6,44 @@
 <?php
     echo form::label('group-name', 'Nazwa grupy'.req);
     echo form::input('group[name]', $group->name, array('id' => 'group-name'));
+    echo form::error($errors['name']);
+
 ?>
 </div>
 <div style="width: 100%">
     <div class="input-wrap-label-right" style="margin-left: 1em">
     <?php
         echo form::label('group-status', 'Globalna', array('style' => 'margin: -.2em 0 0 0'));
-        echo form::checkbox('group[global]', 1, (isset($group->is_global)) ? $group->is_global : FALSE, array('id' => 'group-status'));
+        echo form::checkbox('group[is_global]', 1, ($group->is_global) ? TRUE : FALSE, array('id' => 'group-status'));
     ?>
     </div>
+    <?php echo form::error($errors['is_global']); ?>
     <div id="group-pages">
         <h3>Lista stron zawierających tę grupę odnośników:</h3>
         <ul>
-            <li>Jakaś tam strona 1</li>
-            <li>Jakaś tam strona 2</li>
+            <?php
+                if (isset($_POST['group']['pages'])) {
+                    $post_pages = $_POST['group']['pages'];
+                    foreach($post_pages as $page) : ?>
+                         <li>
+                            <?php
+                                echo form::label('page'.$page['id'], $page['title']);
+                                echo form::checkbox('group[pages]['.$page['id'].'][id]', $page['id'], TRUE, array('id' => 'page'.$page['id']));
+                                echo form::hidden('group[pages]['.$page['id'].'][title]', $page['title']);
+                             ?>
+                        </li>
+             <?php endforeach; ?>
+             <?php
+                } else if (isset($pages)) {
+                    foreach ($pages as $page) : ?>
+                        <li>
+                            <?php
+                                echo form::label('page'.$page->id, $page->title);
+                                echo form::checkbox('group[pages]['.$page->id.'][id]', $page->id, TRUE, array('id' => 'page'.$page->id));
+                                echo form::hidden('group[pages]['.$page->id.'][title]', $page->title);
+                             ?>
+                        </li>
+                    <?php endforeach; } ?>
         </ul>
        <a href="#pages-data" id="page-list-inv" class="open">Wyświetl aktywne strony</a>
     </div>
@@ -33,24 +57,9 @@
         </tr>
     </thead>
     <tbody>
-        
     </tbody>
 </table>
-<div id="pagination-links">
-
-</div>
-<!--<div id="pagination-icons">
-<?php
-            echo html::image('media/img/first_disabled.png', array('class' => 'first-disabled'));
-            echo html::image('media/img/first_enabled.png', array('class' => 'first-enabled'));
-            echo html::image('media/img/last_disabled.png', array('class' => 'last-disabled'));
-            echo html::image('media/img/last_enabled.png', array('class' => 'last-enabled'));
-            echo html::image('media/img/next_enabled.png', array('class' => 'next-enabled'));
-            echo html::image('media/img/next_disabled.png', array('class' => 'next-disabled'));
-            echo html::image('media/img/prev_disabled.png', array('class' => 'prev-disabled'));
-            echo html::image('media/img/prev_enabled.png', array('class' => 'prev-enabled'));
-?>
-</div>-->
+<div id="page-pagination-links" class="pagination-links"></div>
 </div>
 </div>
 <?php echo form::fieldset('Położenie grupy', array('class' => 'location-chooser')) ?>
@@ -65,12 +74,16 @@
     echo form::select('group[location]', $locations, (empty($group->location)) ? -1 : $group->location, array('id' => 'group-location'));
 ?>
 </div>
+<?php   ?>
 <div class="select-wrap" style="float: right; clear: none; ">
 <?php
     echo form::label('group-order', 'Kolejność');
     echo form::select('group[order]', $order, $group->order, array('id' => 'group-order', 'class' => 'order-chooser'));
 ?>
 </div>
+<?php
+    echo form::error($errors['location']);
+?>
 <table id="groups" cellspacing="2">
     <caption>Grupy obecne w tej lokalizacji</caption>
     <thead>
