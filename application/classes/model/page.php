@@ -2,10 +2,13 @@
 
 class Model_Page extends Model_FlyOrm {
 
-    public static $ERROR_MAIN_DELETE = 'Nie możesz usunąć strony głównej. Musisz najpierw określić inną jako główną.';
+    protected $_filters = array(
+                            'title' => array('trim' => NULL),
+                            'content' => array('trim' => NULL),
+                            'keywords' => array('trim' => NULL),
+                            'description' => array('trim' => NULL)
+                       );
 
-    public static $ERROR_DELETE = 'Nie udało się usunąć stron(y).';
-    
     protected $_has_many = array('templates' => array(), 'menugroups' => array('through' => 'pagemenu'));
 
     protected $_rules = array(
@@ -16,11 +19,6 @@ class Model_Page extends Model_FlyOrm {
                    'max_length' => array(100),
 
                ),
-//               'link' => array(
-//                   'not_empty' => NULL,
-//                   'min_length' => array(3),
-//                   'max_length' => array(100),
-//               ),
                'keywords' => array(
                    'max_length' => array(255),
                ),
@@ -69,12 +67,7 @@ class Model_Page extends Model_FlyOrm {
     }
 
     public function get_pages() {
-       // $global_settings = Model::factory('setting');
-        $pages = $this->order_by('is_main', 'DESC')->find_all();
-        foreach($pages as $page) {
-           // $this->set_global_data_if_required($page, $global_settings);
-        }
-        return $pages;
+        return $this->order_by('is_main', 'DESC')->find_all();
     }
 
     public function save() {
@@ -86,7 +79,7 @@ class Model_Page extends Model_FlyOrm {
         }
         if ($this->is_main) {
             $old_main = $this->get_main_page();
-            if ($old_main->is_loaded()) {
+            if ($old_main->_loaded) {
                 $old_main->is_main = 0;
                 $old_main->save();
             }
@@ -96,24 +89,19 @@ class Model_Page extends Model_FlyOrm {
 
     public function values($values) {
         foreach($values as $key => $val) {
-            $values[$key] = utf8::trim($val);
             if ($val == self::NOT_SET)
                 $values[$key] = NULL;
         }
-        if (! isset($values['description']))
-            $values['desciption'] = NULL;
-        if (! isset($values['keywords']))
-            $values['keywords'] = NULL;
         return parent::values($values);
     }
 
     public function _delete($id) {
-        $this->set_result('Strona(y) usunięte z powodzeniem.');
+        $this->set_result($this->get_msg('pages.success.delete'));
         if (is_array($id)) {
                 $pages = ORM::factory('page')->where('id', 'IN', $id)->find_all();
                 foreach ($pages as $page) {
                   if ($page->is_main) {
-                        $this->set_result(self::$ERROR_MAIN_DELETE, FALSE);
+                        $this->set_result($this->get_msg('pages.fail.main_page'), FALSE);
                   } else {
                       $page->delete();
                   }
@@ -122,13 +110,12 @@ class Model_Page extends Model_FlyOrm {
             $this->find($id);
             if ($this->_loaded) {
                 if ($this->is_main) {
-                    $this->set_result(self::$ERROR_MAIN_DELETE,
-                                      FALSE);
+                    $this->set_result($this->get_msg('pages.fail.main_page'), FALSE);
                 } else {
                     $this->delete();
                 }
             } else {
-                $this->set_result(self::$ERROR_DELETE, FALSE);
+                $this->set_result($this->get_msg('pages.fail.delete'), FALSE);
             }
         }
     }
@@ -148,39 +135,7 @@ class Model_Page extends Model_FlyOrm {
         return ORM::factory('page')->where('is_main', '=', 1)->find();
     }
 
-    public function has_keywords() {
-        return ! empty($this->keywords);
-    }
-
-    public function has_description() {
-        return ! empty($this->description);
-    }
-
-    public function has_subtitle() {
-        return ! empty($this->subtitle);
-    }
-
-    public function has_global_header_setting() {
-        return is_null($this->header_on);
-    }
-
-    public function has_author() {
-        return ! empty($this->author);
-    }
-
-    public function has_global_footer_setting() {
-        return is_null($this->footer_on);
-    }
-
-    public function has_global_sidebar_setting() {
-        return is_null($this->sidebar_on);
-    }
-
-    public function has_global_template_setting() {
-        return is_null($this->template_id);
-    }
-
-    public function create_link() {
+    private function create_link() {
         $link = text::pl2en($this->title);
         $link = trim(preg_replace('/[^A-Za-z0-9\-\s]+/', '', $link));
         $link = preg_replace('/\s+/', '-', $link);
@@ -193,15 +148,32 @@ class Model_Page extends Model_FlyOrm {
         $this->result['is_success'] = $is_success;
     }
 
-    private function set_global_data_if_required($page, $global) {
-        if ($page->has_global_template_setting())
-                $page->template = $global->template;
-        if ($page->has_global_header_setting())
-                $page->header_on = $global->header_on;
-        if ($page->has_global_sidebar_setting())
-                $page->header_on = $global->sidebar_on;
-        if ($page->has_global_footer_setting())
-                $page->footer_on = $global->footer_on;
+    private function get_msg($path) {
+        return Kohana::message('messages', $path);
+    }
+
+    private function set_global_settings_if_required($global) {
+        if (empty($this->template)) {
+                $this->template = $global->template;
+        }
+        if (empty($this->header_on)) {
+                $this->header_on = $global->header_on;
+        }
+        if (empty($this->sidebar_on)) {
+                $this->sidebar_on = $global->sidebar_on;
+        }
+        if (empty($this->footer_on)) {
+                $this->footer_on = $global->footer_on;
+        }
+        if (empty($this->keywords)) {
+                $this->keywords = $global->keywords;
+        }
+        if (empty($this->description)) {
+                $this->description = $global->description;
+        }
+        if (empty($this->author)) {
+                $this->author = $global->author;
+        }
     }
     CONST NOT_SET = -1;
 }

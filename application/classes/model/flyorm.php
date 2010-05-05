@@ -26,15 +26,7 @@ class Model_FlyOrm extends ORM {
 		if ($exists)
 			$array->error($target, 'unique');
     }
-
-    public function is_saved() {
-        return $this->_saved;
-    }
-
-    public function is_loaded() {
-        return $this->_loaded;
-    }
-
+    
     public function _delete($id) {
         if (is_array($id)) {
                 $sql = DB::delete($this->_table_name)->where('id', 'IN', $id);
@@ -52,11 +44,7 @@ class Model_FlyOrm extends ORM {
     public function find_all_except_this() {
         return ORM::factory($this->_object_name)->where('id', '!=', $this->id)->find_all();
     }
-
-    public function get_validate() {
-        return $this->_validate;
-    }
-
+    
     protected function get_config($key) {
         $model_name = preg_replace('/Model_/', '', get_class($this));
         return Kohana::config(Inflector::plural($model_name).'.'.$key);

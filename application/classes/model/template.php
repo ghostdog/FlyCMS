@@ -62,13 +62,13 @@ class Model_Template extends Model_FlyOrm {
 
     public function set_template_global($id) {
         $this->find($id);
-        if (! $this->is_loaded())
+        if (! $this->_loaded)
                 return false;
         $settings = ORM::factory('setting')->find();
         $settings->template = $this;
         $settings->save();
         $old_global = $this->get_global_template();
-        if ($old_global->is_loaded()) {
+        if ($old_global->_loaded) {
             $old_global->is_global = 0;
             $old_global->save();
         }

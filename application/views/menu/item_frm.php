@@ -74,4 +74,21 @@ foreach($items as $item) :
     echo form::close_fieldset();
     echo form::close_fieldset();
 endforeach;
+echo html::script('media/js/jquery.dialog.js');
 ?>
+<div id="dialog">
+    <div id="dialog-header">
+        <h4>Tytuł dialogu</h4>
+        <a href="#"><?php echo html::image('media/img/x_btn.png') ?></a>
+    </div>
+    <div id="dialog-content">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse lacus nibh, semper non sollicitudin at, adipiscing id risus. Phasellus cursus purus vitae orci aliquam vestibulum. Maecenas id nibh at est fermentum tempus. Cras vel ante neque. Vivamus est dolor, varius vitae elementum vel, venenatis in ipsum. Vivamus eleifend placerat egestas. Maecenas luctus malesuada vehicula. Vivamus a lectus felis, eget elementum nisi. Donec nisl velit, ornare vel auctor molestie, condimentum  at diam. Phasellus interdum elit mattis quam rutrum viverra. Maecenas consectetur przykładowy obrazek  interdum mi sit amet blandit. Vestibulum orci arcu, semper ac mattis et, tristique vel nisl. Fusce nec ornare neque. Aenean lobortis felis eu lacus egestas laoreet. Pellentesque pretium vulputate neque nec condimentum. Nullam gravida eros in justo sollicitudin lacinia. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Proin ultricies nisl non justo viverra eu condimentum enim feugiat. 
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.page-list-caller').each(function() {
+            $(this).dialog();
+        })
+    })
+</script>

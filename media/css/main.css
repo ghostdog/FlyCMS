@@ -299,3 +299,32 @@ select {
 
 #yes { background: url(img/content/yes_bg.png) repeat-x top left; background-color: #030}
 #no { background: url(img/content/no_bg.png) repeat-x top left; background-color: #600}
+
+#dialog {
+    background: #f1f1f1;
+    border: 1px solid #ccf;
+    -moz-border-radius: 6px;
+    -web-kit-border-radius: 6px;
+    float: left;
+    z-index: 999;
+}
+#dialog-header {
+    background: url(img/content/dialog_header_bg.png) top left repeat-x;
+    -moz-border-radius-topleft: 6px;
+    -moz-border-radius-topright: 6px;
+    color: #39f;
+    float: left;
+    width: 100%;
+}
+#dialog-header h4 {
+    float: left;
+    padding: .6em 0 .6em .8em;
+}
+#dialog-header a {
+    float: right;
+    padding: .3em .8em .6em 0;
+}
+#dialog-content {
+    float: left;
+    padding: 1em;
+}

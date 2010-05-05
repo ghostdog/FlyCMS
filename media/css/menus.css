@@ -100,6 +100,10 @@ a.close {
     width: 50%;
 }
 
+#menu-group {
+    float: left;
+}
+
 #pages {
     clear:left;
     width:100%;

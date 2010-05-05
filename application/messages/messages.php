@@ -42,14 +42,14 @@
             'fail' => array(
                'add' => 'Próba zapisania strony nie powiodła się.',
                'edit' => 'Próba edycji strony nie powiodła się.',
-               'delete' => 'Próba usunięcia strony nie powiodła się.',
-               'group_delete' => 'Nie udało się usunąć wybranych stron.'
+               'delete' => 'Nie udało się usunąć wybranych stron(y).',
+               'main_page' => 'Nie możesz usunąć strony głównej. Musisz najpierw określić inną jako główną.',
+
             ),
             'success' => array(
                'add' => 'Strona zapisana z powodzeniem.',
                'edit' => 'Strona edytowana z powodzeniem.',
-               'delete' => 'Strona usunięta z powodzeniem.',
-               'group_delete' => ':param strony zostały usunięte.',
+               'delete' => 'Strona(y) usunięte z powodzeniem.',
             ),
         ),
     )

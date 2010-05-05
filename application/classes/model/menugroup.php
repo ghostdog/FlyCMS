@@ -28,7 +28,7 @@ class Model_MenuGroup extends Model_FlyOrm {
         'name' => array('is_unique'),
     );
 
-    private $pages_id = array();
+    private $groupOwnerPagesId = array();
 
     public function __construct($id = NULL) {
         parent::__construct('menugroup', $id);
@@ -36,24 +36,29 @@ class Model_MenuGroup extends Model_FlyOrm {
 
     public function save() {
         $this->created = time();
+        if (! empty($this->groupOwnerPagesId)) {
+            foreach($this->groupOwnerPagesId as $id) {
+                $this->add('pagemenu', ORM::factory('page', $id));
+            }
+        }
         parent::save();
     }
 
     public function values($data) {
+        parent::values($data);
         if (! isset($data['is_global'])) {
            if (isset($data['pages'])) {
-               $this->pages_id = $data['pages'];
+               $this->groupOwnerPagesId = $data['pages'];
            }
            $data['is_global'] = 0;
         }
-        parent::values($data);
     }
 
     public function check() {
         $result = parent::check();
         if (! $this->is_global) {
-            if (empty($this->pages_id)) {
-                $this->get_validate()->error('is_global', 'no_pages');
+            if (empty($this->groupOwnerPagesId)) {
+                $this->_validate->error('is_global', 'no_pages');
                 return false;
             }
         }

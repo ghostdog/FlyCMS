@@ -7,19 +7,24 @@
     echo form::label('group-name', 'Nazwa grupy'.req);
     echo form::input('group[name]', $group->name, array('id' => 'group-name'));
     echo form::error($errors['name']);
-
 ?>
 </div>
 <div style="width: 100%">
     <div class="input-wrap-label-right" style="margin-left: 1em">
     <?php
         echo form::label('group-status', 'Globalna', array('style' => 'margin: -.2em 0 0 0'));
-        echo form::checkbox('group[is_global]', 1, ($group->is_global) ? TRUE : FALSE, array('id' => 'group-status'));
+        $action = Request::instance()->action;
+        if ($action == 'add' || $action == 'index' && empty($_POST)) {
+            $checked = TRUE;
+        } else {
+            $checked = ($group->is_global) ? TRUE : FALSE;
+        }
+        echo form::checkbox('group[is_global]', 1, $checked, array('id' => 'group-status'));
     ?>
     </div>
     <?php echo form::error($errors['is_global']); ?>
     <div id="group-pages">
-        <h3>Lista stron zawierających tę grupę odnośników:</h3>
+        <h3>Lista stron zawierających tę grupę odnośników<?php echo req ?>:</h3>
         <ul>
             <?php
                 if (isset($_POST['group']['pages'])) {

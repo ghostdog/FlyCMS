@@ -21,7 +21,8 @@ return array(
         ),
         'author' => array(
             'max_length' => 'Maksymalna długość nazwy autora to :param1',
-        )
+        ),
+
 )
 
 
