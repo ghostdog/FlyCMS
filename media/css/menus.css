@@ -157,5 +157,7 @@ a.close {
 #group-pages ul li input {
     margin-left: .5em
 }
-
+.title {
+    text-align: left;
+}
 

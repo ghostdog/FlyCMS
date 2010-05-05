@@ -51,12 +51,6 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
                                          array('name', 'order','is_global')));
     }
 
-    
-
-    public function action_ajax_get_pages() {
-        
-    }
-
     private function is_group_to_add() {
         if (isset($_POST['menu_type'])) {
             if ($_POST['menu_type'] == 'group') return true;

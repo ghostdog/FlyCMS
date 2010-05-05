@@ -22,9 +22,6 @@ foreach($items as $item) :
     echo form::label('type-chooser'.$i, 'Typ odnośnika');
     echo form::select('type[]', array(0 => 'Wewnętrzny', 1 => 'Zewnętrzny'),
                                     $item->type, array('id' => 'type-chooser'.$i, 'style' => 'width: 10em;'));
-//    echo form::radio('type.'.$i.'[]', 0, (isset($item->type)) ? $item->type : false, array('id' => 'item-inner'.$i));
-//    echo form::label('item-outer'.$i, 'Zewnętrzny');
-//    echo form::radio('type.'.$i.'[]', 1, (isset($item->type)) ? $item->type : false, array('id' => 'item-outer'.$i));
 ?>
     </div>
     <div class="input-wrap">
@@ -82,13 +79,24 @@ echo html::script('media/js/jquery.dialog.js');
         <a href="#"><?php echo html::image('media/img/x_btn.png') ?></a>
     </div>
     <div id="dialog-content">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse lacus nibh, semper non sollicitudin at, adipiscing id risus. Phasellus cursus purus vitae orci aliquam vestibulum. Maecenas id nibh at est fermentum tempus. Cras vel ante neque. Vivamus est dolor, varius vitae elementum vel, venenatis in ipsum. Vivamus eleifend placerat egestas. Maecenas luctus malesuada vehicula. Vivamus a lectus felis, eget elementum nisi. Donec nisl velit, ornare vel auctor molestie, condimentum  at diam. Phasellus interdum elit mattis quam rutrum viverra. Maecenas consectetur przykładowy obrazek  interdum mi sit amet blandit. Vestibulum orci arcu, semper ac mattis et, tristique vel nisl. Fusce nec ornare neque. Aenean lobortis felis eu lacus egestas laoreet. Pellentesque pretium vulputate neque nec condimentum. Nullam gravida eros in justo sollicitudin lacinia. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Proin ultricies nisl non justo viverra eu condimentum enim feugiat. 
+        <table id="item-pages-list" style="float: left; width: 100%" cellspacing="0">
+            <caption></caption>
+            <tbody>
+                
+            </tbody>
+        </table>
+        <div id="dialog-footer">
+            <div id="item-page-pagination" class="pagination-links">
+            </div>
+            <input type="submit" id="dialog-submit" value="Zatwierdź wybór"/>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('.page-list-caller').each(function() {
-            $(this).dialog();
-        })
-    })
 </script>
+<style type="text/css">
+    #dialog table tr:hover {
+        background-color: #d5d5d5;
+        cursor: pointer;
+    }
+</style>

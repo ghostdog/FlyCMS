@@ -9,6 +9,7 @@ var GroupEditor = function() {
     this.statusSwitcher = $('#group-status');
     this.addListeners();
     this.chooser.trigger('change');
+    this.pagination = undefined;
 
     if (this.statusSwitcher.attr('checked') == true) {
         this.activePages.hide();
@@ -67,66 +68,23 @@ GroupEditor.prototype.addListeners = function() {
     });
 };
 GroupEditor.prototype.getPages = function(resultPageId) {
-    var action = '/kohana/admin/pages/ajax_get_pages',
-        query =  (resultPageId == undefined) ? '' : 'page='+resultPageId,
+    var query =  (resultPageId == undefined) ? '' : 'page='+resultPageId,
         id = resultPageId || 1,
         that = this;
-            var caption = this.pagesTable.find('caption').text('Pobieranie listy stron...');
-            $.getJSON(action, query, function(data, status) {
-                var pagination = data['pagination'];
-                delete data['pagination'];
-                that.populatePageTableRows(data);
-                that.createPaginationLinks(pagination);
-                caption.text('Wybierz strony, na których ma pojawić się grupa.');
-            });
+            var caption = this.pagesTable.find('caption');
+            if (this.pagination == undefined) {
+                this.pagination = new Pagination('#page-pagination-links', {
+                    callback : function(data) {
+                            that.populatePageTableRows(data);
+                            caption.text('Wybierz strony, na których ma pojawić się grupa.');
+                    },
+                    before : function() {
+                        caption.text('Pobieranie listy stron...');
+                    }
+                });
+            }
+            this.pagination.request(id);
 }
-GroupEditor.prototype.createPaginationLinks = function(paginationLinks) {
-    var links = paginationLinks,
-        pagination = $('#page-pagination-links'),
-        that = this;
-
-    if (links.total_pages == 1) {
-        pagination.hide();
-    } else {
-        pagination.find('*').remove();
-        pagination.append(getPositionButton('first'))
-                  .append(getPositionButton('prev'));
-        for (var i = 0; i < links.total_pages;) {
-                i += 1;
-                if (i != links.current_page) {
-                    pagination.append(getAnchor(i, '[' + i + ']'));
-                } else {
-                    pagination.append($('<strong/>').text('[' + i + ']'));
-                }
-        }
-        pagination.append(getPositionButton('next'))
-                  .append(getPositionButton('last'));
-     }
-       function getPositionButton(position) {
-            var is_enabled = links[position + '_page'],
-                src = '/kohana/media/img/' + position + ((is_enabled) ? '_enabled' : '_disabled') + '_mini.png',
-                img = $('<img/>')
-                        .attr('src', src)
-                        .attr('alt', position);
-           if (is_enabled) {
-               return getAnchor(is_enabled, img);
-           } else {
-               return img;
-           }
-        }
-
-        function getAnchor(id, content) {
-           var anchor = $('<a>')
-                        .attr('href', '#')
-                        .html(content)
-                        .click(function(evt) {
-                              evt.preventDefault();
-                              that.getPages(id);
-                         });
-              return anchor;
-        }
-
-};
 GroupEditor.prototype.populatePageTableRows = function(pages) {
         var tbody = this.pagesTable.find('tbody'),
             that = this;
