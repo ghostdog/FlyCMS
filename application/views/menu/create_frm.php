@@ -60,6 +60,7 @@ echo html::script('media/js/pagination.js')
                 this.quantityChooser = $('#quantity-chooser');
                 this.submitBtn = $('#safe-btn');
                 this.reqText = $('#req-text');
+                this.itemsList =$('#items-list').hide();
                 this.addListeners();
                 this.init();
         };
@@ -68,7 +69,7 @@ echo html::script('media/js/pagination.js')
                     this.groupRadio.trigger('click');
             } else if (this.isItemRadioChecked()) {
                     this.itemRadio.trigger('click');
-            } else {
+                } else {
                 this.quantityChooser.hide();
                 this.group.hide();
                 this.items.hideAll();
@@ -87,6 +88,7 @@ echo html::script('media/js/pagination.js')
                 this.groupRadio.click(function() {
                     that.group.show('fast');
                     that.items.disableInputs();
+                    that.itemsList.hide();
                     showCommonElements();
                 });
                 this.itemRadio.click(function() {
@@ -94,9 +96,11 @@ echo html::script('media/js/pagination.js')
                     that.items.showAll();
                     that.items.enableInputs();
                     showCommonElements();
+                    $('#items-list a').filter(':first').click();
                 });
 
                 function showCommonElements() {
+                    that.itemsList.show('fast');
                     that.reqText.fadeIn();
                     that.submitBtn.fadeIn(1100);
                     that.quantityChooser.fadeIn(1500);
@@ -104,6 +108,19 @@ echo html::script('media/js/pagination.js')
         };
 
         $(document).ready(function() {
+
+                        var tabContainers = $('fieldset[id^=item]').hide();
+
+            $('#items-list a').click(function () {
+                tabContainers.hide().filter(this.hash).show();
+
+                $('#items-list a').removeClass('selected');
+                $(this).addClass('selected');
+
+                return false;
+            });
+        });
+       
             $.ajaxSetup({
                 type : 'GET'
             });
@@ -115,7 +132,9 @@ echo html::script('media/js/pagination.js')
                 editor.items.clearAll();
                 editor.group.clear();
             });
-        });
+
+
+
                
  
 

@@ -7,8 +7,10 @@ var ItemsEditor = function(items) {
 ItemsEditor.prototype.setItems = function(items) {
     var that = this;
    items.each(function(index, element) {
-        that.addListeners(element, ++index);
-        that.items.push(element);
+        var item = $(element);
+        that.addListeners(item, ++index);
+        that.items.push(item);
+        item.find('#item-group').trigger('change');
     });
     $('.page-list-caller').each(function() {
         var invoker = $(this);
@@ -19,7 +21,7 @@ ItemsEditor.prototype.setItems = function(items) {
                     caption = $('#item-pages-list').find('caption');
                 if (this.pagination == undefined) {
                     this.pagination = new Pagination('#item-page-pagination',
-                                            { callback : function(pages) {
+                                            {callback : function(pages) {
                                                 tbody.find('tr').remove();
                                                 for (var key in pages) {
                                                         if (pages.hasOwnProperty(key)) {
@@ -96,6 +98,52 @@ ItemsEditor.prototype.addListeners = function(item, index) {
             item.find('input[type="text"]').each(function() {
                 $(this).counter({maxLength : 100});
             });
+            var input = $('#item-name' + index),
+                target = $('a[href="#item' + index + '"] > .name');
+                target.data('default', target.text());
+                input.keyup(function() {
+                    var text = input.val();
+                                    console.log(target, 'target');
+
+                    if (text.length == 0) {
+                        target.text(target.data('default'));
+                    } else {
+                        target.text(text);
+                    }
+                })
+              var orderSelect = $('#item-order' + index),
+                  orderTarget = $('a[href="#item' + index + '"] > .order');
+
+                  orderSelect.change(function() {
+                      console.log(orderTarget);
+                      orderTarget.text(orderSelect.val());
+                  })
+
+           
+            item.find('#item-group' + index).change(function() {
+                var msgOutput = item.find('.ajax-msg').text('Pobieranie informacji...'),
+                    groupId = $(this).val(),
+                    itemSelect = item.find('#item-parent'+index);
+
+                $.getJSON('/kohana/admin/menus/ajax_group_items','group_id='+groupId,
+                        function(data, status) {
+                            msgOutput.text('Zakończono pobieranie odnośników.');
+                            itemSelect.find('option').remove();
+                            itemSelect.append(
+                                                $("<option/>").attr('value', -1).text('')
+                                            );
+                            for (var key in data) {
+                                if (data.hasOwnProperty(key)) {
+                                    var item = data[key];
+                                    itemSelect.append($("<option/>").
+                                              attr("value",item.id).
+                                              text(item.name));
+                                }
+                            }
+                            
+                        });
+            
+            })
 };
 ItemsEditor.prototype.clearAll = function() {
     this.itemsWalk(':input', function(input) {
@@ -121,6 +169,7 @@ ItemsEditor.prototype.enableInputs = function() {
 ItemsEditor.prototype.showAll = function() {
     $.each(this.items, function(index, value) {
         value.show();
+        value.find('select').trigger('change');
     })
 }
 ItemsEditor.prototype.hideAll = function() {

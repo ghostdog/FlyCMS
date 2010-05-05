@@ -4,7 +4,21 @@ for ($i = 0; $i < 100; $i++) {
 }
 
 $i = 0;
-fire::log($items, 'items');
+?>
+<ul id="items-list" style="float: left; clear: left">
+    <?php  foreach($items as $item) : ?>
+    <li>
+        <?php
+            $i += 1;
+            $item_order = (empty($item->order)) ? ' [<span class="order">0</span>]' : ' [<span class="order">'.$item->order.'</span>]';
+            $name = (empty($item->name)) ? '<span class="name">Odnośnik</span> '.$i : '<span class="name">'.$item->name.'</span>';
+            echo html::anchor('#item'.$i, $name.$item_order);
+        ?>
+    </li>
+    <?php endforeach ?>
+</ul>
+<?php
+$i = 0;
 foreach($items as $item) :
     $i++;
     echo form::fieldset((empty($item->name)) ? 'Odnośnik '.$i : $item->name, array('id' => 'item'.$i, 'class' => 'item'));
@@ -13,7 +27,7 @@ foreach($items as $item) :
     <div class="item-props-wrap">
     <div class="input-wrap">
 <?php
-    echo form::label('item-name'.$i, 'Nazwa odnośnika');
+    echo form::label('item-name'.$i, 'Nazwa odnośnika'.req);
     echo form::input('name[]', $item->name, array('id' => 'item-name'.$i, 'class' => 'text-name'));
 ?>
     </div>
@@ -26,7 +40,7 @@ foreach($items as $item) :
     </div>
     <div class="input-wrap">
 <?php
-    echo form::label('link'.$i, 'Adres docelowy');
+    echo form::label('link'.$i, 'Adres docelowy'.req);
     echo form::input('link[]', $item->link, array('id' => 'link'.$i, 'class' => 'text-link'));
 ?>
     <a href="#page-list1" class="page-list-caller">Wyświetl listę dostępnych stron</a>
@@ -50,21 +64,24 @@ foreach($items as $item) :
              foreach ($groups as $group) {
                  $options[$group->id] = $group->name;
              }
-             echo form::select('item-group[]', $options, $item->group_id, array('id' => 'item-group'.$i));
-            
+             echo form::select('item-group[]', $options, $item->menugroup_id, array('id' => 'item-group'.$i));
         ?>
+        
     </td>
+</tr>
+<tr>
+    <td class="ajax-msg" colspan="2" style="text-align: right"></td>
 </tr>
 <tr class="select-wrap item-parent">
     <td><?php echo form::label('item-parent'.$i, 'Odnośnik nadrzędny'); ?></td>
     <td><?php
-        $options = array('-1' => 'Brak');
+
         echo form::select('parent[]', $options,
                         $item->parent, array('id' => 'item-parent'.$i));?></td>
 </tr>
 <tr class="select-wrap item-order">
     <td><?php echo form::label('item-order'.$i, 'Pierwszeństwo'); ?></td>
-    <td><?php echo form::select('order[]',$order, $item->order, null, array('id' => 'item-order'.$i));?></td>
+    <td><?php echo form::select('order[]',$order, $item->order, array('id' => 'item-order'.$i));?></td>
 </tr>
 </table>
 <?php
@@ -93,6 +110,7 @@ echo html::script('media/js/jquery.dialog.js');
     </div>
 </div>
 <script type="text/javascript">
+    
 </script>
 <style type="text/css">
     #dialog table tr:hover {

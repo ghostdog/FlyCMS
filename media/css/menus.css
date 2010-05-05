@@ -161,3 +161,38 @@ a.close {
     text-align: left;
 }
 
+#items-list {
+    margin: 3em 0 1em 2em;
+}
+
+#items-list li {
+    float: left;
+}
+
+#items-list a {
+    padding: .5em 1em 2em 1em;
+    -moz-border-radius-topleft: 6px;
+    -moz-border-radius-topright: 6px;
+    background: url(img/content/tab_bg.png) top left;
+    padding: .5em 1em 1.8em 1em;
+    margin: 0 .3em 0 0;
+    color: #fff;
+    border: 1px solid #39f;
+    border-bottom: none;
+
+}
+
+#items-list a:hover {
+    text-decoration: none;
+    color: #999 !important;
+}
+
+#items-list a.selected {
+    margin-bottom: -1em;
+    background: #fff;
+    color: #369
+}
+#items-list a.selected:hover {
+    color: #369 !important;
+}
+

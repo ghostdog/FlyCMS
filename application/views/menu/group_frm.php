@@ -70,7 +70,7 @@
 <?php echo form::fieldset('Położenie grupy', array('class' => 'location-chooser')) ?>
 <div class="select-wrap">
 <?php
-    $locations = array(-1 => '', 0 => 'Nagłówek', 1 => 'Kolumna boczna', 2 => 'Zawartość strony');
+    $locations = array(0 => 'Nagłówek', 1 => 'Kolumna boczna', 2 => 'Zawartość strony');
     $order = array();
      for ($i = 0; $i < 100; $i++) {
         $order[] = $i;

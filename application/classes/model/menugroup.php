@@ -35,13 +35,14 @@ class Model_MenuGroup extends Model_FlyOrm {
     }
 
     public function save() {
+        parent::save();
         $this->created = time();
         if (! empty($this->groupOwnerPagesId)) {
             foreach($this->groupOwnerPagesId as $id) {
                 $this->add('pagemenu', ORM::factory('page', $id));
             }
         }
-        parent::save();
+        
     }
 
     public function values($data) {
@@ -86,6 +87,10 @@ class Model_MenuGroup extends Model_FlyOrm {
         } else {
             return FALSE;
         }
+    }
+
+    public function get_items($group_id) {
+        return $this->find($group_id)->menuitems->find_all();
     }
 }
 ?>

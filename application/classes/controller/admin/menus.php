@@ -51,6 +51,10 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
                                          array('name', 'order','is_global')));
     }
 
+    public function action_ajax_group_items() {
+        $id = intval($_GET['group_id']);
+        echo json_encode(misc::get_raw_db_result($this->group->get_items($id), array('id', 'name')));
+    }
     private function is_group_to_add() {
         if (isset($_POST['menu_type'])) {
             if ($_POST['menu_type'] == 'group') return true;
