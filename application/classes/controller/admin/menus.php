@@ -39,7 +39,7 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
             }
         } else {
             $items_count = 1;
-            $items = $this->items->get_empty_items(1);
+            $items = $this->items->get_empty_items(3);
 
        }
        $groups = $this->group->get_all_groups();
@@ -49,6 +49,20 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
         $location = intval($_GET['location']);
         echo json_encode(misc::get_raw_db_result($this->group->get_by_location($location),
                                          array('name', 'order','is_global')));
+    }
+
+    public function action_ajax_items_refresh() {
+        $addSz = intval($_GET['add_sz']);
+        $next_id = intval($_GET['next_id']);
+        $items = $this->items->get_empty_items($addSz);
+        $items = View::factory('menu/item_frm')
+                 ->set('items_count', $addSz)
+                 ->set('items', $items)
+                 ->set('groups', $this->group->get_all_groups())
+                 ->set('i', $next_id)
+                 ->render();
+        fire::log($items, 'items');
+        echo json_encode($items);
     }
 
     public function action_ajax_group_items() {
@@ -62,8 +76,5 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
         return false;
     }
 
-    private function get_item_array(Array $data, $index) {
-
-    }
 }
 ?>

@@ -6,6 +6,10 @@ var ItemsEditor = function(items) {
 
 ItemsEditor.prototype.setItems = function(items) {
     var that = this;
+
+    if (that.items.length > 0) {
+        that.items = [];
+    }
    items.each(function(index, element) {
         var item = $(element);
         that.addListeners(item, ++index);
@@ -184,5 +188,9 @@ ItemsEditor.prototype.itemsWalk = function(selector, callback) {
             });
     });
 };
+ItemsEditor.prototype.getSize = function() {
+    return this.items.length;
+}
+
 
 
