@@ -67,8 +67,7 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
                  ->set('i', $next_id)
                  ->render();
         $this->request->headers['Content-Type'] = 'text/html; charset=utf-8';
-        fire::log($items, 'items');
-        echo json_encode($items);
+        echo $items;
     }
 
     public function action_ajax_group_items() {
