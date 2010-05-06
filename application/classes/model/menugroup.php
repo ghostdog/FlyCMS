@@ -2,7 +2,7 @@
 
 class Model_MenuGroup extends Model_FlyOrm {
 
-    protected $_has_many = array('menuitems' => array(), 'pages' => array('through' => 'pagemenu'));
+    protected $_has_many = array('menuitems' => array(), 'pages' => array('through' => 'enrollment'));
 
     protected $_filters = array(
         'name' => array('trim' => NULL),
@@ -39,7 +39,7 @@ class Model_MenuGroup extends Model_FlyOrm {
         $this->created = time();
         if (! empty($this->groupOwnerPagesId)) {
             foreach($this->groupOwnerPagesId as $id) {
-                $this->add('pagemenu', ORM::factory('page', $id));
+                $this->add('enrollment', ORM::factory('page', $id));
             }
         }
         

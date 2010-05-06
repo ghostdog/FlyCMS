@@ -103,8 +103,6 @@ ItemsEditor.prototype.addListeners = function(item, index) {
                 target.data('default', target.text());
                 input.keyup(function() {
                     var text = input.val();
-                                    console.log(target, 'target');
-
                     if (text.length == 0) {
                         target.text(target.data('default'));
                     } else {
@@ -115,7 +113,6 @@ ItemsEditor.prototype.addListeners = function(item, index) {
                   orderTarget = $('a[href="#item' + index + '"] > .order');
 
                   orderSelect.change(function() {
-                      console.log(orderTarget);
                       orderTarget.text(orderSelect.val());
                   })
 
@@ -127,7 +124,11 @@ ItemsEditor.prototype.addListeners = function(item, index) {
 
                 $.getJSON('/kohana/admin/menus/ajax_group_items','group_id='+groupId,
                         function(data, status) {
-                            msgOutput.text('Zakończono pobieranie odnośników.');
+                            if (data.length > 0) {
+                                msgOutput.text('Zakończono pobieranie odnośników.');
+                            } else {
+                                msgOutput.text('Nie ma żadnych odnośników w tej grupie.');
+                            }
                             itemSelect.find('option').remove();
                             itemSelect.append(
                                                 $("<option/>").attr('value', -1).text('')
@@ -135,14 +136,13 @@ ItemsEditor.prototype.addListeners = function(item, index) {
                             for (var key in data) {
                                 if (data.hasOwnProperty(key)) {
                                     var item = data[key];
-                                    itemSelect.append($("<option/>").
-                                              attr("value",item.id).
-                                              text(item.name));
+                                    itemSelect.append($("<option/>")
+                                              .attr("value",item.id)
+                                              .text(item.name));
                                 }
                             }
                             
                         });
-            
             })
 };
 ItemsEditor.prototype.clearAll = function() {

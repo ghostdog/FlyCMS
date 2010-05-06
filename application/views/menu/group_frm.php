@@ -24,7 +24,8 @@
     </div>
     <?php echo form::error($errors['is_global']); ?>
     <div id="group-pages">
-        <h3>Lista stron zawierających tę grupę odnośników<?php echo req ?>:</h3>
+        <label>Lista stron zawierających tę grupę odnośników<?php echo req ?>:</label>
+        <a href="#pages-data" id="page-list-inv" class="open">Wyświetl aktywne strony</a>
         <ul>
             <?php
                 if (isset($_POST['group']['pages'])) {
@@ -50,7 +51,6 @@
                         </li>
                     <?php endforeach; } ?>
         </ul>
-       <a href="#pages-data" id="page-list-inv" class="open">Wyświetl aktywne strony</a>
     </div>
 </div>
 <div id="pages-data" style="width: 100%;">

@@ -1,9 +1,9 @@
 h3 {
     float: left;
-    font-family:"Lucida Sans Unicode","Lucida Grande",sans-serif;
-    font-size:115%;
+    font-family:"Serif",sans-serif;
+    font-size:120%;
+    color: #666;
     padding:0 0 0.3em 1em;
-    font-weight: normal;
 }
 table {
     float:left;
@@ -133,14 +133,19 @@ a.close {
     margin: 0 .2em 1em 0 !important;
 }
 
+.ajax-msg {
+    color: #369;
+    font-weight: bold;
+}
+
 #groups tbody tr, #pages tbody tr {
     background: #f1f1f1;
 }
 
 #page-list-inv {
     float: right;
-    clear: both !important;
     padding: 0 1.5em .2em 0;
+    margin-top:  .2em !important;
 }
 #group-pages {
     width: 100%;
@@ -194,5 +199,14 @@ a.close {
 }
 #items-list a.selected:hover {
     color: #369 !important;
+}
+
+#req-text {
+   float: left;
+   clear: both;
+   margin: .5em;
+   font-family:"Lucida Sans Unicode","Lucida Grande",sans-serif;;
+   font-size:110%;
+   font-weight: normal;
 }
 

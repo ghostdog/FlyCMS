@@ -17,7 +17,7 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
     public function action_add() {
         $group = View::factory('menu/group_frm')
                  ->bind('group', $this->group);
-        $this->template->content = View::factory('menu/create_frm')
+        $this->template->content = View::factory('menu/add_frm')
              ->set('group', $group)
              ->bind('items_count', $items_count)
              ->bind('items', $items)

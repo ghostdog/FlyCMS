@@ -44,7 +44,7 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
              }
          }
          
-         $this->set_msg_from_result($this->page->get_result_status());
+         $this->set_msg_from_result($this->page->get_result());
          $this->redirect('pages');
          
      }

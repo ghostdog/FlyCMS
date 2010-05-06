@@ -9,7 +9,7 @@ class Model_Page extends Model_FlyOrm {
                             'description' => array('trim' => NULL)
                        );
 
-    protected $_has_many = array('templates' => array(), 'menugroups' => array('through' => 'pagemenu'));
+    protected $_has_many = array('templates' => array(), 'menugroups' => array('through' => 'enrollment'));
 
     protected $_rules = array(
 
@@ -120,7 +120,7 @@ class Model_Page extends Model_FlyOrm {
         }
     }
 
-    public function get_result_status() {
+    public function get_result() {
         return $this->result;
     }
 
@@ -156,13 +156,13 @@ class Model_Page extends Model_FlyOrm {
         if (empty($this->template)) {
                 $this->template = $global->template;
         }
-        if (empty($this->header_on)) {
+        if (is_null($this->header_on)) {
                 $this->header_on = $global->header_on;
         }
-        if (empty($this->sidebar_on)) {
+        if (is_null($this->sidebar_on)) {
                 $this->sidebar_on = $global->sidebar_on;
         }
-        if (empty($this->footer_on)) {
+        if (is_null($this->footer_on)) {
                 $this->footer_on = $global->footer_on;
         }
         if (empty($this->keywords)) {
