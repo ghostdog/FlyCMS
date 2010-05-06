@@ -7,9 +7,8 @@ var ItemsEditor = function(items) {
 ItemsEditor.prototype.setItems = function(items) {
     var that = this;
 
-    if (that.items.length > 0) {
-        that.items = [];
-    }
+    that.items = [];
+   
    items.each(function(index, element) {
         var item = $(element);
         that.addListeners(item, ++index);

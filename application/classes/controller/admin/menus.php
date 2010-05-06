@@ -34,6 +34,11 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
                         $group->set('errors', $this->group->get_errors());
                     } else {
                         $this->group->save();
+//                        $page = ORM::factory('page');
+//                        foreach($_POST['group']['pages'] as $key => $value) {
+//                                $this->group->add('enrollment', $page->find($key));
+//                                fire::log($key, key);
+//                        }
                     }
                 }
             }
@@ -61,6 +66,7 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
                  ->set('groups', $this->group->get_all_groups())
                  ->set('i', $next_id)
                  ->render();
+        $this->request->headers['Content-Type'] = 'text/html; charset=utf-8';
         fire::log($items, 'items');
         echo json_encode($items);
     }

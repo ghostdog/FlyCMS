@@ -41,9 +41,11 @@ class Model_MenuGroup extends Model_FlyOrm {
         parent::save();
         $this->reload();
         if (! $this->is_global) {
-            $page = ORM::factory('page');
-            foreach($this->groupOwnerPagesId as $id) {
-                $this->add('enrollment', $page->find($id));
+            if (! empty($this->groupOwnerPagesId)) {
+                $page = ORM::factory('page');
+                foreach($this->groupOwnerPagesId as $id) {
+                    $this->add('enrollment', $page->find($id));
+                }
             }
         }
     }
@@ -58,6 +60,7 @@ class Model_MenuGroup extends Model_FlyOrm {
            }
            $this->is_global = 0;
         }
+        
     }
 
     public function check() {
