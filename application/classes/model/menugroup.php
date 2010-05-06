@@ -35,23 +35,28 @@ class Model_MenuGroup extends Model_FlyOrm {
     }
 
     public function save() {
+        if (empty($this->created)) {
+             $this->created = time();
+        }
         parent::save();
-        $this->created = time();
-        if (! empty($this->groupOwnerPagesId)) {
+        $this->reload();
+        if (! $this->is_global) {
+            $page = ORM::factory('page');
             foreach($this->groupOwnerPagesId as $id) {
-                $this->add('enrollment', ORM::factory('page', $id));
+                $this->add('enrollment', $page->find($id));
             }
         }
-        
     }
 
     public function values($data) {
         parent::values($data);
         if (! isset($data['is_global'])) {
            if (isset($data['pages'])) {
-               $this->groupOwnerPagesId = $data['pages'];
+               foreach( $data['pages'] as $key => $value) {
+                   $this->groupOwnerPagesId[] = $key;
+               }
            }
-           $data['is_global'] = 0;
+           $this->is_global = 0;
         }
     }
 
