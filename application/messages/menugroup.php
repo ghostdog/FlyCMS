@@ -13,7 +13,7 @@ return array(
             'range' => 'Przekazano nie prawidłową wartość określającą status grupy.',
             'no_pages' => 'W przypadku grupy <u>nie</u> globalnej, musisz wybrać strony, na których ma się ona znajdować.'
         ),
-        'order' => array(
+        'ord' => array(
             'digit' => 'Przekazano nie prawidłową wartość kolejności grupy.',
         ),
 

@@ -115,7 +115,7 @@ a.close {
 
 #pages tbody tr:hover {
     cursor:pointer;
-    background: #d5d5d5;
+    background: #9cf;
   
 }
 
@@ -184,7 +184,7 @@ a.close {
     color: #fff;
     border: 1px solid #39f;
     border-bottom: none;
-
+    display: block;
 }
 
 #items-list a:hover {

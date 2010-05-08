@@ -15,10 +15,11 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
     }
     
     public function action_add() {
-        $group = View::factory('menu/group_frm')
+        $group_editor = View::factory('menu/group_frm')
                  ->bind('group', $this->group);
-        $this->template->content = View::factory('menu/add_frm')
-             ->set('group', $group)
+        $groups = $this->group->get_all_groups();
+        $this->template->content = $add_frm = View::factory('menu/add_frm')
+             ->bind('group', $group_editor)
              ->bind('items_count', $items_count)
              ->bind('items', $items)
              ->bind('groups', $groups);
@@ -28,32 +29,42 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
             if (isset($_POST['quantity_submit'])) {
                 $items = $this->items->get_empty_items($items_count);
             } else {
+                $is_group_valid = TRUE;
+                $are_items_valid = TRUE;
                 if ($this->is_group_to_add()) {
                     $this->group->values($_POST['group']);
                     if (! $this->group->check()) {
-                        $group->set('errors', $this->group->get_errors());
-                    } else {
-                        $this->group->save();
-//                        $page = ORM::factory('page');
-//                        foreach($_POST['group']['pages'] as $key => $value) {
-//                                $this->group->add('enrollment', $page->find($key));
-//                                fire::log($key, key);
-//                        }
-                    }
+                        $group_editor->set('errors', $this->group->get_errors());
+                        $is_group_valid = FALSE;
+                    } 
+                }
+                $items = new ArrayObject();
+                foreach ($_POST['items'] as $item) {
+                    $items->append(ORM::factory('menuitem')->values($item));
+                }
+                $errors = $this->check_items($items);
+                if (! empty($errors)) {
+                    $add_frm->set('items_errors', $errors);
+                    $are_items_valid = FALSE;
+                }
+             
+                if (! $are_items_valid OR ! $is_group_valid) {
+                    $this->set_msg(FALSE);
+
+                } else {
+                    $this->set_msg(TRUE);
+                    $this->redirect('menus');
                 }
             }
         } else {
-            $items_count = 1;
             $items = $this->items->get_empty_items(3);
-
        }
-       $groups = $this->group->get_all_groups();
     }
 
     public function action_ajax_groups_by_location() {
         $location = intval($_GET['location']);
         echo json_encode(misc::get_raw_db_result($this->group->get_by_location($location),
-                                         array('name', 'order','is_global')));
+                                         array('name', 'ord','is_global')));
     }
 
     public function action_ajax_items_refresh() {
@@ -81,5 +92,15 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
         return false;
     }
 
+    private function check_items(ArrayObject $items) {
+        $errors = array();
+        foreach ($items as $key => $item) {
+            if (! $item->check()) {
+                $errors[$key] = $item->get_errors();
+            }
+        }
+        fire::log($errors, 'errors');
+        return $errors;
+    }
 }
 ?>

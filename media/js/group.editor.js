@@ -173,7 +173,7 @@ GroupEditor.prototype.populateGroupTableRows = function(location) {
         for(i = 0; i < groups.length; i++) {
             var tr = $('<tr/>');
             tr.append($('<td/>').text(groups[i].name)).
-               append($('<td/>').text(groups[i].order)).
+               append($('<td/>').text(groups[i].ord)).
                append($('<td/>').text(groups[i].is_global ? 'Tak' : 'Nie'));
             tbody.append(tr);
         }

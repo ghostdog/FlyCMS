@@ -5,30 +5,32 @@ for ($j = 0; $j < 100; $j++) {
     $order[] = $j;
 }
 $i;
-fire::log($i, 'i');
 foreach($items as $item) :
     $i++;
-    echo form::fieldset((empty($item->name)) ? 'Odnośnik '.$i : $item->name, array('id' => 'item'.$i, 'class' => 'item'));
+    $legend = (empty($item->name)) ? 'Odnośnik '.$i : $item->name;
+    echo form::fieldset($legend, array('id' => 'item'.$i, 'class' => 'item'));
         
 ?>
     <div class="item-props-wrap">
     <div class="input-wrap">
 <?php
     echo form::label('item-name'.$i, 'Nazwa odnośnika'.required);
-    echo form::input('name[]', $item->name, array('id' => 'item-name'.$i, 'class' => 'text-name'));
+    echo form::input('items['.$i.'][name]', $item->name, array('id' => 'item-name'.$i, 'class' => 'text-name'));
+    echo form::error($errors[$i - 1]['name']);
 ?>
     </div>
     <div class="item-type-chooser select-wrap" style="width: 49%">
 <?php
     echo form::label('type-chooser'.$i, 'Typ odnośnika');
-    echo form::select('type[]', array(0 => 'Wewnętrzny', 1 => 'Zewnętrzny'),
+    echo form::select('items['.$i.'][type]', array(0 => 'Wewnętrzny', 1 => 'Zewnętrzny'),
                                     $item->type, array('id' => 'type-chooser'.$i, 'style' => 'width: 10em;'));
 ?>
     </div>
     <div class="input-wrap">
 <?php
     echo form::label('link'.$i, 'Adres docelowy'.required);
-    echo form::input('link[]', $item->link, array('id' => 'link'.$i, 'class' => 'text-link'));
+    echo form::input('items['.$i.'][link]', $item->link, array('id' => 'link'.$i, 'class' => 'text-link'));
+    echo form::error($errors[$i - 1]['link']);
 ?>
     <a href="#page-list1" class="page-list-caller">Wyświetl listę dostępnych stron</a>
 
@@ -36,7 +38,8 @@ foreach($items as $item) :
 <div class="input-wrap">
 <?php
     echo form::label('title'.$i, 'Atrybut "title"');
-    echo form::input('title[]', $item->title, array('id' => 'title'.$i, 'class' => 'text-link'));
+    echo form::input('items['.$i.'][title]', $item->title, array('id' => 'title'.$i, 'class' => 'text-link'));
+    echo form::error($errors[$i - 1]['title']);
 ?>
 </div>
 </div>
@@ -51,7 +54,7 @@ foreach($items as $item) :
              foreach ($groups as $group) {
                  $options[$group->id] = $group->name;
              }
-             echo form::select('item-group[]', $options, $item->menugroup_id, array('id' => 'item-group'.$i));
+             echo form::select('items['.$i.'][group]', $options, $item->menugroup_id, array('id' => 'item-group'.$i));
         ?>
         
     </td>
@@ -63,15 +66,16 @@ foreach($items as $item) :
     <td><?php echo form::label('item-parent'.$i, 'Odnośnik nadrzędny'); ?></td>
     <td><?php
 
-        echo form::select('parent[]', $options,
+        echo form::select('items['.$i.'][parent]', $options,
                         $item->parent, array('id' => 'item-parent'.$i));?></td>
 </tr>
 <tr class="select-wrap item-order">
     <td><?php echo form::label('item-order'.$i, 'Pierwszeństwo'); ?></td>
-    <td><?php echo form::select('order[]',$order, $item->order, array('id' => 'item-order'.$i));?></td>
+    <td><?php echo form::select('items['.$i.'][order]',$order, $item->order, array('id' => 'item-order'.$i));?></td>
 </tr>
 </table>
 <?php
+    echo form::hidden('items['.$i.'][id]', (isset($item->id) ? $item->id : ''));
     echo form::close_fieldset();
     echo form::close_fieldset();
 endforeach;

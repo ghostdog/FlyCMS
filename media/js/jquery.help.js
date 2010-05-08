@@ -1,7 +1,6 @@
 $.fn.makeHelpPanels = function() {
 
     var helpSources = $('.help').hide();
-    console.log(helpSources);
 
     $('.help-invokers').each(function() {
         var invoker = $(this),

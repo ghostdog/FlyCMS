@@ -16,16 +16,16 @@
                 'global' => 'Szablon został ustawiony jako globalny',
             )
         ),
-        'menugroups' => array(
+        'menus' => array(
             'fail' => array(
-                'add' => 'Próba dodania grupy odnośników nie powiodła się.',
-                'edit' => 'Próba edycji grupy odnośników nie powiodła się.',
-                'delete' => 'Próba usunięcia grupy odnośników nie powiodła się.',
+                'add' => 'Próba dodania elementów nawigacji nie powiodła się.',
+                'edit' => 'Próba edycji elementów nawigacji nie powiodła się.',
+                'delete' => 'Próba usunięcia elementów nawigacji nie powiodła się.',
             ),
             'success' => array(
-                'add' => 'Grupa odnośników dodana z powodzeniem.',
-                'edit' => 'Grupa odnośników edytowana z powodzeniem.',
-                'delete' => 'Usunięcie grupy odnośników powiodło się.'
+                'add' => 'Elementy nawigacji dodane z powodzeniem.',
+                'edit' => 'Elementy nawigacji edytowane z powodzeniem.',
+                'delete' => 'Elementy nawigacji usunięte z powodzeniem.'
             )
         ),
 

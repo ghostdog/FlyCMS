@@ -83,7 +83,7 @@
 <div class="select-wrap" style="float: right; clear: none; ">
 <?php
     echo form::label('group-order', 'Kolejność');
-    echo form::select('group[order]', $order, $group->order, array('id' => 'group-order', 'class' => 'order-chooser'));
+    echo form::select('group[order]', $order, $group->ord, array('id' => 'group-order', 'class' => 'order-chooser'));
 ?>
 </div>
 <?php

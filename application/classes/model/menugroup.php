@@ -2,7 +2,7 @@
 
 class Model_MenuGroup extends Model_FlyOrm {
 
-    protected $_has_many = array('menuitems' => array(), 'pages' => array('through' => 'enrollment'));
+    protected $_has_many = array('menuitems' => array(), 'pages' => array('through' => 'enrollments'));
 
     protected $_filters = array(
         'name' => array('trim' => NULL),
@@ -19,7 +19,7 @@ class Model_MenuGroup extends Model_FlyOrm {
         'is_global' => array(
             'range' => array(0,1),
         ),
-        'order' => array(
+        'ord' => array(
             'digit' => NULL,
         )
     );
@@ -44,7 +44,7 @@ class Model_MenuGroup extends Model_FlyOrm {
             if (! empty($this->groupOwnerPagesId)) {
                 $page = ORM::factory('page');
                 foreach($this->groupOwnerPagesId as $id) {
-                    $this->add('enrollment', $page->find($id));
+                    $this->add('pages', $page->find($id));
                 }
             }
         }
@@ -82,7 +82,7 @@ class Model_MenuGroup extends Model_FlyOrm {
     }
 
     public function get_by_location($id) {
-        return $this->where('location', '=', $id)->order_by('order', 'ASC')->find_all();
+        return $this->where('location', '=', $id)->order_by('ord', 'ASC')->find_all();
     }
 
     public function get_all_groups() {
