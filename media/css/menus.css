@@ -210,3 +210,36 @@ a.close {
    font-weight: normal;
 }
 
+
+#groups-list {
+    float: left;
+    width: 100%;
+    border: 1px solid #666;
+    border-top-color: #999;
+    margin-top: .5em;
+}
+#groups-list td {
+    padding: .5em;
+}
+#groups-list th { padding: 1.5em 1.5em; color: #999; }
+
+#groups-list a { margin-left: .5em; }
+#groups-list th, #groups-list td {
+    text-align: center;
+    border-bottom: 1px solid #b5b5b5;
+}
+#groups-list th.name { text-align: left; }
+#groups-list tr { color: #333; }
+#groups-list .name { width: 30%; text-align: left }
+#groups-list em { font-size: 110%; font-style: normal; padding: 0 0 .5em 1em; }
+#groups-listdiv { text-align: center; }
+#groups-list .mark { padding-right: .2em }
+#groups-list thead tr, #groups-list tfoot tr { color: #fff; }
+#groups-list thead, #groups-list tfoot { background: url(img/content/thead_bg.png) repeat-x top left; background-color: #000;  }
+#groups-list tfoot th { border: none; }
+#groups-list tbody tr { cursor: pointer; }
+#groups-list tbody tr.odd { background: #e6e6e6 }
+#groups-list tbody tr.even { background: #f1f1f1 }
+#groups-list tbody tr.marked { background: #fff; }
+#groups-list tbody tr:hover { background: #fff }
+

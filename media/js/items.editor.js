@@ -134,7 +134,7 @@ ItemsEditor.prototype.addListeners = function(item, index) {
                             }
                             itemSelect.find('option').remove();
                             itemSelect.append(
-                                                $("<option/>").attr('value', -1).text('')
+                                                $("<option/>").attr('value', 0).text('')
                                             );
                             for (var key in data) {
                                 if (data.hasOwnProperty(key)) {

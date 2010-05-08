@@ -24,14 +24,15 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
              ->bind('items', $items)
              ->bind('groups', $groups);
         if ($_POST) {
-            $items_count = $_POST['items_quantity'];
             fire::log($_POST, 'post');
+            $items_count = $_POST['items_quantity'];
             if (isset($_POST['quantity_submit'])) {
                 $items = $this->items->get_empty_items($items_count);
             } else {
                 $is_group_valid = TRUE;
                 $are_items_valid = TRUE;
-                if ($this->is_group_to_add()) {
+                $is_group_to_add = $this->is_group_to_add();
+                if ($is_group_to_add) {
                     $this->group->values($_POST['group']);
                     if (! $this->group->check()) {
                         $group_editor->set('errors', $this->group->get_errors());
@@ -52,8 +53,18 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
                     $this->set_msg(FALSE);
 
                 } else {
+                    if ($is_group_to_add && $is_group_valid) {
+                        $this->group->save();
+
+                    }
+                        foreach ($items as $item) {
+                            if ($is_group_to_add) {
+                                $item->menugroup_id = $this->group->id;
+                            }
+                            $item->save();
+                        }
                     $this->set_msg(TRUE);
-                    $this->redirect('menus');
+                   // $this->redirect('menus');
                 }
             }
         } else {
@@ -81,6 +92,12 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
         echo $items;
     }
 
+    public function action_ajax_groups_list() {
+        $this->request->headers['Content-Type'] = 'text/html; charset=utf-8';
+        $list = View::factory('menu/groupslist')->set('groups', $this->group->get_all_groups());
+        echo $list;
+    }
+
     public function action_ajax_group_items() {
         $id = intval($_GET['group_id']);
         echo json_encode(misc::get_raw_db_result($this->group->get_items($id), array('id', 'name')));
@@ -99,7 +116,6 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
                 $errors[$key] = $item->get_errors();
             }
         }
-        fire::log($errors, 'errors');
         return $errors;
     }
 }

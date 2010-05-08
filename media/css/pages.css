@@ -45,7 +45,7 @@ table {
 caption, td {
     padding: .5em;
 }
-th { padding: 1em 1.5em }
+th { padding: 1em 1.5em; color: #999 }
 caption {
     text-align: left;
     color: #036;

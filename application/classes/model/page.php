@@ -57,7 +57,6 @@ class Model_Page extends Model_FlyOrm {
 
     protected $_callbacks = array(
         'title' => array('is_unique'),
-        'link' => array('is_unique'),
     );
 
     private $result = array('msg' => '', 'is_success' => NULL);

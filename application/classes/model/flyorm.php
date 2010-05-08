@@ -22,7 +22,12 @@ class Model_FlyOrm extends ORM {
     }
     
     public function is_unique(Validate $array, $target) {
-                $exists = (bool) $this->where($target, '=', $array[$target])->and_where('id', '!=', $this->id)->count_all();
+                $query = $this->where($target, '=', $array[$target]);
+                if (Request::instance()->action == 'edit') {
+                    $query->and_where('id', '!=', $this->id);
+                }
+                $exists = (bool) $query->count_all();
+
 		if ($exists)
 			$array->error($target, 'unique');
     }

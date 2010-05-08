@@ -62,6 +62,7 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
         if (! $this->is_ajax) {
             $action = $this->request->action;
             if ($_POST && $action != 'delete') {
+                fire::log($_POST, 'post');
                 $is_saved = $this->page->save_if_valid($_POST);
                 $this->set_msg($is_saved);
                 if (! $is_saved) {

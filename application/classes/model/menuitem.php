@@ -29,6 +29,15 @@ class Model_MenuItem extends ORM_MPTT {
 
     private $errors_filename = 'menuitems';
 
+    public function save() {
+        if ($this->parent_id) {
+            $parent = ORM::factory('menuitem', $this->parent_id);
+            $this->insert_as_last_child($parent);
+        } else {
+            $this->insert_as_new_root();
+        }
+    }
+
     public function  __set($name,  $value) {
         if ($name == 'created') {
             $value = time();

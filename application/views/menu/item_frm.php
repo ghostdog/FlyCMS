@@ -15,7 +15,7 @@ foreach($items as $item) :
     <div class="input-wrap">
 <?php
     echo form::label('item-name'.$i, 'Nazwa odnośnika'.required);
-    echo form::input('items['.$i.'][name]', $item->name, array('id' => 'item-name'.$i, 'class' => 'text-name'));
+    echo form::input('items['.$i.'][name]', (isset($item->name)) ? $item->name : 'Odnośnik '.$i, array('id' => 'item-name'.$i, 'class' => 'text-name'));
     echo form::error($errors[$i - 1]['name']);
 ?>
     </div>
@@ -29,7 +29,7 @@ foreach($items as $item) :
     <div class="input-wrap">
 <?php
     echo form::label('link'.$i, 'Adres docelowy'.required);
-    echo form::input('items['.$i.'][link]', $item->link, array('id' => 'link'.$i, 'class' => 'text-link'));
+    echo form::input('items['.$i.'][link]', (isset($item->name)) ? $item->name : 'link'.$i, array('id' => 'link'.$i, 'class' => 'text-link'));
     echo form::error($errors[$i - 1]['link']);
 ?>
     <a href="#page-list1" class="page-list-caller">Wyświetl listę dostępnych stron</a>
@@ -54,7 +54,7 @@ foreach($items as $item) :
              foreach ($groups as $group) {
                  $options[$group->id] = $group->name;
              }
-             echo form::select('items['.$i.'][group]', $options, $item->menugroup_id, array('id' => 'item-group'.$i));
+             echo form::select('items['.$i.'][menugroup_id]', $options, $item->menugroup_id, array('id' => 'item-group'.$i));
         ?>
         
     </td>
@@ -65,12 +65,11 @@ foreach($items as $item) :
 <tr class="select-wrap item-parent">
     <td><?php echo form::label('item-parent'.$i, 'Odnośnik nadrzędny'); ?></td>
     <td><?php
-
-        echo form::select('items['.$i.'][parent]', $options,
+        echo form::select('items['.$i.'][parent_id]', $options,
                         $item->parent, array('id' => 'item-parent'.$i));?></td>
 </tr>
 <tr class="select-wrap item-order">
-    <td><?php echo form::label('item-order'.$i, 'Pierwszeństwo'); ?></td>
+    <td><?php echo form::label('item-order'.$i, 'Kolejność'); ?></td>
     <td><?php echo form::select('items['.$i.'][order]',$order, $item->order, array('id' => 'item-order'.$i));?></td>
 </tr>
 </table>
