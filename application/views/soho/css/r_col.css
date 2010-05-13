@@ -1,0 +1,174 @@
+@charset "utf-8";
+/* CSS Document */
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #f5f5f5; 
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: small;
+	color: #333;
+}
+
+#wrap {
+	padding: 3em 2.2em 0 2.2em;
+	max-width: 900px;
+	min-width: 600px;
+	margin: 0 auto;
+}
+
+ul, ol { list-style:none;}
+ul a, ol a {text-decoration: none; color:#333; display: block;}
+
+h1, h2, h3, h4, h5, h6, .active, ul, ol {font-family: Myriad Pro; color: #90f; font-weight: normal; }
+#content a { color: #90f; }
+
+#header { 
+float: left;
+border-bottom: 1px solid #CCC;
+width: 100%;
+margin-bottom: 1em;
+}
+
+#header h1 {
+	float: left;
+	clear: left;
+	padding: 0 1em 0 2em;
+	font-size: 250%;
+	background: url(img/soho_logo.png) no-repeat top right;
+	
+}
+
+#header p {
+	position: absolute;
+	top: 2em;
+	margin: 0 0 1em 2em;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-style:italic;
+	color: #666;
+	font-size: 95%;
+	font-weight: bold;
+	font: bold italic Georgia, "Times New Roman", Times, serif;
+
+}
+
+#header ul {
+	font-size: 120%;
+	float: right;
+	
+}
+
+#header ul li {
+	float: left;	
+}
+#header ul li a {
+	padding: 1em 1.2em 1em 1.2em;
+}
+#header ul li a:hover {
+	background-color: #efefef;
+}	
+
+
+#sidebar {
+	float: right;
+	width: 19%;
+}
+
+#sidebar h2 {
+	font-size: 120%;
+	padding-bottom: .3em;
+}
+
+#sidebar ul {
+ float: left;
+ font-size: 110%;
+ margin-left: 1em;
+ list-style-image:url(img/soho_arrow.png)
+}
+
+#sidebar ul li a {
+	padding: 0.2em;	
+}
+
+#sidebar ul li a:hover {
+	text-decoration: underline;	
+}
+
+#content {
+	float: left;
+	width: 79%;
+	margin-right: 1%;
+}
+
+.box {
+	padding-right: 1%;
+	padding-left: 1%;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	width: 98%;
+	float: left;
+	border: 1px solid #ededed;
+	background: #f9f9f9;
+}
+
+#sidebar .box {
+	width: 96%;
+	padding-left: 4%;
+	padding-right: 0;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+	padding: 0 0 .3em 0;
+}
+
+h1 { font-size: 150%; }
+h2 { font-size: 140%; }
+h3 { font-size: 130%; }
+h4 {font-size: 120%; }
+h5 {font-size: 110%; }
+h6 {font-size: 105% }
+
+blockquote, p {
+	text-align:justify;	
+	padding: .5em;
+}
+
+blockquote {
+	font-style: italic;	
+}
+
+blockquote[cite]:after {
+	content: "(Źródło "attr(cite)")";	
+	font-style: normal;
+}
+
+q[cite]:after {
+	content: "\" (Źródło "attr(cite)")";
+}
+
+#sidebar .box {
+	margin-bottom: 1em;	
+}
+
+#footer {
+	border-top: 1px solid #ccc;
+	text-align: center;
+	padding: .6em ;
+	clear: both;
+}
+
+
+img { 
+	padding: .5em;
+	float: left;
+	border: none;
+}
+
+
+
+/* CSS Document */
+

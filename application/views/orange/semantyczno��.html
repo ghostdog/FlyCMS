@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Nasza Klasa i niczym nie okiełznana semantyczność HTML-a.</title>
+<style type="text/css">
+
+/** {
+	padding: 0;
+	margin: 0;
+}
+
+body { 
+	font-size: small; 
+	font-family: Tahoma, Geneva, sans-serif;	
+	padding: 50px;
+	text-align:center;
+}
+
+div, dd, dl, dt {
+	float: left;	
+}
+
+div {
+	border: 1px solid #ccf;
+}
+
+dd { 
+	clear: left;
+	font-size: 75%; 
+}
+
+dl {
+	padding: 7px 14px;
+}
+
+a {
+	text-decoration: none;
+	font-size: 110%;
+	font-weight: bold;
+	color: #369;
+	border: none;
+}
+
+img {
+	padding: 5px;	
+	border: 1px solid #ccf;
+}*/
+
+/*
+* {
+	padding: 0;
+	margin: 0;
+}
+
+body { 
+	font-size: small; 
+	font-family: Tahoma, Geneva, sans-serif;	
+	padding: 50px;
+	text-align:center;
+}
+
+div, dd, dl, dt {
+	float: left;	
+}
+
+div {
+	border: 1px solid #ccf;
+	height: 160px;
+}
+
+dd { 
+	clear: left;
+	font-size: 75%; 
+}
+
+dl {
+	padding: 7px 14px;
+}
+
+dt {	
+	height: 112px;
+}
+
+a {
+	text-decoration: none;
+	font-size: 110%;
+	font-weight: bold;
+	color: #369;
+	border: none;
+}
+
+img {
+	padding: 5px;	
+	border: 1px solid #ccf;
+}
+
+*/
+
+
+
+
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+body { 
+	font-size: small; 
+	font-family: Tahoma, Geneva, sans-serif;	
+	padding: 50px;
+	text-align:center;
+}
+
+div, dd, dl, dt {
+	float: left;	
+}
+
+div {
+	border: 1px solid #ccf;
+	height: 160px;
+}
+
+dl {		
+padding: 7px 14px;
+}
+
+dd { 
+	clear: left;
+	font-size: 75%; 
+	width: 120px;
+}
+
+dt {
+	width: 120px;
+	height: 112px;
+	display: table;
+}
+a {
+	text-decoration: none;
+	font-size: 110%;
+	font-weight: bold;
+	color: #369;	
+}
+dt a {
+	border: none;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+img {
+	padding: 5px;
+	background: #fff;
+	border: 1px solid #ccf;
+	-moz-box-shadow: 1px 1px 0 #ccf;
+	-webkit-box-shadow: 1px 1px 0 #ccf;
+     box-shadow: 1px 1px 0 #ccf;
+}
+
+</style>
+</head>
+
+<body>
+        <div>
+        	<dl>
+                <dt><a href="#"><img src="img/nk1.jpeg" alt="miniaturka-zdjęcia" /></a></dt>
+                <dd>
+                    <a href="#">Xxxxx Yyyyyyyyyyy</a><br />Dzisiaj 17:44
+                </dd>
+            </dl>
+            <dl>
+                <dt><a href="#"><img src="img/nk2.jpeg" alt="miniaturka-zdjęcia" /></a></dt>
+                <dd>
+                	<a href="#">Uuuuuu Nnnnn (Jjjjjj)</a> <br />Dzisiaj 17:44
+                </dd>
+            </dl>
+            <dl>
+                <dt><a href=""><img src="img/nk3.jpeg" alt="miniaturka-zdjęcia" /></a></dt>
+                <dd>
+                	<a href="#">Aaaa Kkkkkkkkkk</a> <br />Dzisiaj 17:44
+                </dd>
+            </dl>
+            <dl>
+                <dt><a href=""><img src="img/nk4.jpeg" alt="miniaturka-zdjęcia" /></a></dt>
+                <dd><a href="">Uuuuu Ppppppp</a> <br />Dzisiaj 17:44</dd>
+            </dl>
+        </div>
+</body>
+</html>
+
+
+<!--<div class="last_rows"><div class="thumb">
+          <div class="outer">
+              <div class="middle">
+                <div class="inner">
+                  <div class="avatar_photo"><a href="/profile/31521844/gallery/12"><img alt="miniaturka zdjęcia" class="thumb" src="http://photos.nasza-klasa.pl/29105443/12/thumb/b10fb051fa.jpeg"></a>
+                 </div>
+                </div>
+              </div>
+            </div><div class="desc"><div class="author"><a href="/profile/31521844">XXXXX YYYYYY</a><br>dzisiaj 20:31</div></div>
+</div>
+<div class="thumb">
+            <div class="outer">
+              <div class="middle">
+                <div class="inner">
+                  <div class="avatar_photo"><a href="/profile/22620947/gallery/39"><img alt="miniaturka zdjęcia" class="thumb" src="http://photos.nasza-klasa.pl/22164904/39/thumb/44d11daf6a.jpeg"></a>
+                  </div>
+                </div>
+              </div>
+            </div><div class="desc"><div class="author"><a href="/profile/22620947">LLLLLLLL ### ~~~ CCCCCCCC ~~~</a><br>dzisiaj 20:31</div></div>
+</div>
+<div class="thumb">
+            <div class="outer">
+              <div class="middle">
+                <div class="inner">
+                  <div class="avatar_photo"><a href="/profile/19763376/gallery/145"><img alt="miniaturka zdjęcia" class="thumb" src="http://photos.nasza-klasa.pl/19984140/145/thumb/3719f89981.jpeg"></a>
+                  </div>
+                </div>
+              </div>
+            </div><div class="desc"><div class="author"><a href="/profile/19763376">***SLODKA  BLONDI***</a><br>dzisiaj 20:31</div></div>
+</div>
+<div id="last_photo_td"><div class="thumb">
+           <div class="outer">
+              <div class="middle">
+                <div class="inner">
+                  <div class="avatar_photo"><a href="/profile/9290319/gallery/58"><img alt="miniaturka zdjęcia" class="thumb" src="http://photos.nasza-klasa.pl/9798258/58/thumb/bd2c3d3fd9.jpeg"></a>
+                  </div>
+                </div>
+              </div>
+            </div><div class="desc"><div class="author"><a href="/profile/9290319">Bartek Rybak (95 SUPPORT)</a><br>dzisiaj 20:31</div></div>
+            </div>
+</div> 41 linii
+<div class="clear"></div></div></div>
+-->
