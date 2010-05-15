@@ -44,7 +44,10 @@ class Model_MenuGroup extends Model_FlyOrm {
             if (! empty($this->groupOwnerPagesId)) {
                 $page = ORM::factory('page');
                 foreach($this->groupOwnerPagesId as $id) {
-                    $this->add('pages', $page->find($id));
+                    $page = $page->find($id);
+                    if (! $this->has('pages', $page)) {
+                        $this->add('pages', $page->find($id));
+                    }
                 }
             }
         }
@@ -97,8 +100,8 @@ class Model_MenuGroup extends Model_FlyOrm {
         }
     }
 
-    public function get_items($group_id) {
-        return $this->find($group_id)->menuitems->find_all();
+    public function get_items() {
+        return $this->menuitems->find_all();
     }
 }
 ?>

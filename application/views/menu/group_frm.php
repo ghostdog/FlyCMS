@@ -5,8 +5,9 @@
 <div class="input-wrap" style="width: 100%">
 <?php
     echo form::label('group-name', 'Nazwa grupy'.req);
-    echo form::input('group[name]', /**$group->name */ 'Grupa 234', array('id' => 'group-name'));
+    echo form::input('group[name]', $group->name, array('id' => 'group-name'));
     echo form::error($errors['name']);
+    echo form::hidden('group[id]', $group->id);
 ?>
 </div>
 <div style="width: 100%">

@@ -64,9 +64,6 @@
     <a href="#" class="unmark-all">Odznacz wszystkie</a>
     ] Zaznaczone: 
     <?php echo form::submit('remove-submit', 'Usuń', array('class' => 'condition-submit', 'style' => 'float: none;'))?>
-
- 
-   
 </div>
 <?php 
     echo form::close();

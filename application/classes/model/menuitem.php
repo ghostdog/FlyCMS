@@ -34,7 +34,11 @@ class Model_MenuItem extends ORM_MPTT {
             $parent = ORM::factory('menuitem', $this->parent_id);
             $this->insert_as_last_child($parent);
         } else {
-            $this->insert_as_new_root();
+            if (! $this->_loaded) {
+                $this->insert_as_new_root();
+            } else {
+                parent::save();
+            }
         }
     }
 

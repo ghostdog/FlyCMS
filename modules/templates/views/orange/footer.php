@@ -1,1 +1,4 @@
-<?php echo '<div>footer</div>' ?>
+<div id="footer">&copy; 2010 Powered by FlyCMS</div>
+</div>
+</body>
+</html>

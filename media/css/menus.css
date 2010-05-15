@@ -230,14 +230,13 @@ a.close {
 }
 #groups-list th.name { text-align: left; }
 #groups-list tr { color: #333; }
-#groups-list .name { width: 30%; text-align: left }
+#groups-list .name { width: 30%; }
 #groups-list em { font-size: 110%; font-style: normal; padding: 0 0 .5em 1em; }
 #groups-listdiv { text-align: center; }
 #groups-list .mark { padding-right: .2em }
 #groups-list thead tr, #groups-list tfoot tr { color: #fff; }
 #groups-list thead, #groups-list tfoot { background: url(img/content/thead_bg.png) repeat-x top left; background-color: #000;  }
 #groups-list tfoot th { border: none; }
-#groups-list tbody tr { cursor: pointer; }
 #groups-list tbody tr.odd { background: #e6e6e6 }
 #groups-list tbody tr.even { background: #f1f1f1 }
 #groups-list tbody tr.marked { background: #fff; }

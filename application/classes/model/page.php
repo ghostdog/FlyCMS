@@ -70,8 +70,10 @@ class Model_Page extends Model_FlyOrm {
     }
 
     public function save() {
-        $this->create_link();
-        if (! $this->_loaded) {
+        if (empty($this->link) || isset($this->_changed['link'])) {
+            $this->create_link();
+        }
+        if (empty($this->created)) {
             $this->created = time();
         } else {
             $this->last_modified = time();

@@ -15,7 +15,7 @@ foreach($items as $item) :
     <div class="input-wrap">
 <?php
     echo form::label('item-name'.$i, 'Nazwa odnośnika'.required);
-    echo form::input('items['.$i.'][name]', (isset($item->name)) ? $item->name : 'Odnośnik '.$i, array('id' => 'item-name'.$i, 'class' => 'text-name'));
+    echo form::input('items['.$i.'][name]', $item->name, array('id' => 'item-name'.$i, 'class' => 'text-name'));
     echo form::error($errors[$i - 1]['name']);
 ?>
     </div>
@@ -29,7 +29,7 @@ foreach($items as $item) :
     <div class="input-wrap">
 <?php
     echo form::label('link'.$i, 'Adres docelowy'.required);
-    echo form::input('items['.$i.'][link]', (isset($item->name)) ? $item->name : 'link'.$i, array('id' => 'link'.$i, 'class' => 'text-link'));
+    echo form::input('items['.$i.'][link]', $item->link, array('id' => 'link'.$i, 'class' => 'text-link'));
     echo form::error($errors[$i - 1]['link']);
 ?>
     <a href="#page-list1" class="page-list-caller">Wyświetl listę dostępnych stron</a>
@@ -47,6 +47,7 @@ foreach($items as $item) :
     echo form::fieldset('Położenie odnośnika', array('class' => 'item-location location-chooser'));
 ?>
 <table cellspacing="0">
+<?php if (Request::instance()->action == 'add') { ?>
 <tr class="select-wrap item-group">
     <td><?php echo form::label('item-group'.$i, 'Grupa odnośników'); ?></td>
     <td>
@@ -54,19 +55,33 @@ foreach($items as $item) :
              foreach ($groups as $group) {
                  $options[$group->id] = $group->name;
              }
-             echo form::select('items['.$i.'][menugroup_id]', $options, $item->menugroup_id, array('id' => 'item-group'.$i));
+             echo form::select('items['.$i.'][menugroup_id]', (isset($options)) ? $options : NULL, $item->menugroup_id, array('id' => 'item-group'.$i));
         ?>
         
     </td>
 </tr>
+<?php } ?>
 <tr>
     <td class="ajax-msg" colspan="2" style="text-align: right"></td>
 </tr>
 <tr class="select-wrap item-parent">
     <td><?php echo form::label('item-parent'.$i, 'Odnośnik nadrzędny'); ?></td>
-    <td><?php
+    <td>
+    <?php
+        $group = $item->menugroup;
+        $items = $group->menuitems->find_all();
+        $options = array();
+        foreach($items as $_item) {
+            if ($_item->id == $item->id) {
+                continue;
+            } else {
+                $options[$_item->id] = $_item->name;
+            }
+        }
         echo form::select('items['.$i.'][parent_id]', $options,
-                        $item->parent, array('id' => 'item-parent'.$i));?></td>
+                        $item->parent, array('id' => 'item-parent'.$i));
+    ?>
+    </td>
 </tr>
 <tr class="select-wrap item-order">
     <td><?php echo form::label('item-order'.$i, 'Kolejność'); ?></td>
@@ -74,7 +89,7 @@ foreach($items as $item) :
 </tr>
 </table>
 <?php
-    echo form::hidden('items['.$i.'][id]', (isset($item->id) ? $item->id : ''));
+    echo form::hidden('items['.$i.'][id]', $item->id);
     echo form::close_fieldset();
     echo form::close_fieldset();
 endforeach;
