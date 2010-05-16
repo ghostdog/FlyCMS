@@ -6,15 +6,14 @@
 		$('#dialog').hide();
 	});
 	
-	$.fn.dialog = function(actions, opts, effects) {
+	$.fn.dialog = function(_acts, opts, eff) {
 		var dialog = $('#dialog'),
-                    invoker = $(this);
-
-		var settings = $.extend({}, $.fn.dialog.defaultSettings, opts);
-		var acts = $.extend({}, $.fn.dialog.actions, actions);
-		var effects = $.extend({}, $.fn.dialog.effects, effects);
-                var submit = $('#dialog-submit');
-		var bgOverlay;
+                    invoker = $(this),
+		    settings = $.extend({}, $.fn.dialog.defaultSettings, opts),
+		    acts = $.extend({}, $.fn.dialog.actions, _acts),
+		    effects = $.extend({}, $.fn.dialog.effects, eff),
+                    submit = $('#dialog-submit'),
+		    bgOverlay;
 
 
                 dialog.attr('tabIndex', -1).css('outline', 0)
@@ -40,7 +39,15 @@
                     evt.preventDefault();
                     acts.onSubmit(dialog, invoker, evt);
                     doClose(evt);
-                })
+                });
+
+		function doClose(evt) {
+			effects.hideDialog(dialog, invoker);
+			if (settings.makeBgDark)
+				effects.hideOverlay();
+			acts.onClose(dialog, invoker, evt);
+			dialog.blur();
+		}
 		
 		function doOpen(evt) {
 			invoker = $(evt.target);
@@ -55,13 +62,7 @@
 			acts.onOpen(dialog, invoker, evt);
 		}
 
-		function doClose(evt) {
-			effects.hideDialog(dialog, invoker);
-			if (settings.makeBgDark)
-				effects.hideOverlay();
-			acts.onClose(dialog, invoker, evt);
-			dialog.blur();
-		}
+
 		
 		function setDialogPosition() {
 			var top;
@@ -139,12 +140,5 @@
 			$('#bg_overlay').fadeOut();
 		}
 	}
-	
-
-	
-  	
-	
-	
-	
 })(jQuery);
 

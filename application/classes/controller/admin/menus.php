@@ -15,9 +15,20 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
         $this->redirect('menus', 'add');
     }
 
-    public function delete() {
-        //TODO
+    public function action_delete_group() {
         $this->redirect('menus', 'add');
+    }
+
+    public function action_delete_item($id) {
+        $this->items->find($id);
+        if ($this->items->loaded()) {
+            $this->items->delete();
+            $this->set_msg(TRUE);
+        } else {
+            $this->set_msg(FALSE);
+        }
+        $this->redirect_to_prev_uri();
+        
     }
     
     public function action_add() {
@@ -64,11 +75,10 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
         if ($action == 'add' OR $action == 'edit') {
             $group_editor = View::factory('menu/group_frm')
                      ->bind('group', $this->group);
-            $groups = $this->group->get_all_groups();
             $this->template->content = $main_frm = View::factory('menu/main_frm')
                  ->bind('group', $group_editor)
                  ->bind('items', $items)
-                 ->bind('groups', $groups);
+                 ->set('groups', $this->group->get_all_groups());
                if ($_POST) {
                     $is_group_valid = TRUE;
                     $are_items_valid = TRUE;

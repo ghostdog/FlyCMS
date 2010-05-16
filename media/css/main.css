@@ -23,7 +23,7 @@ input[type="reset"] { background: transparent; color: #369 }
 input[type="reset"]:hover { text-decoration: underline; color: #06f; }
 input[type="submit"] { 
     background: url(img/content/info_bg.png) repeat-x top left;
-    border: none; padding: .4em;
+    border: none; padding: .35em;
     -moz-border-radius: 6px; -webkit-border-radius: 6px;
     color: #fff; margin-right: .3em
 

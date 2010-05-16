@@ -115,7 +115,7 @@ a.close {
 
 #pages tbody tr:hover {
     cursor:pointer;
-    background: #9cf;
+    background: #9cf !important;
   
 }
 
@@ -181,24 +181,24 @@ a.close {
     background: url(img/content/tab_bg.png) top left;
     padding: .5em 1em 1.8em 1em;
     margin: 0 .3em 0 0;
-    color: #fff;
-    border: 1px solid #39f;
+    color: #333;
+    border: 1px solid #999;
     border-bottom: none;
     display: block;
 }
 
 #items-list a:hover {
     text-decoration: none;
-    color: #999 !important;
+    color: #666 !important;
 }
 
 #items-list a.selected {
     margin-bottom: -1em;
     background: #fff;
-    color: #369
+    color: #333;
 }
 #items-list a.selected:hover {
-    color: #369 !important;
+    color: #333 !important;
 }
 
 #req-text {

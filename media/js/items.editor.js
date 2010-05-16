@@ -3,13 +3,10 @@ var ItemsEditor = function(items) {
       this.setItems(items);
       this.pagination = undefined;
 }
-
 ItemsEditor.prototype.setItems = function(items) {
     var that = this;
-
     that.items = [];
-   
-   items.each(function(index, element) {
+    items.each(function(index, element) {
         var item = $(element);
         that.addListeners(item, ++index);
         that.items.push(item);
@@ -17,7 +14,6 @@ ItemsEditor.prototype.setItems = function(items) {
     });
     $('.page-list-caller').each(function() {
         var invoker = $(this);
-
         invoker.dialog({
             onOpen : function(dialog, invoker, evt) {
                 var tbody = $('#item-pages-list').find('tbody'),
@@ -66,17 +62,17 @@ ItemsEditor.prototype.setItems = function(items) {
                 this.pagination.request();
             },
             onSubmit : function(dialog, invoker, evt) {
-               var checked = dialog.find(':checked');
-               if (checked.length > 0) {
-                   invoker.parent().find('input').val(checked.val());
-               }
+                     evt.preventDefault();
+                     var checked = dialog.find(':checked');
+                     console.log(invoker.attr('href'), 'href');
+                     $(invoker.attr('href')).val(checked.val());
             }
         });
+
         invoker.click(function(evt) {
             evt.preventDefault();
 
         });
-        
     })
 };
 ItemsEditor.prototype.addListeners = function(item, index) {
@@ -189,7 +185,7 @@ ItemsEditor.prototype.itemsWalk = function(selector, callback) {
 };
 ItemsEditor.prototype.getSize = function() {
     return this.items.length;
-}
+};
 
 
 

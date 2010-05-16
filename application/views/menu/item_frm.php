@@ -1,5 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access');
-    define('required', '<em class="required">*</em>');
+
+define('required', '<em class="required">*</em>');
 
 for ($j = 0; $j < 100; $j++) {
     $order[] = $j;
@@ -32,7 +33,7 @@ foreach($items as $item) :
     echo form::input('items['.$i.'][link]', $item->link, array('id' => 'link'.$i, 'class' => 'text-link'));
     echo form::error($errors[$i - 1]['link']);
 ?>
-    <a href="#page-list1" class="page-list-caller">Wyświetl listę dostępnych stron</a>
+    <a href="#link<?php echo $i ?>" class="page-list-caller">Wyświetl listę dostępnych stron</a>
 
 </div>
 <div class="input-wrap">
@@ -47,8 +48,12 @@ foreach($items as $item) :
     echo form::fieldset('Położenie odnośnika', array('class' => 'item-location location-chooser'));
 ?>
 <table cellspacing="0">
-<?php if (Request::instance()->action == 'add') { ?>
-<tr class="select-wrap item-group">
+
+<?php
+    $action = Request::instance()->action;
+    if ($action == 'add') {
+?>
+ <tr class="select-wrap item-group">
     <td><?php echo form::label('item-group'.$i, 'Grupa odnośników'); ?></td>
     <td>
         <?php
@@ -88,9 +93,14 @@ foreach($items as $item) :
     <td><?php echo form::select('items['.$i.'][order]',$order, $item->order, array('id' => 'item-order'.$i));?></td>
 </tr>
 </table>
+
 <?php
+    if ($action == 'edit' AND isset($item->id)) {
+        echo html::anchor('/admin/menus/delete_item/'.$item->id, 'Usuń odnośnik', array('class' => 'delete remove'));
+    }
     echo form::hidden('items['.$i.'][id]', $item->id);
     echo form::close_fieldset();
     echo form::close_fieldset();
 endforeach;
 ?>
+

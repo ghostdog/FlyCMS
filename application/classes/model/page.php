@@ -133,7 +133,7 @@ class Model_Page extends Model_FlyOrm {
     }
 
     public function get_main_page() {
-        return ORM::factory('page')->where('is_main', '=', 1)->find();
+        return $this->where('is_main', '=', 1)->find()->set_global_settings_if_required();
     }
 
     private function create_link() {
@@ -175,6 +175,7 @@ class Model_Page extends Model_FlyOrm {
         if (empty($this->author)) {
                 $this->author = $global->author;
         }
+        return $this;
     }
     CONST NOT_SET = -1;
 }

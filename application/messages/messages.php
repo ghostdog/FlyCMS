@@ -21,11 +21,12 @@
                 'add' => 'Próba dodania elementów nawigacji nie powiodła się.',
                 'edit' => 'Próba edycji elementów nawigacji nie powiodła się.',
                 'delete' => 'Próba usunięcia elementów nawigacji nie powiodła się.',
+                'delete_item' => 'Próba usunięcia odnośnika nie powiodła się',
             ),
             'success' => array(
                 'add' => 'Elementy nawigacji dodane z powodzeniem.',
                 'edit' => 'Elementy nawigacji edytowane z powodzeniem.',
-                'delete' => 'Elementy nawigacji usunięte z powodzeniem.'
+                'delete_item' => 'Odnośnik usunięty z powodzeniem.'
             )
         ),
 

@@ -7,6 +7,7 @@
 </head>
 <body>
 <div id="wrap">
+<?php if ($settings->header_on) { ?>
 <div id="header">
 
         <h1><?php echo $settings->title ?> <span id="desc"><?php echo $settigs->subtitle ?>s</span></h1>
@@ -24,3 +25,4 @@
     }
 ?>
 </div>
+<?php } ?>
