@@ -119,7 +119,7 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
                 } else {
                     $this->set_msg(FALSE);
                 }
-            } elseif($action == 'edit') {
+            } else if($action == 'edit') {
                 $this->template->sections = $this->page->sections;
             }
             if ($action == 'index') {
