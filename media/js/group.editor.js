@@ -50,14 +50,18 @@ GroupEditor.prototype.addListeners = function() {
         var chooser = $(this);
         var location = chooser.val();
         if (location != -1) {
-            that.groupsTable.show();
             if (that.groups[location] == undefined) {
             var caption = that.groupsTable.find('caption').text('Pobieranie informacji...');
             $.getJSON('/kohana/admin/menus/ajax_groups_by_location','location='+location,
                         function(data, status) {
                             that.groups[location] = data;
-                            caption.text('Grupy aktywne w tej lokalizacji.');
-                            that.populateGroupTableRows(location);
+                            if (data.length > 0) {
+                                that.groupsTable.show();
+                                caption.text('Grupy aktywne w tej lokalizacji.');
+                                that.populateGroupTableRows(location);
+                            } else {
+
+                            }
                         });
             } else {
                 that.populateGroupTableRows(location);

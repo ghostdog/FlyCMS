@@ -177,7 +177,7 @@ select {
 
 #top-menu  a, #footer a { font-size: 90%}
 #top-menu { float: right; padding: .3em .5em;}
-#top-menu a, #footer a { color: #ccc; padding: 0 .5em }
+#top-menu a, #footer a { color: #ccc; padding: 0 .5em  !important}
 #top-menu li, #footer li { border-right: 1px solid #ccc }
 #top-menu a:hover, #footer a:hover, #menu-bar a:hover { color: #fff }
 #top-menu { float: right; padding: .3em .5em;}

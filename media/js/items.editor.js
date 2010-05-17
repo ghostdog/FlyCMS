@@ -63,9 +63,10 @@ ItemsEditor.prototype.setItems = function(items) {
             },
             onSubmit : function(dialog, invoker, evt) {
                      evt.preventDefault();
-                     var checked = dialog.find(':checked');
-                     console.log(invoker.attr('href'), 'href');
-                     $(invoker.attr('href')).val(checked.val());
+                     var checked = dialog.find(':checked'),
+                         selectedTab = $('#items-list').find('a.selected');
+                     $(selectedTab.attr('href'))
+                     .find('input[id*=link]').val(checked.val());
             }
         });
 
@@ -97,7 +98,7 @@ ItemsEditor.prototype.addListeners = function(item, index) {
             item.find('input[type="text"]').each(function() {
                 $(this).counter({maxLength : 100});
             });
-            var input = $('#item-name' + index),
+             var input = $('#item-name' + index),
                 target = $('a[href="#item' + index + '"] > .name');
                 target.data('default', target.text());
                 input.keyup(function() {
@@ -107,13 +108,13 @@ ItemsEditor.prototype.addListeners = function(item, index) {
                     } else {
                         target.text(text);
                     }
-                })
+              });
               var orderSelect = $('#item-order' + index),
                   orderTarget = $('a[href="#item' + index + '"] > .order');
 
                   orderSelect.change(function() {
                       orderTarget.text(orderSelect.val());
-                  })
+              });
 
            
             item.find('#item-group' + index).change(function() {

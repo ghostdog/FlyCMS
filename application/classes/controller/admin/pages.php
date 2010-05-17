@@ -3,10 +3,12 @@
 class Controller_Admin_Pages extends Controller_Admin_Admin {
 
      private $page;
+     private $section;
 
      public function before() {
          parent::before();
          $this->page = ORM::factory('page');
+         $this->section = ORM::factory('section');
      }
 
     public function action_index() {
@@ -49,6 +51,19 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
          
      }
 
+    public function action_ajax_sections_refresh() {
+        $addSz = intval($_GET['add_sz']);
+        $next_id = intval($_GET['next_id']);
+        $sections = $this->section->get_empty_sections($addSz);
+        $sections = View::factory('section')
+                 ->set('sections', $sections)
+                 ->set('i', $next_id)
+                 ->set('action', $this->request->action)
+                 ->render();
+        $this->request->headers['Content-Type'] = 'text/html; charset=utf-8';
+        echo $sections;
+    }
+
      public function action_ajax_get_pages() {
          $limit = intval($_GET['limit']);
          $finder = new Finder($this->page);
@@ -82,11 +97,15 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
          $this->load_page_content('page_form')
               ->bind('page', $this->page)
               ->bind('action', $action)
+              ->bind('sections', $sections)
               ->set('templates', ORM::factory('template')->get_templates());
-
          $action = $this->request->action;
          if ($action == 'edit') {
              $action .= '/'.$this->request->param('id');
+         } else {
+             if (! $_POST) {
+                $sections = $this->section->get_empty_sections(3);
+             }
          }
      }
 

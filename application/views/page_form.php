@@ -22,10 +22,42 @@
     echo form::checkbox('is_main',1, ($page->is_main) ? TRUE : FALSE, array('id' => 'is_main'));
 ?>
 </div>
+<div id="quantity-chooser" style="float: left; clear: left;">
+    <h3 style="margin-top: .5em">Ile sekcji mam utworzyć?:</h3>
+<?php
+    for ($i = 0; $i < 10;) {
+        $values[++$i] = $i ;
+    }
+    echo form::select('sections_quantity', $values, form::value('sections_quantity'),
+                       array('id' => 'sections-quantity-chooser',
+                           'style' => 'margin-left: 1em;
+                                      width: 10em;
+                      '));
+
+    echo form::submit('quantity_submit','Odśwież', array('style' => 'margin-left: 1em; width: 5em', 'id' => 'quantity-submit'));
+?>
+    <span id="refresh-msg"></span>
+</div>
+<ul id="sections-list" style="float: left; clear: left">
+    <?php $i = 0;
+        foreach($sections as $section) : ?>
+    <li>
+        <?php
+            $i += 1;
+            $section_order = (empty($section->ord)) ? ' [<span class="ord">0</span>]' : ' [<span class="ord">'.$section->ord.'</span>]';
+            $name = (empty($section->name)) ? '<span class="name">Sekcja '.$i.'</span> ': '<span class="name">'.$section->name.'</span>';
+            $error_mark = (isset($sections_errors[$i - 1])) ? ' <strong style="color:red; text-decoration: underline">Błąd!</strong>' : '';
+            echo html::anchor('#section'.$i, $name.$section_order.$error_mark);
+        ?>
+    </li>
+    <?php endforeach ?>
+</ul>
 <?php
     //echo form::cluetip('content', 'Treść podpowiedzi dla zawartości strony');
-    echo form::error($errors['content']);
-    echo form::tarea_w_label('content', 'Edytor zawartości', html::chars($page->content));
+//    echo form::error($errors['content']);
+//    echo form::tarea_w_label('content', 'Edytor zawartości', html::chars($page->content));
+    echo View::factory('section', array('sections' => $sections, 'i' => 0,'action' => $action, 'errors' => (isset($sections_errors)) ? $sections_errors : array()));
+
     echo form::close_fieldset();
 
     echo form::fieldset('Meta dane', array('id' => 'metas'));
@@ -59,7 +91,88 @@
 ?>
 
 <script type="text/javascript">
+function makeTabs() {
+    var tabContainers = $('fieldset[id^=section]').hide();
+    $('#sections-list a').click(function () {
+        tabContainers.hide().filter(this.hash).show();
+        $('#sections-list a').removeClass('selected');
+        $(this).addClass('selected');
+        return false;
+    });
+    $('#sections-list a').filter(':first').trigger('click');
+}
+
+function changeTabs(reqSize) {
+        var itemsSize = $('fieldset[id^=section]').length,
+        changeSize = 0,
+        msgOutput = $('#refresh-msg'),
+        requestSize = reqSize;
+
+        if (requestSize == itemsSize) {
+            msgOutput.text('Liczba paneli sekcji, którą wybrałeś jest równa liczbie już aktywnych. Podaj inną.')
+        } else if (requestSize > itemsSize) {
+            changeSize = requestSize - itemsSize;
+            var nextId = itemsSize;
+            msgOutput.text('Trwa odświeżanie...');
+            $.ajax({
+                dataType : 'html',
+                data : 'add_sz='+changeSize+'&next_id='+nextId,
+                url : '/kohana/admin/pages/ajax_sections_refresh',
+                error : function(err, xhr, status) {
+                    msgOutput.text('Wystąpił błąd podczas próby odświeżenia.');
+                },
+                success : function(data, xhr, textStatus) {
+                    msgOutput.text('Odświeżanie zakończone powodzeniem.');
+
+                    $('#sections-wrap').append(data);
+
+                    for (i = 0; i < changeSize; i++) {
+                        nextId += 1;
+                        $('#sections-list').append($('<li/>')
+                                        .append(
+                                        $('<a/>')
+                                          .attr('href', '#section'+nextId)
+                                          .append(
+                                            $('<span/>').addClass('name').text('Sekcja '+nextId)
+                                          )
+                                          .append(' [<span class="ord">0</span>]')
+                                       )
+                                    )
+                    }
+                    makeTabs();
+                    $('#sections-list a').filter(':first').click();
+
+                }
+            });
+
+        } else if (requestSize < itemsSize) {
+            changeSize = itemsSize - requestSize;
+            removeSectionTabs(changeSize);
+        }
+}
+function removeSectionTabs(quantity) {
+    var items = $('fieldset[id^=section]'),
+        tabs = $('#sections-list li'),
+        idx = items.length - 1;
+    while (idx > 0) {
+       if (quantity > 0) {
+           $(items[idx]).remove();
+           $(tabs[idx]).remove();
+           quantity--;
+       }
+       idx -= 1;
+   }
+   makeTabs();
+   $('#sections-list a').filter(':first').click();
+}
 $(document).ready(function() {
+    makeTabs();
+    $('#quantity-submit').click(function(evt) {
+        evt.preventDefault();
+        var submit = $(this),
+            requestSize = $('#sections-quantity-chooser').val();
+            changeTabs(requestSize);
+    });
     $('#title').counter({maxLength : 100});
     $('.delete').c_dialog();
     $('#page-content input[type="text"]:first').focus();

@@ -60,8 +60,8 @@
     </tbody>
 </table>
 <div style="float: left;">
-    [ <a href="#" class="mark-all">Zaznacz wszystkie</a>
-    <a href="#" class="unmark-all">Odznacz wszystkie</a>
+    [ <a href="#" class="mark-all" style="padding-right: .3em">Zaznacz wszystkie</a>
+    <a href="#" class="unmark-all" style="padding-right: .3em">Odznacz wszystkie</a>
     ] Zaznaczone: 
     <?php echo form::submit('remove-submit', 'Usuń', array('class' => 'condition-submit', 'style' => 'float: none;'))?>
 </div>

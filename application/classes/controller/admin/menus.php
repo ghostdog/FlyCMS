@@ -50,7 +50,6 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
         $next_id = intval($_GET['next_id']);
         $items = $this->items->get_empty_items($addSz);
         $items = View::factory('menu/item_frm')
-                 ->set('items_count', $addSz)
                  ->set('items', $items)
                  ->set('groups', $this->group->get_all_groups())
                  ->set('i', $next_id)

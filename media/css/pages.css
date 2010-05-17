@@ -11,6 +11,10 @@
 #page-content .input-wrap-label-right { margin-top: 1em }
 #page-content #title-and-content a { margin-right: 1em }
 #page-content .submit:last-child { float: left }
+table .pages-list-header {
+    font-size: 100%;
+    font-weight: bold;
+}
 .create { background: url('img/content/info_bg.png') repeat-x top left; margin-right: 1em }
 .remove {
     background: url(img/content/no_bg.png) repeat-x top left !important;
@@ -18,14 +22,24 @@
   
 }
 .create, .remove {
-      padding: .6em; font-size: 110%;
--moz-border-radius: 4px; -webkit-border-radius: 4px; color: #fff !important; float: right; width: 10em; text-align: center; }
+      padding: .6em !important; font-size: 110%;
+      -moz-border-radius: 4px; -webkit-border-radius: 4px; color: #fff !important; float: right; width: 10em; text-align: center; }
 .create:hover, .remove:hover{ text-decoration: none !important; }
 .condition-submit {
     background: none !important;
     color: red !important;
     font-weight: bold;
     width: 5em !important;
+}
+#page-content a {
+    padding: 0 1.5em .3em 0;
+}
+a.open {
+    background: url("img/content/arrow_open.png") no-repeat scroll right top transparent;
+}
+
+a.close {
+    background: url("img/content/arrow_close.png") no-repeat scroll right top transparent;
 }
 .items-count-chooser label {
     padding: 0.4em 0.4em 0.3em 1em !important;
@@ -77,5 +91,45 @@ tbody tr.marked { background: #fff; }
 tbody tr:hover { background: #fff }
 
   
+#sections-list {
+    margin: 3em 0 1em 2em;
+}
 
+#sections-list li {
+    float: left;
+}
 
+#sections-list a {
+    padding: .5em 1em 2em 1em;
+    -moz-border-radius-topleft: 6px;
+    -moz-border-radius-topright: 6px;
+    background: url(img/content/tab_bg.png) top left;
+    padding: .5em 1em 1.8em 1em;
+    margin: 0 .3em 0 0 !important;
+    color: #333;
+    border: 1px solid #999;
+    border-bottom: none;
+    display: block;
+}
+
+#sections-list a:hover {
+    text-decoration: none;
+    color: #666 !important;
+}
+
+#sections-list a.selected {
+    margin-bottom: -1em;
+    background: #fff;
+    color: #333;
+}
+#sections-list a.selected:hover {
+    color: #333 !important;
+}
+
+h3 {
+    float: left;
+    font-family:"Serif",sans-serif;
+    font-size:120%;
+    color: #666;
+    padding:0 0 0.3em 1em;
+}
