@@ -9,7 +9,7 @@ class Model_Page extends Model_FlyOrm {
                             'description' => array('trim' => NULL)
                        );
 
-    protected $_has_many = array('templates' => array(), 'menugroups' => array('through' => 'enrollments'));
+    protected $_has_many = array('templates' => array(), 'menugroups' => array('through' => 'enrollments'), 'sections' => array('through' => 'pagessections'));
 
     protected $_rules = array(
 
@@ -39,10 +39,6 @@ class Model_Page extends Model_FlyOrm {
                ),
                'is_main' => array(
                    'digit' => array(),
-               ),
-               'content' => array(
-                   'not_empty' => array(),
-                   'min_length' => array(10),
                ),
                'created' => array(
                    'digit' => array(),

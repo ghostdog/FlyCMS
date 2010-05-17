@@ -12,14 +12,15 @@
     echo form::submit('submit1', 'Zapisz stronę', array('style' => 'float: right'));
     echo form::fieldset('Zawartość', array('id' => 'title-and-content'));
     //echo form::cluetip('title', 'Treść podpowiedzi dla tytułu strony');
-    echo form::text_w_label('title', 'Tytuł strony', html::chars($page->title));
+
+    echo form::text_w_label('page[title]', 'Tytuł strony'.req, html::chars($page->title));
     echo form::error($errors['title']);
     echo form::help('title', 'Treść panelu pomocy dla tytułu');
 ?>
 <div class="input-wrap-label-right" style="width: 16.5em; margin-left: 1em">
 <?php
     echo form::label('is_main', 'Ustaw stronę jako główną');
-    echo form::checkbox('is_main',1, ($page->is_main) ? TRUE : FALSE, array('id' => 'is_main'));
+    echo form::checkbox('page[is_main]',1, ($page->is_main) ? TRUE : FALSE, array('id' => 'is_main'));
 ?>
 </div>
 <div id="quantity-chooser" style="float: left; clear: left;">
@@ -46,16 +47,13 @@
             $i += 1;
             $section_order = (empty($section->ord)) ? ' [<span class="ord">0</span>]' : ' [<span class="ord">'.$section->ord.'</span>]';
             $name = (empty($section->name)) ? '<span class="name">Sekcja '.$i.'</span> ': '<span class="name">'.$section->name.'</span>';
-            $error_mark = (isset($sections_errors[$i - 1])) ? ' <strong style="color:red; text-decoration: underline">Błąd!</strong>' : '';
+            $error_mark = (isset($sections_errors[$i])) ? ' <strong style="color:red; text-decoration: underline">Błąd!</strong>' : '';
             echo html::anchor('#section'.$i, $name.$section_order.$error_mark);
         ?>
     </li>
     <?php endforeach ?>
 </ul>
 <?php
-    //echo form::cluetip('content', 'Treść podpowiedzi dla zawartości strony');
-//    echo form::error($errors['content']);
-//    echo form::tarea_w_label('content', 'Edytor zawartości', html::chars($page->content));
     echo View::factory('section', array('sections' => $sections, 'i' => 0,'action' => $action, 'errors' => (isset($sections_errors)) ? $sections_errors : array()));
 
     echo form::close_fieldset();
@@ -63,21 +61,21 @@
     echo form::fieldset('Meta dane', array('id' => 'metas'));
     echo form::check_w_label('set_keywords', 'Ustaw słowa kluczowe dla tej strony');
    // echo form::cluetip('keywords', 'Treść podpowiedzi dla słów kluczowych');
-    echo form::text_w_label('keywords', 'Słowa kluczowe', html::chars($page->keywords));
+    echo form::text_w_label('page[keywords]', 'Słowa kluczowe', html::chars($page->keywords), array('class' => 'optional'));
     echo form::error($errors['keywords']);
     echo form::help('keywords', 'Treść panelu pomocy dla słów kluczowych');
     echo form::check_w_label('set_description', 'Ustaw opis dla tej strony');
    // echo form::cluetip('description', 'Treść panelu pomocy dla słów kluczowych');
-    echo form::tarea_w_label('description', 'Opis strony', html::chars($page->description));
+    echo form::tarea_w_label('page[description]', 'Opis strony', html::chars($page->description), array('class' => 'optional'));
     echo form::error($errors['keywords']);
     echo form::help('description', 'Treść panelu pomocy dla słów kluczowych');
     echo form::close_fieldset();
 
     echo form::fieldset('Wygląd', array('id' => 'appearence', 'style' => 'padding-bottom: 3.7em'));
-    echo form::select_w_label('template_id', 'Wybierz szablon', $page->template_id, $tpls);
-    echo form::select_w_label('header_on', 'Nagłówek', (is_null($page->header_on)) ? '-1' : $page->header_on , $options);
-    echo form::select_w_label('footer_on', 'Stopka', (is_null($page->footer_on)) ? '-1' : $page->footer_on, $options);
-    echo form::select_w_label('sidebar_on', 'Kolumna boczna', (is_null($page->sidebar_on)) ? '-1' : $page->sidebar_on, $sidebar_options);
+    echo form::select_w_label('page[template_id]', 'Wybierz szablon', $page->template_id, $tpls);
+    echo form::select_w_label('page[header_on]', 'Nagłówek', (is_null($page->header_on)) ? '-1' : $page->header_on , $options);
+    echo form::select_w_label('page[footer_on]', 'Stopka', (is_null($page->footer_on)) ? '-1' : $page->footer_on, $options);
+    echo form::select_w_label('page[sidebar_on]', 'Kolumna boczna', (is_null($page->sidebar_on)) ? '-1' : $page->sidebar_on, $sidebar_options);
     echo form::close_fieldset(); ?>
 <div style="float: right">
 <?php echo form::submit('submit2', 'Zapisz stronę'); ?>
@@ -178,8 +176,7 @@ $(document).ready(function() {
     $('#page-content input[type="text"]:first').focus();
     $('#set_keywords, #set_description').each(function() {
         var input = $(this),
-            targetId = input.attr('id').replace('set_', ""),
-            target = $('#'+targetId);
+            target = input.parent().next().find('.optional');
         target.data('bg', target.css('background'));
         if (target.hasValue()) {
             input.attr('checked', 'checked');

@@ -15,10 +15,6 @@ return array(
         'description' => array(
             'max_length' => 'Maksymalna długość słów kluczowych to :param1 znaków',
         ),
-        'content' => array(
-            'min_length' => 'Minimalna zawartość strony to :param1 znaków',
-            'not_empty' => 'W systemie nie może istnieć strona bez zawartości',
-        ),
         'author' => array(
             'max_length' => 'Maksymalna długość nazwy autora to :param1',
         ),

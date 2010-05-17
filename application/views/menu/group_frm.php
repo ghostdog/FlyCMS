@@ -59,7 +59,7 @@
     <caption>Wybierz strony, na których ma pojawić się grupa.</caption>
     <thead>
         <tr>
-            <th style="padding: .3em .5em">Tytył strony</th>
+            <th style="padding: .3em .5em">Tytuł strony</th>
         </tr>
     </thead>
     <tbody>

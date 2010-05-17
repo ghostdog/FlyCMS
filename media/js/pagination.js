@@ -76,7 +76,6 @@ Pagination.Defaults = {
     url : '/kohana/admin/pages/ajax_get_pages',
     limit : 8,
     callback : function(data) {
-        alert(data);
     },
     before : function() {
 

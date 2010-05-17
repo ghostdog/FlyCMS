@@ -87,6 +87,8 @@ input[type=text] {
     width: 40%;
 }
 
+thead, tfoot { background-color: #000;  background: url(img/content/thead_bg.png) repeat-x top left; }
+
 a.open {
     background: url("img/content/arrow_open.png") no-repeat scroll right top transparent;
 }
@@ -232,7 +234,7 @@ a.close {
 #groups-list tr { color: #333; }
 #groups-list .name { width: 30%; }
 #groups-list em { font-size: 110%; font-style: normal; padding: 0 0 .5em 1em; }
-#groups-listdiv { text-align: center; }
+#groups-list div { text-align: center; }
 #groups-list .mark { padding-right: .2em }
 #groups-list thead tr, #groups-list tfoot tr { color: #fff; }
 #groups-list thead, #groups-list tfoot { background: url(img/content/thead_bg.png) repeat-x top left; background-color: #000;  }

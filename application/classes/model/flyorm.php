@@ -28,8 +28,9 @@ class Model_FlyOrm extends ORM {
                 }
                 $exists = (bool) $query->count_all();
 
-		if ($exists)
+		if ($exists) {
 			$array->error($target, 'unique');
+                }
     }
     
     public function _delete($id) {

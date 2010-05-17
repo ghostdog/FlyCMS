@@ -97,7 +97,7 @@ Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
 
 Route::set('site', '(/<controller>(/<action>(/<id>)))')
 		->defaults(array(
-		'controller' => 'page',
+		'controller' => 'home',
                 'action' => 'main',
 ));
 

@@ -31,7 +31,7 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
 
      public function action_edit($id) {
         $this->page->find($id);
-         $this->load_page_form();
+        $this->load_page_form();
      }
 
      public function action_delete($id = NULL) {
@@ -78,11 +78,49 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
             $action = $this->request->action;
             if ($_POST && $action != 'delete') {
                 fire::log($_POST, 'post');
-                $is_saved = $this->page->save_if_valid($_POST);
-                $this->set_msg($is_saved);
-                if (! $is_saved) {
-                    $this->set_form_errors($this->page->get_errors());
+                $this->template->content
+                        ->bind('sections', $sections)
+                        ->bind('errors', $page_errors)
+                        ->bind('page_errors', $errors)
+                        ->bind('sections_errors', $sections_errors);
+                $sections_valid = TRUE;
+                $page_valid = TRUE;
+                $posted_sections = $_POST['sections'];
+                $sections = new ArrayObject();
+                $sections_errors = array();
+                $page_errors = array();
+                foreach($posted_sections as $key => $section) {
+                    $section_orm = ORM::factory('section');
+                    if ($action == 'edit') {
+                        $section_orm->find($section['id']);
+                        unset($section['id']);
+                    }
+                    $section_orm->values($section);
+                    if (! $section_orm->check()) {
+                        $sections_valid = FALSE;
+                        $sections_errors[$key] = $section_orm->get_errors();
+                    }
+                    $sections->append($section_orm);
                 }
+                $this->page->values($_POST['page']);
+                if ($this->page->check() && $sections_valid) {
+                    $this->page->save();
+                    $this->page->reload();
+                    foreach($sections as $section) {
+                        $section->_save($this->page);
+                    }
+                } else {
+                    $page_valid = FALSE;
+                    $page_errors = $this->page->get_errors();
+                }
+                if ($sections_valid && $page_valid) {
+                    $this->set_msg(TRUE);
+                    $this->redirect('pages', 'add');
+                } else {
+                    $this->set_msg(FALSE);
+                }
+            } elseif($action == 'edit') {
+                $this->template->sections = $this->page->sections;
             }
             if ($action == 'index') {
                 $this->set_page_title('Twoje strony');

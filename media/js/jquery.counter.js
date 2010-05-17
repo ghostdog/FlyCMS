@@ -13,10 +13,11 @@
    }
    function getResultTagByInput(input) {
                 var label = input.parent().find('label'),
-                    em = label.find('em');
-                    if (! label.find('em').size()) {
+                    em = label.find('em.counter-msg');
+                    if (! em.length) {
+                            em = $('<em/>');
+                            em.css(options.MsgStyle)
                             label.append(em);
-                            em.css(options.MsgStyle);
                     }
                 return em;
     }
