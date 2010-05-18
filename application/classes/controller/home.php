@@ -2,6 +2,13 @@
 
 class Controller_Home extends Controller_Fly {
 
+   private $settings;
+   private $page;
+
+   public function before() {
+       $this->page = ORM::factory('page');
+   }
+
    public function action_main() {
         $this->page = ORM::factory('page')->get_main_page();
     }

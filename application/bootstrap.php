@@ -73,14 +73,14 @@ Kohana::modules(array(
 
 	// 'pagination' => MODPATH.'pagination', // Paging of results
 	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
-           'image' => MODPATH.'image',
-           'firephp' => MODPATH.'firephp',
+           'image'      => MODPATH.'image',
+           'firephp'    => MODPATH.'firephp',
            'database'   => MODPATH.'database',   // Database acces
            'orm'        => MODPATH.'orm',        // Object Relationship Mapping
            'templates'  => MODPATH.'templates',
-           'unittest'   =>MODPATH.'unittest',
-           'pagination' =>MODPATH.'pagination',
-           'mptt'       =>MODPATH.'mptt',
+           'unittest'   => MODPATH.'unittest',
+           'pagination' => MODPATH.'pagination',
+           'mptt'       => MODPATH.'mptt',
 	));
 
 //Kohana::$log->attach(new FirePHP_Log_File(APPPATH.'logs'));
@@ -95,7 +95,7 @@ Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
 		'directory' => 'admin',
 ));
 
-Route::set('site', '(/<controller>(/<action>(/<id>)))')
+Route::set('home', '(/<controller>(/<action>(/<id>)))')
 		->defaults(array(
 		'controller' => 'home',
                 'action' => 'main',

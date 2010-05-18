@@ -126,6 +126,10 @@ tbody tr:hover { background: #fff }
     color: #333 !important;
 }
 
+#page-pagination-links {
+    text-align: center;
+}
+
 h3 {
     float: left;
     font-family:"Serif",sans-serif;

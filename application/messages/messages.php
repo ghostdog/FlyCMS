@@ -45,7 +45,7 @@
                'edit' => 'Próba edycji strony nie powiodła się.',
                'delete' => 'Nie udało się usunąć wybranych stron(y).',
                'main_page' => 'Nie możesz usunąć strony głównej. Musisz najpierw określić inną jako główną.',
-
+               'last_page' => ' W systemie musi pozostać co najmniej jedna strona.',
             ),
             'success' => array(
                'add' => 'Strona zapisana z powodzeniem.',
