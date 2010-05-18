@@ -80,8 +80,7 @@ class Model_Page extends Model_FlyOrm {
     }
 
     public function get_sections() {
-        $global_sections = ORM::factory('section')->get_globals();
-        $paqe_sections = $this->sections->order_by('ord', 'ASC')->find_all();
+        return $this->sections->order_by('ord', 'ASC')->find_all();
     }
 
     public function get_pages() {
@@ -180,11 +179,11 @@ class Model_Page extends Model_FlyOrm {
             $page = $this;
         }
         if ($this->count_all() > 1) {
-            if (! $page->is_main) {
+//            if (! $page->is_main) {
                 $page->delete();
-            } else {
-                $this->set_result($this->get_msg('pages.fail.main_page'), FALSE);
-            }
+//            } else {
+//                $this->set_result($this->get_msg('pages.fail.main_page'), FALSE);
+//            }
         } else {
             $this->set_result($this->get_msg('pages.fail.last_page'), FALSE);
         }
