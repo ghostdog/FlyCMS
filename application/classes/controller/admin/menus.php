@@ -32,6 +32,7 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
     
     public function action_add() {
 
+
     }
 
     public function action_edit($id) {
@@ -53,12 +54,10 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
                  ->set('groups', $this->group->get_all_groups())
                  ->set('i', $next_id)
                  ->render();
-        $this->request->headers['Content-Type'] = 'text/html; charset=utf-8';
         echo $items;
     }
 
     public function action_ajax_groups_list() {
-        $this->request->headers['Content-Type'] = 'text/html; charset=utf-8';
         if ($this->group->count_all()) {
             $list = View::factory('menu/groups_list')->set('groups', $this->group->get_all_groups());
             echo $list;
@@ -138,6 +137,8 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
                         $items = $this->group->get_items();
                     }
                 }
+        } else if ($action == 'ajax_items_refresh' OR $action == 'ajax_groups_list') {
+             $this->request->headers['Content-Type'] = 'text/html; charset=utf-8';
         }
         parent::after();
     }

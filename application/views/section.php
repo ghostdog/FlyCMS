@@ -142,12 +142,8 @@ endforeach;
             var caption = pagesList.find('caption');
             var pagination = new Pagination('#page-pagination-links', {
                     callback : function(data) {
-                            if (data.length) {
                                 caption.text('Wybierz strony, na których ma pojawić się sekcja.');
                                 populatePageTableRows(data, pagesList, order);
-                            } else {
-                                caption.text('Nie ma żadnych stron w systemie');
-                            }
                     },
                     before : function() {
                         caption.text('Pobieranie listy stron...');

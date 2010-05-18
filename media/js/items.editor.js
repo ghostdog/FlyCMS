@@ -1,5 +1,5 @@
-var ItemsEditor = function(items,  pageListUrl, groupListUrl) {
-      this.groupListUrl = groupListUrl;
+var ItemsEditor = function(items,  pageListUrl, itemsByGroupUrl) {
+      this.itemsByGroupUrl = itemsByGroupUrl;
       this.pageListUrl = pageListUrl;
       this.items = [];
       this.setItems(items);
@@ -126,7 +126,7 @@ ItemsEditor.prototype.addListeners = function(item, index) {
                     groupId = $(this).val(),
                     itemSelect = item.find('#item-parent'+index);
 
-                $.getJSON(that.groupsListUrl,'group_id='+groupId,
+                $.getJSON(that.itemsByGroupUrl,'group_id='+groupId,
                         function(data, status) {
                             if (data.length > 0) {
                                 msgOutput.text('Zakończono pobieranie odnośników.');

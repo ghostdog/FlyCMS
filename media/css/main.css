@@ -25,7 +25,7 @@ input[type="submit"] {
     background: url(img/content/info_bg.png) repeat-x top left;
     border: none; padding: .35em;
     -moz-border-radius: 6px; -webkit-border-radius: 6px;
-    color: #fff; margin-right: .3em
+    color: #fff; margin-right: .6em
 
 }
 

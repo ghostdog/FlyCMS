@@ -23,8 +23,8 @@
     echo form::checkbox('page[is_main]',1, ($page->is_main) ? TRUE : FALSE, array('id' => 'is_main'));
 ?>
 </div>
-<div id="quantity-chooser" style="float: left; clear: left;">
-    <h3 style="margin-top: .5em">Ile sekcji mam utworzyć?:</h3>
+<div id="quantity-chooser" style="float:right; width:40%; margin-top: 4em">
+    <h3 style="margin-top: .5em">Zmień liczbą sekcji na:</h3>
 <?php
     for ($i = 0; $i < 10;) {
         $values[++$i] = $i ;
@@ -104,20 +104,20 @@ function changeTabs(reqSize) {
         requestSize = reqSize;
 
         if (requestSize == itemsSize) {
-            msgOutput.text('Liczba paneli sekcji, którą wybrałeś jest równa liczbie już aktywnych. Podaj inną.')
+
         } else if (requestSize > itemsSize) {
             changeSize = requestSize - itemsSize;
             var nextId = itemsSize;
-            msgOutput.text('Trwa odświeżanie...');
+            msgOutput.text('Odświeżanie...');
             $.ajax({
                 dataType : 'html',
                 data : 'add_sz='+changeSize+'&next_id='+nextId,
                 url : '/kohana/admin/pages/ajax_sections_refresh',
                 error : function(err, xhr, status) {
-                    msgOutput.text('Wystąpił błąd podczas próby odświeżenia.');
+                    msgOutput.text('Błąd');
                 },
                 success : function(data, xhr, textStatus) {
-                    msgOutput.text('Odświeżanie zakończone powodzeniem.');
+                    msgOutput.text('');
 
                     $('#sections-wrap').append(data);
 
