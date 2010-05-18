@@ -1,4 +1,6 @@
-var ItemsEditor = function(items) {
+var ItemsEditor = function(items,  pageListUrl, groupListUrl) {
+      this.groupListUrl = groupListUrl;
+      this.pageListUrl = pageListUrl;
       this.items = [];
       this.setItems(items);
       this.pagination = undefined;
@@ -56,6 +58,7 @@ ItemsEditor.prototype.setItems = function(items) {
                                               before : function() {
                                                 caption.text('Pobieranie listy stron...');
                                               },
+                                              url : that.pageListUrl,
                                               limit : 10
                                             });
                 }
@@ -78,7 +81,8 @@ ItemsEditor.prototype.setItems = function(items) {
 };
 ItemsEditor.prototype.addListeners = function(item, index) {
             var pageListBtn = item.find('.page-list-caller'),
-                linkField = item.find('#link' + index);
+                linkField = item.find('#link' + index),
+                that = this;
             item.find('#type-chooser' + index).change(function() {
                 var currVal = $(this).val();
                 if (currVal == 0) {
@@ -122,7 +126,7 @@ ItemsEditor.prototype.addListeners = function(item, index) {
                     groupId = $(this).val(),
                     itemSelect = item.find('#item-parent'+index);
 
-                $.getJSON('/kohana/admin/menus/ajax_group_items','group_id='+groupId,
+                $.getJSON(that.groupsListUrl,'group_id='+groupId,
                         function(data, status) {
                             if (data.length > 0) {
                                 msgOutput.text('Zakończono pobieranie odnośników.');

@@ -11,18 +11,31 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
          $this->section = ORM::factory('section');
      }
 
-    public function action_index() {
-        $finder = new Finder($this->page);
-        $this->load_page_content('pages')
-                ->set('pages', $finder->find_w_limit(15, 'is_main', FALSE))
-                ->set('pagination', $finder->get_pagination_links());
+    public function action_index($limit = 15) {
+        $this->set_pages_list($limit);
     }
 
     public function action_search() {
+        $this->set_pages_list(15);
+    }
+
+    private function set_pages_list($limit) {
         $finder = new Finder($this->page);
-        $this->load_page_content('pages')
-             ->set('pages', $finder->find_by_value('title', $_GET['search']))
-             ->set('pagination', $finder->get_pagination_links());
+        $action = $this->request->action;
+        if ($action == 'index') {
+            $result = $finder->find_all($limit, 'is_main', FALSE);
+        } else if ($action == 'search') {
+            $result = $finder->find_by_value('title', $_GET['search']);
+        }
+        if ($this->is_ajax) {
+             $result = misc::get_raw_db_result($result, array('id', 'title', 'link'));
+             $result['pagination'] = $finder->get_pagination_links();
+             echo json_encode($result);
+        } else {
+             $this->load_page_content('pages')
+                 ->set('pages', $result)
+                 ->set('pagination', $finder->get_pagination_links());
+        }
     }
 
     public function action_add() {
@@ -64,14 +77,7 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
         echo $sections;
     }
 
-     public function action_ajax_get_pages() {
-         $limit = intval($_GET['limit']);
-         $finder = new Finder($this->page);
-         $pages = $finder->find_w_limit($limit);
-         $result = misc::get_raw_db_result($pages, array('id', 'title', 'link'));
-         $result['pagination'] = $finder->get_pagination_links();
-         echo json_encode($result);
-     }
+
 
      public function after() {
         if (! $this->is_ajax) {

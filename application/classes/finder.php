@@ -7,22 +7,22 @@ class Finder {
 
     public function   __construct(ORM $model) {
         $this->model = $model;
-        $this->pagination = new Pagination(array(
-            'items_per_page' => 10
-        ));
+        $this->pagination = new Pagination;
    
     }
 
-    public function find_w_limit($limit, $order_by = 'id', $asc = TRUE) {
+    public function find_all($limit = 10, $order_by = 'id', $asc = TRUE) {
         $count = $this->model->reset(FALSE)->count_all();
         $this->pagination->items_per_page = $limit;
         return $this->get_result($count, $order_by, $asc);
     }
 
-    public function find_by_value($field, $value) {
+    public function find_by_value($field, $value, $limit = NULL) {
         $value = '%'.$value.'%';
+        if (! is_null($limit)) {
+            $this->pagination->items_per_page = $limit;
+        }
         $count = $this->model->where($field, 'LIKE', $value)->reset(FALSE)->count_all();
-        //$this->model->where($field, 'LIKE', $value);
         return $this->get_result($count);
     }
 

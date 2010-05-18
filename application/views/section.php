@@ -151,7 +151,8 @@ endforeach;
                     },
                     before : function() {
                         caption.text('Pobieranie listy stron...');
-                    }
+                    },
+                    url : <?php echo url::site() ?>+'admin/pages/index/10'
                 });
        pagination.request(id);
 }

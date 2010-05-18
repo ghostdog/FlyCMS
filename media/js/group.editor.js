@@ -1,4 +1,6 @@
-var GroupEditor = function() {
+var GroupEditor = function(group_by_location_url, pages_list_url) {
+    this.group_by_location_url = group_by_location_url;
+    this.pages_list_url = pages_list_url
     this.body = $('#menu-group');
     this.groups = [];
     this.currentLocation = -1;
@@ -52,7 +54,7 @@ GroupEditor.prototype.addListeners = function() {
         if (location != -1) {
             if (that.groups[location] == undefined) {
             var caption = that.groupsTable.find('caption').text('Pobieranie informacji...');
-            $.getJSON('/kohana/admin/menus/ajax_groups_by_location','location='+location,
+            $.getJSON(that.group_by_location_url,'location='+location,
                         function(data, status) {
                             that.groups[location] = data;
                             if (data.length > 0) {
@@ -60,7 +62,7 @@ GroupEditor.prototype.addListeners = function() {
                                 caption.text('Grupy aktywne w tej lokalizacji.');
                                 that.populateGroupTableRows(location);
                             } else {
-
+                                caption.text('Nie ma żadnych dostępnych grup.');
                             }
                         });
             } else {
@@ -84,7 +86,8 @@ GroupEditor.prototype.getPages = function(resultPageId) {
                     },
                     before : function() {
                         caption.text('Pobieranie listy stron...');
-                    }
+                    },
+                    url : that.pages_list_url
                 });
             }
             this.pagination.request(id);

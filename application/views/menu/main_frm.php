@@ -116,8 +116,10 @@ if ($action == 'add') {
 <script type="text/javascript">
 
         var Editor = function() {
-                this.items = new ItemsEditor($('.item'));
-                this.group = new GroupEditor();
+                this.items = new ItemsEditor($('.item'), <?php echo url::site() ?>  + 'admin/pages/index/',
+                                                        <?php echo url::site() ?>  + 'admin/menus/ajax_group_items');
+                this.group = new GroupEditor(<?php echo url::site() ?> + 'admin/menus/ajax_groups_by_location',
+                                            <?php echo url::site() ?>  + 'admin/pages/index/');
                 this.groupRadio = $('#group');
                 this.itemRadio = $('#item');
                 this.quantityChooser = $('#quantity-chooser');
@@ -255,26 +257,30 @@ if ($action == 'add') {
                                 $.ajax({
                                             dataType : 'html',
                                             data : '',
-                                            url : '/kohana/admin/menus/ajax_groups_list',
+                                            url : <?php echo url::site() ?> + 'admin/menus/ajax_groups_list',
                                             error : function(err, xhr, status) {
                                                 msgOutput.text('Wystąpił błąd podczas próby pobrania grup.');
                                             },
                                             success : function(data, xhr, textStatus) {
-                                                body.find('tr').remove();
-                                                body.append(data).slideDown('medium');
-                                                msgOutput.text('List grup pobrana z powodzeniem.');
-                                                outputTable.slideDown('medium');
-                                                body.find('tr').each(function(index) {
-                                                    var tr = $(this);
-                                                    tr.find('td.name div').hide();
-                                                    ((index & 1) == 0) ? tr.addClass('even') : tr.addClass('odd');
-                                                    tr.hover(function() {
-                                                        tr.find('td.name > div').show();
-                                                    }, function() {
-                                                        tr.find('td.name > div').hide();
-                                                    })
-                                                    });
-                                                  }
+                                                if (data.length > 0) {
+                                                    body.find('tr').remove();
+                                                    body.append(data).slideDown('medium');
+                                                    msgOutput.text('List grup pobrana z powodzeniem.');
+                                                    outputTable.slideDown('medium');
+                                                    body.find('tr').each(function(index) {
+                                                        var tr = $(this);
+                                                        tr.find('td.name div').hide();
+                                                        ((index & 1) == 0) ? tr.addClass('even') : tr.addClass('odd');
+                                                        tr.hover(function() {
+                                                            tr.find('td.name > div').show();
+                                                        }, function() {
+                                                            tr.find('td.name > div').hide();
+                                                        })
+                                                   });
+                                                } else {
+                                                    msgOutput.text('Nie ma żadnych dostępnych grup');
+                                                }
+                                          }
                                 });
                                 invoker.unbind('click', getGroups).bind('click', hideTable).removeClass('open').addClass('close');
                         }
@@ -295,7 +301,7 @@ if ($action == 'add') {
                         $.ajax({
                             dataType : 'html',
                             data : 'add_sz='+changeSize+'&next_id='+nextId,
-                            url : '/kohana/admin/menus/ajax_items_refresh',
+                            url : <?php echo url::site() ?>  + 'admin/menus/ajax_items_refresh',
                             error : function(err, xhr, status) {
                                 msgOutput.text('Wystąpił błąd podczas próby odświeżenia.');
                             },

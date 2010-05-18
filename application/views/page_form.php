@@ -84,10 +84,7 @@
     echo form::close();
     echo html::script('media/js/jquery.c-dialog.js');
     echo html::script('media/js/tiny/jquery.tinymce.js');
-
-    
 ?>
-
 <script type="text/javascript">
 function makeTabs() {
     var tabContainers = $('fieldset[id^=section]').hide();

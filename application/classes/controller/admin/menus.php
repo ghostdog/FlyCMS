@@ -1,4 +1,4 @@
-<?php
+<?php defined('SYSPATH') or die('No direct script access allowed');
 
 class Controller_Admin_Menus extends Controller_Admin_Admin {
 
@@ -28,7 +28,6 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
             $this->set_msg(FALSE);
         }
         $this->redirect_to_prev_uri();
-        
     }
     
     public function action_add() {
@@ -60,8 +59,12 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
 
     public function action_ajax_groups_list() {
         $this->request->headers['Content-Type'] = 'text/html; charset=utf-8';
-        $list = View::factory('menu/groups_list')->set('groups', $this->group->get_all_groups());
-        echo $list;
+        if ($this->group->count_all()) {
+            $list = View::factory('menu/groups_list')->set('groups', $this->group->get_all_groups());
+            echo $list;
+        } else {
+            echo null;
+        }
     }
 
     public function action_ajax_group_items() {
@@ -138,7 +141,7 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
         }
         parent::after();
     }
-    private function is_group_to_add() {
+    private function is_group_to_add()  {
         if ($this->request->action == 'add') {
             if (isset($_POST['menu_type'])) {
                 if ($_POST['menu_type'] == 'group') return true;
