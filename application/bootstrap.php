@@ -95,9 +95,9 @@ Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
 		'directory' => 'admin',
 ));
 
-Route::set('home', '(/<controller>(/<action>(/<id>)))')
+Route::set('site', '(/<controller>(/<action>(/<id>)))')
 		->defaults(array(
-		'controller' => 'home',
+		'controller' => 'site',
                 'action' => 'main',
 ));
 
