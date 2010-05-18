@@ -50,6 +50,16 @@ class Model_MenuGroup extends Model_FlyOrm {
                     }
                 }
             }
+        } else {
+            if (Request::instance()->action == 'edit') {
+                $count = $this->pages->count_all();
+                if ($count) {
+                   $pages = $this->pages->find_all();
+                   foreach($pages as $page) {
+                       $this->remove('pages', $page);
+                   }
+                }
+            }
         }
     }
 

@@ -26,8 +26,10 @@ class Controller_Home extends Controller_Fly {
                   ->set('subtitle', $settings->subtitle)
                   ->set('keywords', $this->page->keywords)
                   ->set('description', $this->page->description)
-                  ->set('author', $this->page->author)
-                  ->bind('header_menus', $header_menus);
+                  ->set('author', $this->page->author);
+        if ($this->page->header_on) {
+            $header->bind('menus', $header_menus);
+        }
         $template = $settings->template->name;
         $this->template = View::factory('site')
                           ->set_global('page', $this->page)
@@ -35,7 +37,7 @@ class Controller_Home extends Controller_Fly {
                           ->bind('header', $header)
                           ->bind('sidebar_menus', $sidebar_menus)
                           ->bind('content_menus', $content_menus);
-        $menus = ORM::factory('menugroup')->get_globals();
+        $menus_global = ORM::factory('menugroup')->get_globals();
         $menus = $this->page->menugroups;
         $header_menus = new ArrayObject();
         $sidebar_menus = new ArrayObject();
