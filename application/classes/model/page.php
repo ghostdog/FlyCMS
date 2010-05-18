@@ -68,7 +68,7 @@ class Model_Page extends Model_FlyOrm {
     }
 
     public function save() {
-        if (empty($this->link) || isset($this->_changed['link'])) {
+        if (empty($this->link) OR isset($this->_changed['link'])) {
             $this->create_link();
         }
         if (empty($this->created)) {
