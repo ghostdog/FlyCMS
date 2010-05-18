@@ -29,6 +29,10 @@ class Model_Section extends Model_FlyOrm {
         parent::__construct('sections', $id);
     }
 
+    public function get_globals() {
+        return $this->where('is_global', '=', 1)->order_by('ord', 'ASC')->find_all();
+    }
+
     public function values($values) {
         if (isset($values['pages'])) {
             $this->section_additional_owners_id = array_keys($values['pages']);
@@ -44,23 +48,35 @@ class Model_Section extends Model_FlyOrm {
         }
         
         parent::save();
-        fire::log($this->section_additional_owners_id, 'owners');
         $this->reload();
-        $current_page->add('sections', $this);
-        if (! empty($this->section_additional_owners_id)) {
-                $page = ORM::factory('page');
-                foreach($this->section_additional_owners_id as $id) {
-                   $page->find($id);
-                   if (! $this->has('pages', $page)) {
-                       $this->add('pages', $page);
-                   }
+        if (! $this->is_global) {
+            $current_page->add('sections', $this);
+            if (! empty($this->section_additional_owners_id)) {
+                    $page = ORM::factory('page');
+                    foreach($this->section_additional_owners_id as $id) {
+                       $page->find($id);
+                       if (! $this->has('pages', $page)) {
+                           $this->add('pages', $page);
+                       }
+                    }
+            }
+            if (Request::instance()->action == 'edit') {
+                $pages = $this->pages->find_all();
+                foreach($pages as $page) {
+                    if (! in_array($page->id, $this->section_additional_owners_id)
+                            AND $page->id != $current_page->id) {
+                        $this->remove('pages', $page);
+                    }
                 }
-        }
-        if (Request::instance()->action == 'edit') {
-            foreach($this->pages as $page) {
-                if (! in_array($page->id, $this->section_additional_owners_id)
-                        AND $page->id != $current_page->id) {
-                    $this->remove('pages', $page);
+            }
+        } else {
+            if (Request::instance()->action == 'edit') {
+                $count = $this->pages->count_all();
+                if ($count) {
+                    $pages = $this->pages->find_all();
+                    foreach($pages as $page) {
+                        $this->remove('pages', $page);
+                    }
                 }
             }
         }

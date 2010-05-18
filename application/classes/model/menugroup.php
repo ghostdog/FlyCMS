@@ -2,7 +2,7 @@
 
 class Model_MenuGroup extends Model_FlyOrm {
 
-    protected $_has_many = array('menuitems' => array(), 'pages' => array('through' => 'enrollments'));
+    protected $_has_many = array('menuitems' => array(), 'pages' => array('through' => 'pagesgroups'));
 
     protected $_filters = array(
         'name' => array('trim' => NULL),

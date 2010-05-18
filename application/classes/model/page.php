@@ -9,7 +9,7 @@ class Model_Page extends Model_FlyOrm {
                             'description' => array('trim' => NULL)
                        );
 
-    protected $_has_many = array('menugroups' => array('through' => 'enrollments'), 'sections' => array('through' => 'pagessections'));
+    protected $_has_many = array('menugroups' => array('through' => 'pagesgroups'), 'sections' => array('through' => 'pagessections'));
     
     protected $_belongs_to = array('template' => array());
 
@@ -79,6 +79,11 @@ class Model_Page extends Model_FlyOrm {
         return $this;
     }
 
+    public function get_sections() {
+        $global_sections = ORM::factory('section')->get_globals();
+        $paqe_sections = $this->sections->order_by('ord', 'ASC')->find_all();
+    }
+
     public function get_pages() {
         return $this->order_by('is_main', 'DESC')->find_all();
     }
@@ -143,7 +148,7 @@ class Model_Page extends Model_FlyOrm {
         } else {
             $this->find($id);
             if ($this->_loaded) {
-                $this->delete_if_allowed($this);
+                $this->delete_if_allowed();
             } else {
                 $this->set_result($this->get_msg('pages.fail.delete'), FALSE);
             }
@@ -170,7 +175,10 @@ class Model_Page extends Model_FlyOrm {
         $this->link = strtolower($link);
     }
 
-    private function delete_if_allowed($page) {
+    private function delete_if_allowed($page = NULL) {
+        if (is_null($page)) {
+            $page = $this;
+        }
         if ($this->count_all() > 1) {
             if (! $page->is_main) {
                 $page->delete();
@@ -191,6 +199,5 @@ class Model_Page extends Model_FlyOrm {
         return Kohana::message('messages', $path);
     }
     CONST NOT_SET = -1;
-
 }
 ?>

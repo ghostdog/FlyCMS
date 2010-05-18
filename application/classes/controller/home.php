@@ -2,7 +2,6 @@
 
 class Controller_Home extends Controller_Fly {
 
-   private $settings;
    private $page;
 
    public function before() {
@@ -14,7 +13,7 @@ class Controller_Home extends Controller_Fly {
    }
 
    public function action_page($page_title) {
-       $this->page->find((int) $id);
+       $this->page->get_by_title($page_title);
        if (! $this->page->loaded()) {
            $this->page->get_main_page();
        }
@@ -22,13 +21,29 @@ class Controller_Home extends Controller_Fly {
 
    public function after() {
         $settings = ORM::factory('setting')->find();
+        $header = View::factory($template.'/header')
+                  ->set('site_title', $settings->title)
+                  ->set('subtitle', $settings->subtitle)
+                  ->set('keywords', $this->page->keywords)
+                  ->set('description', $this->page->description)
+                  ->set('author', $this->page->author)
+                  ->bind('header_menus', $header_menus);
         $template = $settings->template->name;
-        $this->template = View::factory($template.'/template')
+        $this->template = View::factory('site')
                           ->set_global('page', $this->page)
-                          ->set_global('settings', $settings)
-                          ->set('footer', View::factory($template.'/footer'))
-                          ->bind('content', $content)
-                          ->bind('header', $header);
+                          ->set('sections', $page->get_sections())
+                          ->bind('header', $header)
+                          ->bind('sidebar_menus', $sidebar_menus)
+                          ->bind('content_menus', $content_menus);
+        $menus = ORM::factory('menugroup')->get_globals();
+        $menus = $this->page->menugroups;
+        $header_menus = new ArrayObject();
+        $sidebar_menus = new ArrayObject();
+        $content_menus = new ArrayObject();
+       
+        if ($this->page->footer_on) {
+            $this->template->footer = View::factory($template);
+        }
         parent::after();
    }
 }
