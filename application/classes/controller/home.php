@@ -10,10 +10,17 @@ class Controller_Home extends Controller_Fly {
    }
 
    public function action_main() {
-        $this->page = ORM::factory('page')->get_main_page();
-    }
+        $this->page->get_main_page();
+   }
 
-    public function after() {
+   public function action_page($page_title) {
+       $this->page->find((int) $id);
+       if (! $this->page->loaded()) {
+           $this->page->get_main_page();
+       }
+   }
+
+   public function after() {
         $settings = ORM::factory('setting')->find();
         $template = $settings->template->name;
         $this->template = View::factory($template.'/template')
@@ -22,8 +29,7 @@ class Controller_Home extends Controller_Fly {
                           ->set('footer', View::factory($template.'/footer'))
                           ->bind('content', $content)
                           ->bind('header', $header);
-
         parent::after();
-    }
+   }
 }
 ?>

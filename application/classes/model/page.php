@@ -63,6 +63,22 @@ class Model_Page extends Model_FlyOrm {
         parent::__construct('pages', $id);
     }
 
+    public function get_main_page() {
+        $this->where('is_main', '=', 1)->find();
+        if (! $this->_loaded) {
+            $this->find();
+        }
+        return $this;
+    }
+
+    public function get_by_link($link) {
+        $this->where('link', '=', $link)->find();
+        if (! $this->_loaded) {
+            $this->get_main_page();
+        }
+        return $this;
+    }
+
     public function get_pages() {
         return $this->order_by('is_main', 'DESC')->find_all();
     }
@@ -106,13 +122,13 @@ class Model_Page extends Model_FlyOrm {
             $this->template = $settings->template;
         }
         parent::save();
-
     }
 
     public function values($values) {
         foreach($values as $key => $val) {
-            if ($val == self::NOT_SET)
+            if ($val == self::NOT_SET) {
                 $values[$key] = NULL;
+            }
         }
         return parent::values($values);
     }
@@ -133,17 +149,6 @@ class Model_Page extends Model_FlyOrm {
             }
         }
     }
-    private function delete_if_allowed($page) {
-        if ($this->count_all() > 1) {
-            if (! $page->is_main) {
-                $page->delete();
-            } else {
-                $this->set_result($this->get_msg('pages.fail.main_page'), FALSE);
-            }
-        } else {
-            $this->set_result($this->get_msg('pages.fail.last_page'), FALSE);
-        }
-    }
 
     public function get_result() {
         return $this->result;
@@ -156,13 +161,6 @@ class Model_Page extends Model_FlyOrm {
         else return $value;
     }
 
-    public function get_main_page() {
-        $this->where('is_main', '=', 1)->find();
-        if (! $this->loaded()) {
-            $this->find();
-        }
-        return $this;
-    }
 
     private function create_link() {
         $link = text::pl2en($this->title);
@@ -170,6 +168,18 @@ class Model_Page extends Model_FlyOrm {
         $link = preg_replace('/\s+/', '-', $link);
         $link = preg_replace('/^(-*)|(-*$)/', '', $link);
         $this->link = strtolower($link);
+    }
+
+    private function delete_if_allowed($page) {
+        if ($this->count_all() > 1) {
+            if (! $page->is_main) {
+                $page->delete();
+            } else {
+                $this->set_result($this->get_msg('pages.fail.main_page'), FALSE);
+            }
+        } else {
+            $this->set_result($this->get_msg('pages.fail.last_page'), FALSE);
+        }
     }
 
     private function set_result($msg, $is_success = TRUE) {
@@ -181,5 +191,6 @@ class Model_Page extends Model_FlyOrm {
         return Kohana::message('messages', $path);
     }
     CONST NOT_SET = -1;
+
 }
 ?>

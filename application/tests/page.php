@@ -13,8 +13,7 @@ class UnitTest_Page extends UnitTest_Case {
 	}
 
         public function test_setup() {
-
-            $this->assert_true($this->setup_has_run);
+                $this->assert_true($this->setup_has_run);
         }
 
         public function test_create_link_with_noise_at_end() {
