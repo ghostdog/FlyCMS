@@ -51,7 +51,7 @@ GroupEditor.prototype.addListeners = function() {
     this.chooser.change(function() {
         var chooser = $(this);
         var location = chooser.val();
-        if (location != -1) {
+        if (location != -1 || location != undefined) {
             if (that.groups[location] == undefined) {
             var caption = that.groupsTable.find('caption').text('Pobieranie informacji...');
             $.getJSON(that.group_by_location_url,'location='+location,

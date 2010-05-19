@@ -50,7 +50,9 @@ class Model_Section extends Model_FlyOrm {
         parent::save();
         $this->reload();
         if (! $this->is_global) {
-            $current_page->add('sections', $this);
+            if (! $this->has('pages', $current_page)) {
+                $current_page->add('sections', $this);
+            }
             if (! empty($this->section_additional_owners_id)) {
                     $page = ORM::factory('page');
                     foreach($this->section_additional_owners_id as $id) {

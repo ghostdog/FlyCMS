@@ -61,7 +61,6 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
          
          $this->set_msg_from_result($this->page->get_result());
          $this->redirect('pages');
-         
      }
 
     public function action_ajax_sections_refresh() {
@@ -126,7 +125,7 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
                     $this->set_msg(FALSE);
                 }
             } else if($action == 'edit') {
-                $this->template->sections = $this->page->sections;
+                $this->template->content->sections = $this->page->sections->find_all();
             }
             if ($action == 'index') {
                 $this->set_page_title('Twoje strony');

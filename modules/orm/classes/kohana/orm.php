@@ -449,7 +449,6 @@ class Kohana_ORM {
 				$this->_related[$key] = $value;
 			}
 		}
-
 		return $this;
 	}
 
@@ -794,6 +793,7 @@ class Kohana_ORM {
 	 */
 	public function check()
 	{
+
 		if ( ! isset($this->_validate))
 		{
 			// Initialize the validation object
@@ -809,7 +809,6 @@ class Kohana_ORM {
 		{
 			// Fields may have been modified by filters
 			$this->_object = array_merge($this->_object, $this->_validate->getArrayCopy());
-
 			return TRUE;
 		}
 		else

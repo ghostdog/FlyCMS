@@ -64,11 +64,11 @@ class Model_Page extends Model_FlyOrm {
     }
 
     public function get_main_page() {
-        $this->where('is_main', '=', 1)->find();
-        if (! $this->_loaded) {
-            $this->find();
+        $main_page = ORM::factory('page')->where('is_main', '=', 1)->find();
+        if (! $main_page->loaded()) {
+            $main_page->find();
         }
-        return $this;
+        return $main_page;
     }
 
     public function get_by_link($link) {
@@ -80,7 +80,10 @@ class Model_Page extends Model_FlyOrm {
     }
 
     public function get_sections() {
-        return $this->sections->order_by('ord', 'ASC')->find_all();
+        $page_sections = $this->sections->order_by('ord', 'ASC')->find_all();
+        $global_sections = ORM::factory('section')->get_globals();
+        $arr_obj = $this->db_result2arr_obj($global_sections());
+        return $this->db_result2arr_obj($page_sections, $arr_obj);
     }
 
     public function get_pages() {
@@ -88,6 +91,7 @@ class Model_Page extends Model_FlyOrm {
     }
 
     public function save() {
+        fire::log($this->_object, 'object');
         if (empty($this->link) OR isset($this->_changed['link'])) {
             $this->create_link();
         }
@@ -98,7 +102,7 @@ class Model_Page extends Model_FlyOrm {
         }
         if ($this->is_main) {
             $old_main = $this->get_main_page();
-            if ($old_main->_loaded) {
+            if ($old_main->loaded()) {
                 $old_main->is_main = 0;
                 $old_main->save();
             }
@@ -125,6 +129,7 @@ class Model_Page extends Model_FlyOrm {
         if (empty($this->template_id)) {
             $this->template = $settings->template;
         }
+        fire::log($this->_object, 'object  after save');
         parent::save();
     }
 
@@ -187,6 +192,16 @@ class Model_Page extends Model_FlyOrm {
         } else {
             $this->set_result($this->get_msg('pages.fail.last_page'), FALSE);
         }
+    }
+
+    private function db_result2arr_obj($results, $arr_obj = NULL) {
+        if (is_null($arr_obj)) {
+            $arr_obj = new ArrayObject();
+        }
+        foreach($results as $result) {
+            $arr_obj->append($result);
+        }
+        return $arr_obj;
     }
 
     private function set_result($msg, $is_success = TRUE) {

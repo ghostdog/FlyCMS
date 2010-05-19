@@ -122,31 +122,33 @@ ItemsEditor.prototype.addListeners = function(item, index) {
 
            
             item.find('#item-group' + index).change(function() {
-                var msgOutput = item.find('.ajax-msg').text('Pobieranie informacji...'),
+                var msgOutput = item.find('.ajax-msg'),
                     groupId = $(this).val(),
                     itemSelect = item.find('#item-parent'+index);
-
-                $.getJSON(that.itemsByGroupUrl,'group_id='+groupId,
-                        function(data, status) {
-                            if (data.length > 0) {
-                                msgOutput.text('Zakończono pobieranie odnośników.');
-                            } else {
-                                msgOutput.text('Nie ma żadnych odnośników w tej grupie.');
-                            }
-                            itemSelect.find('option').remove();
-                            itemSelect.append(
-                                                $("<option/>").attr('value', 0).text('')
-                                            );
-                            for (var key in data) {
-                                if (data.hasOwnProperty(key)) {
-                                    var item = data[key];
-                                    itemSelect.append($("<option/>")
-                                              .attr("value",item.id)
-                                              .text(item.name));
+                if (groupId != undefined) {
+                    msgOutput.text('Pobieranie informacji...');
+                    $.getJSON(that.itemsByGroupUrl,'group_id='+groupId,
+                            function(data, status) {
+                                if (data.length > 0) {
+                                    msgOutput.text('Zakończono pobieranie odnośników.');
+                                } else {
+                                    msgOutput.text('Nie ma żadnych odnośników w tej grupie.');
                                 }
-                            }
-                            
+                                itemSelect.find('option').remove();
+                                itemSelect.append(
+                                                    $("<option/>").attr('value', 0).text('')
+                                                );
+                                for (var key in data) {
+                                    if (data.hasOwnProperty(key)) {
+                                        var item = data[key];
+                                        itemSelect.append($("<option/>")
+                                                  .attr("value",item.id)
+                                                  .text(item.name));
+                                    }
+                                }
+
                         });
+                }
             })
 };
 ItemsEditor.prototype.clearAll = function() {

@@ -40,8 +40,10 @@
     <span id="refresh-msg"></span>
 </div>
 <ul id="sections-list" style="float: left; clear: left">
-    <?php $i = 0;
-        foreach($sections as $section) : ?>
+    <?php
+        $i = 0;
+        foreach($sections as $section) : 
+     ?>
     <li>
         <?php
             $i += 1;
@@ -168,9 +170,8 @@ $(document).ready(function() {
             requestSize = $('#sections-quantity-chooser').val();
             changeTabs(requestSize);
     });
-    $('#title').counter({maxLength : 100});
     $('.delete').c_dialog();
-    $('#page-content input[type="text"]:first').focus();
+    $('#page-content input[type="text"]:first').focus().counter({maxLength: 100});
     $('#set_keywords, #set_description').each(function() {
         var input = $(this),
             target = input.parent().next().find('.optional');

@@ -75,7 +75,7 @@
                 }
 
                 protected function redirect_to_prev_uri() {
-                    $this->request->redirect($this->session->get('prev_uri'));
+                    $this->request->redirect('/'.$this->session->get('prev_uri'));
                 }
 	}
 ?>

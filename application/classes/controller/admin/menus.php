@@ -30,10 +30,7 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
         $this->redirect_to_prev_uri();
     }
     
-    public function action_add() {
-
-
-    }
+    public function action_add() {}
 
     public function action_edit($id) {
         $this->group->find($id);
