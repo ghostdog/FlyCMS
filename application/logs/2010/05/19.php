@@ -1,0 +1,4 @@
+<?php defined('SYSPATH') or die('No direct script access.'); ?>
+
+2010-05-19 17:31:20 --- ERROR: Database_Exception [ 1062 ]: Duplicate entry 'Sekcja 1' for key 'name' [ INSERT INTO `sections` (`name`, `ord`, `content`, `created`) VALUES ('Sekcja 1', '0', 'Zawartość sekcji 1', 1274283080) ] ~ MODPATH/database\classes\kohana\database\mysql.php [ 173 ]
+2010-05-19 17:40:04 --- ERROR: Database_Exception [ 1062 ]: Duplicate entry '16' for key 'PRIMARY' [ INSERT INTO `sections` (`name`, `ord`, `content`, `id`, `created`) VALUES ('Jakaś tam sekcja 1', '0', 'To jest treść jakieś tam sekcji jeden', '16', 1274283604) ] ~ MODPATH/database\classes\kohana\database\mysql.php [ 173 ]
