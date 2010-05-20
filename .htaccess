@@ -7,7 +7,7 @@ RewriteEngine On
 RewriteBase /kohana/
 
 # Protect application and system files from being viewed
-RewriteCond $1 ^(application|system|modules)
+RewriteCond $1 ^(application|system)
 
 # Rewrite to index.php/access_denied/URL
 RewriteRule ^(.*)$ / [PT,L]

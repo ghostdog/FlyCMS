@@ -2,7 +2,7 @@
 
 class Model_Setting extends Model_FlyOrm {
 
-    protected $_belongs_to = array('template' => array());
+    protected $_belongs_to = array('theme' => array());
 
     protected $_filters = array
     (
@@ -21,23 +21,6 @@ class Model_Setting extends Model_FlyOrm {
                 'subtitle'			=> array
 		(
 			'max_length'		=> array(50),
-		),
-		'template_id'	=> array
-		(
-			'not_empty'             => NULL,
-                        'digit'  => NULL,
-		),
-		'header_on'                     => array
-		(
-			'range'	=> array(0, 1),
-		),
-		'footer_on'                     => array
-		(
-			'range'	=> array(0, 1),
-		),
-		'sidebar_on'                     => array
-		(
-			'range'	=> array(0, 1),
 		),
 		'keywords'                     => array
 		(

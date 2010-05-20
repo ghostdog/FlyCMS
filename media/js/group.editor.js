@@ -2,7 +2,6 @@ var GroupEditor = function(group_by_location_url, pages_list_url) {
     this.group_by_location_url = group_by_location_url;
     this.pages_list_url = pages_list_url
     this.body = $('#menu-group');
-    this.groups = [];
     this.currentLocation = -1;
     this.chooser = $('#group-location');
     this.activePages = $('#group-pages');
@@ -52,24 +51,29 @@ GroupEditor.prototype.addListeners = function() {
         var chooser = $(this);
         var location = chooser.val();
         if (location != -1 || location != undefined) {
-            if (that.groups[location] == undefined) {
             var caption = that.groupsTable.find('caption').text('Pobieranie informacji...');
             $.getJSON(that.group_by_location_url,'location='+location,
                         function(data, status) {
-                            that.groups[location] = data;
                             if (data.length > 0) {
-                                that.groupsTable.show();
                                 caption.text('Grupy aktywne w tej lokalizacji.');
-                                that.populateGroupTableRows(location);
+                                setVisible(true);
+                                that.populateGroupTableRows(data, location);
                             } else {
                                 caption.text('Nie ma żadnych dostępnych grup.');
+                                setVisible(false);
                             }
                         });
             } else {
-                that.populateGroupTableRows(location);
-            }
-         } else {
-             that.groupsTable.slideUp('fast');
+                that.populateGroupTableRows(data, location);
+                setVisible(true);
+         }
+
+         function setVisible(status) {
+             if (! status) {
+                 that.groupsTable.slideUp('fast');
+             } else {
+                 that.groupsTable.slideDown('fast');
+             }
          }
     });
 };
@@ -171,10 +175,9 @@ GroupEditor.prototype.populatePageTableRows = function(pages) {
             tr.css({'background-color' : '#f1f1f1'});
         }
 };
-GroupEditor.prototype.populateGroupTableRows = function(location) {
+GroupEditor.prototype.populateGroupTableRows = function(groups, location) {
     if (location !== this.currentLocation) {
-        var groups = this.groups[location],
-            tbody = this.groupsTable.find('tbody');
+        var tbody = this.groupsTable.find('tbody');
 
         tbody.find('tr').remove();
         for(i = 0; i < groups.length; i++) {

@@ -1,16 +1,14 @@
 <?php defined('SYSPATH') or die('No direct script access');
 
-class Model_FlyOrm extends ORM {
+abstract class Model_FlyOrm extends ORM {
 
     protected $errors_filename = '';
+
+    private $result = array();
 
     public function  __construct($errors_filename, $id = null) {
         $this->errors_filename = $errors_filename;
         parent::__construct($id);
-    }
-
-    public function get_errors() {
-        return $this->_validate->errors($this->errors_filename);
     }
 
     public function save_if_valid(Array $values) {
@@ -47,16 +45,30 @@ class Model_FlyOrm extends ORM {
         return false;
     }
 
-    public function find_all_except_this() {
-        return ORM::factory($this->_object_name)->where('id', '!=', $this->id)->find_all();
+    public function get_result() {
+        return $this->result;
+    }
+
+    public function get_errors() {
+        return $this->_validate->errors($this->errors_filename);
+    }
+
+    public function get_error_msg($path) {
+        return Kohana::message($this->errors_filename, $path);
     }
     
     protected function get_config($key) {
-        $model_name = preg_replace('/Model_/', '', get_class($this));
-        return Kohana::config(Inflector::plural($model_name).'.'.$key);
+        return Kohana::config($this->_table_name.'.'.$key);
     }
 
-    protected function execute($sql) {
+    protected function set_result($msg_name, $is_success = TRUE) {
+        $msg_group = $this->_table_name;
+        $msg_type = ($is_success) ? 'success' : 'fail';
+        $this->result['msg'] = Kohana::message('messages', $msg_group.'.'.$msg_type.'.'.$msg_name);
+        $this->result['is_success'] = $is_success;
+    }
+
+    private function execute($sql) {
         try {
             $result = $sql->execute();
         } catch (Database_Exception $ex) {

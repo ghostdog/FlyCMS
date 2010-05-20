@@ -10,7 +10,7 @@ class Controller_Admin_Settings extends Controller_Admin_Admin {
         $this->set_page_title('Ustawienia globalne');
         $this->load_page_content('settings')
              ->bind('settings', $this->settings)
-             ->set('templates', ORM::factory('template')->get_templates());
+             ->set('themes', ORM::factory('theme')->get_themes());
     }
 
     public function action_index() {}

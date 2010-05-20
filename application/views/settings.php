@@ -26,16 +26,16 @@
     echo form::close_fieldset();
     echo '</div>';
     echo '<div id="column2">';
-    echo form::fieldset('Wygląd', array('id' => 'site-template'));
-    foreach($templates as $tpl) {
-        $tpls[$tpl->id] = $tpl->name;
+    echo form::fieldset('Wygląd', array('id' => 'site-theme'));
+    foreach($themes as $theme) {
+        $themes_options[$theme->id] = $theme->name;
     }
     echo '<div class="input-wrap">';
-    echo form::label('template_id', 'Wybierz szablon'.req);
-    echo form::select('template_id', $tpls, $settings->template_id, array('id' => 'template_id'));
+    echo form::label('theme_id', 'Wybierz szablon'.req);
+    echo form::select('theme_id', $themes_options, $settings->theme_id, array('id' => 'theme_id'));
     echo '</div>';
-    echo html::anchor(set_controller('templates', 'add'), 'Dodaj nowy', array('id' => 'add-anchor'));
-    echo html::anchor(set_controller('templates', 'preview'), 'Podglądnij', array('id' => 'preview-anchor'));
+    echo html::anchor(set_controller('themes', 'add'), 'Dodaj nowy', array('id' => 'add-anchor'));
+    echo html::anchor(set_controller('themes', 'preview'), 'Podglądnij', array('id' => 'preview-anchor'));
     echo form::check_w_label('header_on', 'Nagłówek', $settings->header_on);
     echo form::check_w_label('footer_on', 'Stopka', $settings->footer_on);
     echo '<div class="input-wrap">';

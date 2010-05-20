@@ -11,7 +11,7 @@ class Model_Page extends Model_FlyOrm {
 
     protected $_has_many = array('menugroups' => array('through' => 'pagesgroups'), 'sections' => array('through' => 'pagessections'));
     
-    protected $_belongs_to = array('template' => array());
+    protected $_belongs_to = array('theme' => array());
 
     protected $_rules = array(
 
@@ -28,24 +28,6 @@ class Model_Page extends Model_FlyOrm {
                    'max_length' => array(255),
                ),
                'template_id' => array(
-                   'digit' => array(),
-               ),
-               'header_on' => array(
-                   'digit' => array(),
-               ),
-               'footer_on' => array(
-                   'digit' => array(),
-               ),
-               'sidebar_on' => array(
-                   'digit' => array(),
-               ),
-               'is_main' => array(
-                   'digit' => array(),
-               ),
-               'created' => array(
-                   'digit' => array(),
-               ),
-               'last_modified' => array(
                    'digit' => array(),
                ),
                'author' => array(
@@ -82,8 +64,32 @@ class Model_Page extends Model_FlyOrm {
     public function get_sections() {
         $page_sections = $this->sections->order_by('ord', 'ASC')->find_all();
         $global_sections = ORM::factory('section')->get_globals();
-        $arr_obj = $this->db_result2arr_obj($global_sections());
-        return $this->db_result2arr_obj($page_sections, $arr_obj);
+        $arr_obj = misc::result_obj2arr_obj($global_sections);
+        return misc::result_obj2arr_obj($page_sections, $arr_obj);
+    }
+
+    public function get_menus() {
+        $page_menus = $this->menugroups->order_by('ord', 'ASC')->find_all();
+        $global_menus = ORM::factory('menugroup')->get_globals();
+        $menus_all = misc::result_obj2arr_obj($global_menus);
+        $menus_all = misc::result_obj2arr_obj($page_menus, $menus_all);
+        $header_menus = new ArrayObject();
+        $sidebar_menus = new ArrayObject();
+        $content_menus = new ArrayObject();
+        foreach($menus_all as $menu) {
+            $location = (int) $menu->location;
+            if ($location == 0) {
+                $header_menus->append($menu);
+            } else if ($location == 1) {
+                $sidebar_menus->append($menu);
+            } else if ($location == 2) {
+                $content_menus->append($menu);
+            }
+        }
+        $menus['header'] = $header_menus;
+        $menus['sidebar'] = $sidebar_menus;
+        $menus['content'] = $content_menus;
+        return $menus;
     }
 
     public function get_pages() {
@@ -91,7 +97,6 @@ class Model_Page extends Model_FlyOrm {
     }
 
     public function save() {
-        fire::log($this->_object, 'object');
         if (empty($this->link) OR isset($this->_changed['link'])) {
             $this->create_link();
         }
@@ -126,10 +131,9 @@ class Model_Page extends Model_FlyOrm {
         if (empty($this->author)) {
                 $this->author = $settings->author;
         }
-        if (empty($this->template_id)) {
-            $this->template = $settings->template;
+        if (empty($this->theme_id)) {
+            $this->theme = $settings->theme;
         }
-        fire::log($this->_object, 'object  after save');
         parent::save();
     }
 
@@ -143,7 +147,7 @@ class Model_Page extends Model_FlyOrm {
     }
 
     public function _delete($id) {
-        $this->set_result($this->get_msg('pages.success.delete'));
+        $this->set_result('delete', TRUE);
         if (is_array($id)) {
                 $pages = ORM::factory('page')->where('id', 'IN', $id)->find_all();
                 foreach ($pages as $page) {
@@ -154,7 +158,7 @@ class Model_Page extends Model_FlyOrm {
             if ($this->_loaded) {
                 $this->delete_if_allowed();
             } else {
-                $this->set_result($this->get_msg('pages.fail.delete'), FALSE);
+                $this->set_result('delete', FALSE);
             }
         }
     }
@@ -184,33 +188,18 @@ class Model_Page extends Model_FlyOrm {
             $page = $this;
         }
         if ($this->count_all() > 1) {
-//            if (! $page->is_main) {
+            if (! $page->is_main) {
+                $sections = $page->sections->find_all();
+                foreach ($sections as $section) {
+                    $section->delete();
+                }
                 $page->delete();
-//            } else {
-//                $this->set_result($this->get_msg('pages.fail.main_page'), FALSE);
-//            }
+            } else {
+                $this->set_result('main_page', FALSE);
+            }
         } else {
-            $this->set_result($this->get_msg('pages.fail.last_page'), FALSE);
+            $this->set_result('last_page', FALSE);
         }
-    }
-
-    private function db_result2arr_obj($results, $arr_obj = NULL) {
-        if (is_null($arr_obj)) {
-            $arr_obj = new ArrayObject();
-        }
-        foreach($results as $result) {
-            $arr_obj->append($result);
-        }
-        return $arr_obj;
-    }
-
-    private function set_result($msg, $is_success = TRUE) {
-        $this->result['msg'] = $msg;
-        $this->result['is_success'] = $is_success;
-    }
-
-    private function get_msg($path) {
-        return Kohana::message('messages', $path);
     }
     CONST NOT_SET = -1;
 }

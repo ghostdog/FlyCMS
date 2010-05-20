@@ -113,9 +113,8 @@ ItemsEditor.prototype.addListeners = function(item, index) {
                         target.text(text);
                     }
               });
-              var orderSelect = $('#item-order' + index),
-                  orderTarget = $('a[href="#item' + index + '"] > .order');
-
+              var orderSelect = $('#item-ord' + index),
+                  orderTarget = $('a[href="#item' + index + '"] > .ord');
                   orderSelect.change(function() {
                       orderTarget.text(orderSelect.val());
               });

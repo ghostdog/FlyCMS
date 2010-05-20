@@ -10,5 +10,16 @@ class Text extends Kohana_Text {
         return str_ireplace($aPL, $aEN, $string);
                  
     }
+
+    public static function first_words($string, $num = 1, $tail='&nbsp;') {
+            /** words into an array **/
+            $words = str_word_count($string, 2);
+
+            /*** get the first $num words ***/
+            $firstwords = array_slice( $words, 0, $num);
+
+            /** return words in a string **/
+            return  implode(' ', $firstwords).$tail;
+    }
 }
 ?>

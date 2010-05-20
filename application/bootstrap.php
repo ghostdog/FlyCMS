@@ -90,21 +90,31 @@ Kohana::modules(array(
  * defaults for the URI.
  */
 #
+Route::set('menus', 'admin/menus(/<action>(/<id>))')
+		->defaults(array(
+		'directory' => 'admin',
+                'controller' => 'menus',
+                'action' => 'add',
+));
+
+
+
 Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
 		->defaults(array(
 		'directory' => 'admin',
 ));
 
-Route::set('site', '(/<controller>(/<action>(/<id>)))')
-		->defaults(array(
+Route::set('page', 'page/<id>')
+	->defaults(array(
 		'controller' => 'site',
-                'action' => 'main',
-));
+		'action'     => 'page',
+	));
+
 
 Route::set('default', '(<controller>(/<action>(/<id>)))')
 	->defaults(array(
-		'controller' => 'welcome',
-		'action'     => 'index',
+		'controller' => 'site',
+		'action'     => 'main',
 	));
 
 

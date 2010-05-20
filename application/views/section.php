@@ -80,30 +80,21 @@ foreach($sections as $section) :
         <?php echo html::anchor('#pages-list'.$i,'Wyświetl listę aktywnych stron', array('class' => 'open page-list-caller', 'rel' => $i, 'style' => 'float: right; clear: none')) ?>
         <ul class="active-pages-list">
             <?php
-                if (isset($_POST['sections'][$i]['pages'])) {
-                    $post_pages = $_POST['sections'][$i]['pages'];
-                    foreach($post_pages as $page) : ?>
+                $section_pages = $section->get_section_pages();
+                if ($section_pages) {
+                    foreach($section_pages as $page) : ?>
                          <li>
                             <?php
-                                echo form::label('page'.$page['id'], $page['title']);
-                                echo form::checkbox('sections['.$i.'][pages]['.$page['id'].'][id]', $page['id'], TRUE, array('id' => 'page'.$page['id']));
-                                echo form::hidden('sections['.$i.'][pages]['.$page['id'].'][title]', $page['title']);
+                                $id = $page->id;
+                                $title = $page->title;
+                                echo form::label('page'.$id, $title);
+                                echo form::checkbox('sections['.$i.'][pages]['.$id.'][id]', $id, TRUE, array('id' => 'page'.$id));
+                               // echo form::hidden('sections['.$i.'][pages]['.$id.'][title]', $id);
                              ?>
                         </li>
-             <?php endforeach; ?>
-             <?php
-                } else if (isset($pages)) {
-                    foreach ($pages as $page) : ?>
-                        <li>
-                            <?php
-                                echo form::label('page'.$page->id, $page->title);
-                                echo form::checkbox('sections['.$i.'][pages]['.$page->id.'][id]', $page->id, TRUE, array('id' => 'page'.$page->id));
-                                echo form::hidden('sections['.$i.'][pages]['.$page->id.'][title]', $page->title);
-                             ?>
-                        </li>
-            <?php endforeach;
-               }
-            ?>
+             <?php endforeach; 
+                  }
+             ?>
         </ul>
     <div id="pages-list<?php echo $i ?>" style="width: 100%;">
     <table cellspacing="0" id="pages">
@@ -140,10 +131,12 @@ endforeach;
         id = resultPageId || 1,
         pagesList = $(target).parent().find('div[id^=pages-list]');
             var caption = pagesList.find('caption');
+
             var pagination = new Pagination('#page-pagination-links', {
                     callback : function(data) {
                                 caption.text('Wybierz strony, na których ma pojawić się sekcja.');
                                 populatePageTableRows(data, pagesList, order);
+                                console.log(data, 'data');
                     },
                     before : function() {
                         caption.text('Pobieranie listy stron...');
@@ -206,20 +199,20 @@ function populatePageTableRows(pages, _pagesList, order) {
                                            )
                                        .append(
                                             $('<input/>')
+                                            .click(function() {
+                                                var input = $(this);
+                                                if (input.attr('checked')) {
+                                                    input.removeAttr('checked');
+                                                } else {
+                                                    input.attr('checked', true);
+                                                }
+                                            })
                                             .attr({
                                                     'type' : 'checkbox',
                                                     'name' : 'sections['+order+'][pages][' + id +'][id]                                    ',
                                                     'value' : id,
                                                     'checked' : true,
                                                     'id' : 'page'+id
-                                            })
-                                        )
-                                       .append(
-                                            $('<input/>')
-                                            .attr({
-                                                'type' : 'hidden',
-                                                'name' : 'sections['+order+'][pages][' + id +'][title]',
-                                                'value' : title
                                             })
                                         )
                             )

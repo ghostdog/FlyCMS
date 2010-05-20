@@ -71,12 +71,12 @@ class Form extends Kohana_Form {
        } else return $default;
    }
 
-   public static function radioChecked($field_name, $value, $default = FALSE) {
+   public static function radio_checked($field_name, $value) {
        if (isset($_POST[$field_name])) {
             if ($_POST[$field_name] ==  $value)
                 return TRUE;
        }
-       return $default;
+       return FALSE;
    }
 
 

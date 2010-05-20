@@ -8,7 +8,6 @@ class Finder {
     public function   __construct(ORM $model) {
         $this->model = $model;
         $this->pagination = new Pagination;
-   
     }
 
     public function find_all($limit = 10, $order_by = 'id', $asc = TRUE) {

@@ -2,61 +2,52 @@
 
 class Controller_Admin_Menus extends Controller_Admin_Admin {
 
-    private $group;
-    private $items;
-    
-    public function before() {
-        parent::before();
-        $this->group = ORM::factory('menugroup');
-        $this->items = ORM::factory('menuitem');
-    }
-
-    public function action_index() {
-        $this->redirect('menus', 'add');
-    }
-
+ 
     public function action_delete_group() {
-        $this->redirect('menus', 'add');
+        //TODO
     }
 
     public function action_delete_item($id) {
-        $this->items->find($id);
-        if ($this->items->loaded()) {
-            $this->items->delete();
+        $item = $this->model_instance('menuitem', $id);
+        if ($item->loaded()) {
+            $group_id = $item->menugroup->find()->id;
+            $item->delete();
             $this->set_msg(TRUE);
+            $this->redirect('menus', 'edit', $group_id);
         } else {
             $this->set_msg(FALSE);
+            $this->redirect('menus');
         }
-        $this->redirect_to_prev_uri();
     }
     
     public function action_add() {}
 
     public function action_edit($id) {
-        $this->group->find($id);
+        $this->model_instance('menugroup')->find($id);
     }
 
     public function action_ajax_groups_by_location() {
         $location = intval($_GET['location']);
-        echo json_encode(misc::get_raw_db_result($this->group->get_by_location($location),
+        echo json_encode(misc::result_obj2arr($this->model_instance('menugroup')->get_by_location($location),
                                          array('name', 'ord','is_global')));
     }
 
     public function action_ajax_items_refresh() {
         $addSz = intval($_GET['add_sz']);
         $next_id = intval($_GET['next_id']);
-        $items = $this->items->get_empty_items($addSz);
+        $items = $this->model_instance('menuitem')->get_empty_items($addSz);
         $items = View::factory('menu/item_frm')
                  ->set('items', $items)
-                 ->set('groups', $this->group->get_all_groups())
+                 ->set('groups', $this->model_instance('menugroup')->get_all_groups())
                  ->set('i', $next_id)
                  ->render();
         echo $items;
     }
 
     public function action_ajax_groups_list() {
-        if ($this->group->count_all()) {
-            $list = View::factory('menu/groups_list')->set('groups', $this->group->get_all_groups());
+        $group = $this->model_instance('menugroup');
+        if ($group->count_all()) {
+            $list = View::factory('menu/groups_list')->set('groups', $group->get_all_groups());
             echo $list;
         } else {
             echo null;
@@ -64,48 +55,51 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
     }
 
     public function action_ajax_group_items() {
-        $id = intval($_GET['group_id']);
-        echo json_encode(misc::get_raw_db_result($this->group->find($id)->get_items($id), array('id', 'name')));
+        $id = (int)$_GET['group_id'];
+        echo json_encode(misc::result_obj2arr($this->model_instance('menugroup',$id)->get_items($id), array('id', 'name')));
     }
 
     public function after() {
         $action = $this->request->action;
         if ($action == 'add' OR $action == 'edit') {
+            $group = $this->model_instance('menugroup');
             $group_editor = View::factory('menu/group_frm')
-                     ->bind('group', $this->group);
+                     ->bind('group', $group);
             $this->template->content = $main_frm = View::factory('menu/main_frm')
                  ->bind('group', $group_editor)
                  ->bind('items', $items)
-                 ->set('groups', $this->group->get_all_groups());
+                 ->set('groups', $group->get_all_groups());
                if ($_POST) {
                     $is_group_valid = TRUE;
                     $are_items_valid = TRUE;
-                    $is_group_to_add = $this->is_group_to_add();
+                    $is_group_to_add = $this->is_group_to_add($action);
 
                     if ($is_group_to_add) {
-                        $group = $this->group;
                         $group_vals = $_POST['group'];
                         if (! empty($group_vals['id'])) {
                             $group = $group->find($group_vals['id']);
                             unset($group_vals['id']);
                         }
                         $group->values($group_vals);
-                        if (! ($is_group_valid =$group->check())) {
-                            $group_editor->set('errors', $this->group->get_errors());
+                        if (! ($is_group_valid = $group->check())) {
+                            $group_editor->set('errors', $group->get_errors());
                         }
                     }
                     
                     $items = new ArrayObject();
-                    foreach ($_POST['items'] as $item) {
-                        $temp_item = ORM::factory('menuitem');
+                    foreach ($_POST['items'] as $key => $item) {
+                        $temp_item = $this->model_factory('menuitem');
                         if (! empty($item['id'])) {
                            $temp_item->find($item['id']);
                            unset($item['id']);
                         }
                         $items->append($temp_item->values($item));
-                    }
-
-                    $errors = $this->check_items($items);
+                        $errors = array();
+                        if (! $temp_item->check()) {
+                            $errors[$key] = $temp_item->get_errors();
+                        }
+                        $sections->append($temp_item);
+                     }
                     if (! empty($errors)) {
                         $main_frm->set('items_errors', $errors);
                         $are_items_valid = FALSE;
@@ -120,7 +114,7 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
                         }
                         foreach ($items as $item) {
                             if ($is_group_to_add) {
-                                $item->menugroup_id = $this->group->id;
+                                $item->menugroup_id = $group->id;
                             }
                             $item->save();
                         }
@@ -129,9 +123,9 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
                     }
                 } else {
                     if ($action == 'add') {
-                        $items = $this->items->get_empty_items(3);
+                        $items = $this->model_instance('menuitem')->get_empty_items(3);
                     } else {
-                        $items = $this->group->get_items();
+                        $items = $group->get_items();
                     }
                 }
         } else if ($action == 'ajax_items_refresh' OR $action == 'ajax_groups_list') {
@@ -139,25 +133,15 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
         }
         parent::after();
     }
-    private function is_group_to_add()  {
-        if ($this->request->action == 'add') {
+    private function is_group_to_add($action)  {
+        if ($action == 'add') {
             if (isset($_POST['menu_type'])) {
                 if ($_POST['menu_type'] == 'group') return true;
             }
-        } else {
+        } else if ($action == 'edit') {
             return true;
         }
         return false;
-    }
-
-    private function check_items(ArrayObject $items) {
-        $errors = array();
-        foreach ($items as $key => $item) {
-            if (! $item->check()) {
-                $errors[$key] = $item->get_errors();
-            }
-        }
-        return $errors;
     }
 }
 ?>

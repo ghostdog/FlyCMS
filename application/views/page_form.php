@@ -1,9 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access'); 
     $options = array('-1' => 'Użyj ustawień globalnych', '0' => 'Wyłącz', '1' => 'Włącz');
     $sidebar_options = array('-1' => 'Użyj ustawień globalnych', '1' => 'Lewa', '2' => 'Prawa', '0' => 'Brak');
-    $tpls['-1'] = 'Użyj szablonu globalnego';
-    foreach ($templates as $tpl) {
-        $tpls[$tpl->id] = $tpl->name;
+    $themes_options['-1'] = 'Użyj szablonu globalnego';
+    foreach ($themes as $theme) {
+        $themes_options[$theme->id] = $theme->name;
     }
     
     echo form::open('admin/pages/'.$action);
@@ -47,7 +47,7 @@
     <li>
         <?php
             $i += 1;
-            $section_order = (empty($section->ord)) ? ' [<span class="ord">0</span>]' : ' [<span class="ord">'.$section->ord.'</span>]';
+            $section_order = (empty($section->ord)) ? ' [<span class="ord" title="Kolejność">0</span>]' : ' [<span class="ord" title="Kolejność">'.$section->ord.'</span>]';
             $name = (empty($section->name)) ? '<span class="name">Sekcja '.$i.'</span> ': '<span class="name">'.$section->name.'</span>';
             $error_mark = (isset($sections_errors[$i])) ? ' <strong style="color:red; text-decoration: underline">Błąd!</strong>' : '';
             echo html::anchor('#section'.$i, $name.$section_order.$error_mark);
@@ -74,7 +74,7 @@
     echo form::close_fieldset();
 
     echo form::fieldset('Wygląd', array('id' => 'appearence', 'style' => 'padding-bottom: 3.7em'));
-    echo form::select_w_label('page[template_id]', 'Wybierz szablon', $page->template_id, $tpls);
+    echo form::select_w_label('page[theme_id]', 'Wybierz szablon', $page->theme_id, $themes_options);
     echo form::select_w_label('page[header_on]', 'Nagłówek', (is_null($page->header_on)) ? '-1' : $page->header_on , $options);
     echo form::select_w_label('page[footer_on]', 'Stopka', (is_null($page->footer_on)) ? '-1' : $page->footer_on, $options);
     echo form::select_w_label('page[sidebar_on]', 'Kolumna boczna', (is_null($page->sidebar_on)) ? '-1' : $page->sidebar_on, $sidebar_options);
@@ -204,13 +204,13 @@ $(document).ready(function() {
 //			// General options
 //	mode : "textareas",
 //	theme : "advanced",
-//	plugins : "safari,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+//	plugins : "safari,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,theme",
 //
 //	// Theme options
 //	theme_advanced_buttons1 : "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
 //	theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
 //	theme_advanced_buttons3 : "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen",
-//	theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,|,insertfile,insertimage",
+//	theme_advanced_buttons4 : "insertlayer,moveforward,movebackward,absolute,|,styleprops,spellchecker,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,theme,blockquote,pagebreak,|,insertfile,insertimage",
 //	theme_advanced_toolbar_location : "top",
 //	theme_advanced_toolbar_align : "left",
 //	theme_advanced_statusbar_location : "bottom",
@@ -219,14 +219,14 @@ $(document).ready(function() {
 //			// Example content CSS (should be your site CSS)
 //			content_css : "css/content.css",
 //
-//			// Drop lists for link/image/media/template dialogs
-//			template_external_list_url : "lists/template_list.js",
+//			// Drop lists for link/image/media/theme dialogs
+//			theme_external_list_url : "lists/theme_list.js",
 //			external_link_list_url : "lists/link_list.js",
 //			external_image_list_url : "lists/image_list.js",
 //			media_external_list_url : "lists/media_list.js",
 //
-//			// Replace values for the template plugin
-//			template_replace_values : {
+//			// Replace values for the theme plugin
+//			theme_replace_values : {
 //				username : "Some User",
 //				staffid : "991234"
 //			}

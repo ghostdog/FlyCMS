@@ -10,7 +10,7 @@ return array(
             'validate::standard_text' => 'Nazwa sekcji może składać się z liter, cyfr i białych znaków',
         ),
         'content' => array(
-            'not_empty' => 'Zawartość strony nie może być pusta',
+            'not_empty' => 'Zawartość sekcji nie może być pusta',
         ),
 )
 

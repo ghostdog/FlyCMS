@@ -12,9 +12,9 @@ if ($action == 'add') {
     <div style="margin: .5em 0 .5em 0">
     <?php
         echo form::label('item', 'Pojedyncze odnośniki menu');
-        echo form::radio('menu_type', 'item', form::radioChecked('menu_type', 'item'), array('id' => 'item'));
+        echo form::radio('menu_type', 'item', form::radio_checked('menu_type', 'item'), array('id' => 'item'));
         echo form::label('group', 'Nową grupę odnośników', array('style' => 'margin-left: 1em'));
-        echo form::radio('menu_type', 'group', form::radioChecked('menu_type', 'group'), array('id' => 'group'));
+        echo form::radio('menu_type', 'group', form::radio_checked('menu_type', 'group'), array('id' => 'group'));
     ?>
         <a href="#" id="groups-list-inv" class="open" style="padding: 0 1.5em .5em 0">Wyświetl dostępne grupy</a>
     </div>
@@ -60,7 +60,7 @@ if ($action == 'add') {
     <li>
         <?php
             $i += 1;
-            $item_order = (empty($item->order)) ? ' [<span class="order">0</span>]' : ' [<span class="order">'.$item->order.'</span>]';
+            $item_order = (empty($item->ord)) ? ' [<span class="ord" title="Kolejność">0</span>]' : ' [<span class="ord" title="Kolejność">'.$item->order.'</span>]';
             $name = (empty($item->name)) ? '<span class="name">Odnośnik '.$i.'</span> ': '<span class="name">'.$item->name.'</span>';
             $error_mark = (isset($items_errors[$i - 1])) ? ' <strong style="color:red; text-decoration: underline">Błąd!</strong>' : '';
             echo html::anchor('#item'.$i, $name.$item_order.$error_mark);
@@ -305,7 +305,6 @@ if ($action == 'add') {
                             success : function(data, xhr, textStatus) {
                                msgOutput.text('');
                                $('#items-wrap').append(data);
-                                  console.log('dasdsada');
                                 for (i = 0; i < changeSize; i++) {
                                     nextId += 1;
                                     $('#items-list').append($('<li/>')
@@ -315,7 +314,7 @@ if ($action == 'add') {
                                                       .append(
                                                         $('<span/>').addClass('name').text('Odnośnik '+nextId)
                                                       )
-                                                      .append(' [<span class="order">0</span>]')
+                                                      .append(' [<span class="ord">0</span>]')
                                                    )
                                                 )
                                 }

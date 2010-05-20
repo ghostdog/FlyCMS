@@ -2,7 +2,7 @@
 
     return array(
 
-        'templates' => array(
+        'themes' => array(
             'fail' => array(
                 'add' => 'Próba dodania szablony nie powiodła się.',
                 'edit' => 'Próba edycji szablonu nie powiodła się.',

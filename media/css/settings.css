@@ -1,11 +1,13 @@
 textarea, input[type="text"] { width: 96% }
 textarea { height: 10em }
 
-input[type="reset"] { background: transparent; border: none; color: #369 }
-input[type="reset"]:hover { color: #06f; text-decoration: underline; }
+input[type="reset"] { border: none; font-size: 100% }
 
 .input-wrap {width: 100%;  }
- 
+.reset:hover {
+    text-decoration: none ! important;
+    color: #06f ! important
+}
 
 #site-title, #site-meta, #site-template, .submit, #column1 { float: left; clear: left; }
 #column1, #column2 { padding: 1em 1%; width: 48%; padding: 1em 1%; width: 48%; }

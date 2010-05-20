@@ -1,18 +1,15 @@
 <?php
-    define('APP_NAME', 'FlyCMS');
-    define('req', '<em class="required">*</em>');
-    define('IMGS_PATH', 'media/img/tpl_examples/');
+    $request = Request::instance();
 
-    function get_tpl_img($tpl_name) {
-        $img_file = file::search_img_by_name($tpl_name, IMGS_PATH);
-        return html::image(IMGS_PATH.$img_file, array('alt' => 'Miniaturka obrazka szablonu'));
-    }
+    define('APP_NAME', $site_name);
+    define('req', '<em class="required">*</em>');
+    define('CONTROLLER', $request->controller);
+    define('ACTION', $request->action);
 
     function create_link($name, $controller_name, $action_name = null, $id = null, $attr = null) {
         $uri = set_controller($controller_name, $action_name, $id);
-        $request = Request::instance();
-        if ($request->controller == $controller_name) {
-            if ($request->action !== 'edit') {
+        if (CONTROLLER == $controller_name) {
+            if (ACTION !== 'edit') {
                     (! isset($attr['class'])) ? $attr['class'] = 'active' : $attr['class'] .= ' active';
             }
         }
@@ -53,13 +50,13 @@
             <li class="last-item"><?php echo html::anchor(set_controller('logout'), 'Wyloguj') ?></li>
     </ul>
     <div id="site-name">
-        <h1>FlyCMS<span> Twórz oczywiste...</span></h1>
+        <h1><?php echo APP_NAME ?><!--<span> Twórz oczywiste...</span>--></h1>
     </div>
     <div id="menu-bar">
         <ul id="menu">
            <li><?php create_link('Strony', 'pages') ?></li>
            <li><?php create_link('Nawigacja', 'menus') ?></li>
-           <li><?php create_link('Szablony', 'templates') ?></li>
+           <li><?php create_link('Szablony', 'themes') ?></li>
            <li><?php create_link('Ustawienia', 'settings') ?></li>
         </ul>
         <?php echo form::open('admin/pages/search', array('method' => 'GET', 'id' => 'search-frm')) ?>
@@ -90,6 +87,11 @@
     <li class="last-item"><?php echo html::anchor(set_controller('logout'), 'Wyloguj') ?></li>
 </ul>
 </div>
+	<?php if (Kohana::$environment !== Kohana::PRODUCTION) { ?>
+		<div id="kohana-profiler">
+			<?php echo View::factory('profiler/stats') ?>
+		</div><!-- #kohana-profiler -->
+	<?php } ?>
 </div>
 <script type="text/javascript">
  $(document).ready(function() {

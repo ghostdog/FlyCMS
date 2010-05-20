@@ -20,7 +20,7 @@
                 }
 
    
-                public static function get_raw_db_result(Database_Result $result, Array $columns) {
+                public static function result_obj2arr(Database_Result $result, Array $columns) {
                     $output = array();
                     $result = $result->as_array();
                     foreach ($result as $r) {
@@ -30,6 +30,16 @@
                         $output[] = $temp;
                     }
                      return $output;
+                }
+
+                public static function result_obj2arr_obj(Database_Result $results, $arr_obj = NULL) {
+                    if (is_null($arr_obj)) {
+                        $arr_obj = new ArrayObject();
+                    }
+                    foreach($results as $result) {
+                        $arr_obj->append($result);
+                    }
+                    return $arr_obj;
                 }
 	}
 

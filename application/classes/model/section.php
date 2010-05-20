@@ -65,8 +65,7 @@ class Model_Section extends Model_FlyOrm {
             if (Request::instance()->action == 'edit') {
                 $pages = $this->pages->find_all();
                 foreach($pages as $page) {
-                    if (! in_array($page->id, $this->section_additional_owners_id)
-                            AND $page->id != $current_page->id) {
+                    if (! in_array($page->id, $this->section_additional_owners_id)) {
                         $this->remove('pages', $page);
                     }
                 }
@@ -84,6 +83,13 @@ class Model_Section extends Model_FlyOrm {
         }
     }
 
+    public function get_section_pages() {
+        if ($this->pages->count_all()) {
+            return $this->pages->find_all();
+        }
+        return FALSE;
+    }
+    
     public function get_empty_sections($quantity = 1) {
         $arr_obj = new ArrayObject(array());
         for ($i = 0; $i < $quantity; $i++) {

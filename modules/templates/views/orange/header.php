@@ -1,28 +1,42 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="css/no_cols.css" type="text/css"/>
-<title><?php echo $page->title ?></title>
-</head>
-<body>
-<div id="wrap">
-<?php if ($settings->header_on) { ?>
-<div id="header">
-
-        <h1><?php echo $settings->title ?> <span id="desc"><?php echo $settigs->subtitle ?>s</span></h1>
-<!--        <ul>
-         <li><a href="" class="active" id="first_item"><span>Strona główna</span></a></li>
-         <li><a href=""><span>O nas</span></a></li>
-         <li><a href=""><span>Portfolio</span></a></li>
-         <li><a href="" id="last_item"><span>Kontakt</span></a></li>
-       </ul>
-
--->
 <?php
-    foreach ($menus as $menu) {
-        create_links($menu->menuitems);
-    }
+    defined('SYSPATH') or die('No direct script access');
+    $site_name = preg_split('/[\s,]+/', $title, 2);
 ?>
+<div id="header">
+    <h1><span style="color: #ff9400; font-style:italic; "><?php echo html::chars($site_name[0]) ?> </span><?php echo $site_name[1] ?><span id="desc"><?php echo html::chars($subtitle) ?></span></h1>
+    <?php
+          $count = $menus->count();
+          $active_link = Request::instance()->param('id');
+          fire::log($active_link, 'active_link');
+          $i = 0;
+          if ($count) {
+          foreach($menus as $menu) :
+    ?>
+        <ul>
+            <?php 
+                $menuitems = $menu->menuitems->find_all();
+                foreach($menuitems as $item) : ?>
+                <li>
+                    <?php
+                       $attr = array();
+                       if ($i == 0) {
+                           $attr['id'] = 'first_item';
+                       }
+                       if ($i == $count - 1) {
+                           $attr['id'] = 'last_item';
+                       }
+                       if ($active_link == $item->link) {
+                           $attr['class'] = 'active';
+                       }
+                       $i++;
+                       if ((int) $item->type == 0) {
+                       echo html::anchor(Route::get('page')->uri(array('id' => $item->link)), $item->name, $attr);
+                       } else {
+                           echo html::anchor($item->link);
+                       }
+                    ?>
+                </li>
+             <?php endforeach ?>
+        </ul>
+    <?php endforeach; } ?>
 </div>
-<?php } ?>

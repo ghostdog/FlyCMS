@@ -42,6 +42,23 @@ class Model_MenuItem extends ORM_MPTT {
         }
     }
 
+    public function delete($query = NULL) {
+        $count = ORM::factory('menuitem')->count_all();
+        if ($this->is_global) {
+            if ($count < 2) {
+
+            }
+        } else {
+            $item_groups = $this->menugroups->find_all();
+            foreach ($item_groups as $group) {
+                if ($group->menuitems->count_all() < 2) {
+                    
+                }
+            }
+        }
+        parent::delete($query);
+    }
+
     public function  __set($name,  $value) {
         if ($name == 'created') {
             $value = time();
@@ -60,6 +77,7 @@ class Model_MenuItem extends ORM_MPTT {
     public function get_errors() {
         return $this->_validate->errors($this->errors_filename);
     }
+
 
     
 

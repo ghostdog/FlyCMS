@@ -5,11 +5,11 @@
 		public $template = 'template';
                 protected $session;
                 protected $is_ajax = FALSE;
+                protected $active_models = array();
 
                 public function __construct(Request $req) {
                     parent::__construct($req);
                     $this->session = Session::instance();
-                    $this->session->set('prev_uri', $_SERVER['REQUEST_URI']);
                     if ( Request::$is_ajax OR $this->request !== Request::instance() ) {
                         $this->auto_render = FALSE;
                         $this->is_ajax = TRUE;
@@ -25,13 +25,16 @@
                 }
 
                 public function after() {
-                    if (($msg = $this->session->get('msg'))) {
-                            $this->template->set('msg', $msg)
-                                           ->set('is_success', $this->session->get('is_success'));
-                            $this->session->delete('msg')
-                                          ->delete('is_success');
+                  if ($this->auto_render) {
+                        if (($msg = $this->session->get('msg'))) {
+                                $this->template->set('msg', $msg)
+                                               ->set('is_success', $this->session->get('is_success'));
+                                $this->session->delete('msg')
+                                              ->delete('is_success');
+                       }
+                       $this->template->site_name = ORM::factory('setting')->find()->title;
                    }
-                    parent::after();
+                   parent::after();
                 }
 
                 protected function set_page_title($title) {
@@ -42,10 +45,6 @@
                         $this->template->set('content', View::factory($view));
                         return $this->template->content;
 		}
-
-                protected function set_content_var($var_name, $value) {
-                    $this->template->content->set($var_name, $value);
-                }
 
                 protected function set_msg($is_success) {
                     $msg_group = $this->request->controller;
@@ -65,17 +64,29 @@
                     $this->template->content->errors = $errors;
                 }
 
-               protected function redirect($controller, $action = null) {
-                    $route = Route::get('admin');
-                    $segments['controller'] = $controller;
-                    if (! is_null($action)) {
-                        $segments['action'] = $action;
+               protected function redirect($controller, $action = NULL, $id = NULL) {
+                   $route = 'admin';
+                   if ($controller == 'menus') {
+                        $route = 'menus';
+                   }
+                    $params['controller'] = $controller;
+                    if (isset($action)) {
+                        $param['action'] = $action;
+                    } else if (isset($id)) {
+                        $param['id'] = $id;
                     }
-                    $this->request->redirect($route->uri($segments));
+                    $this->request->redirect(Route::get($route)->uri($params));
                 }
 
-                protected function redirect_to_prev_uri() {
-                    $this->request->redirect('/'.$this->session->get('prev_uri'));
+                protected function model_instance($model_name, $id = NULL) {
+                    if (! isset($this->$model_name)) {
+                           $this->$model_name = ORM::factory($model_name, $id);
+                    }   
+                    return $this->$model_name;
+                }
+
+                protected function model_factory($model_name, $id = NULL) {
+                    return ORM::factory($model_name, $id);
                 }
 	}
 ?>

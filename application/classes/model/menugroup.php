@@ -28,7 +28,7 @@ class Model_MenuGroup extends Model_FlyOrm {
         'name' => array('is_unique'),
     );
 
-    private $groupOwnerPagesId = array();
+    private $group_owners_id = array();
 
     public function __construct($id = NULL) {
         parent::__construct('menugroup', $id);
@@ -41,9 +41,9 @@ class Model_MenuGroup extends Model_FlyOrm {
         parent::save();
         $this->reload();
         if (! $this->is_global) {
-            if (! empty($this->groupOwnerPagesId)) {
+            if (! empty($this->group_owners_id)) {
                 $page = ORM::factory('page');
-                foreach($this->groupOwnerPagesId as $id) {
+                foreach($this->group_owners_id as $id) {
                     $page = $page->find($id);
                     if (! $this->has('pages', $page)) {
                         $this->add('pages', $page->find($id));
@@ -68,7 +68,7 @@ class Model_MenuGroup extends Model_FlyOrm {
         if (! isset($data['is_global'])) {
            if (isset($data['pages'])) {
                foreach( $data['pages'] as $key => $value) {
-                   $this->groupOwnerPagesId[] = $key;
+                   $this->group_owners_id[] = $key;
                }
            }
            $this->is_global = 0;
@@ -79,11 +79,11 @@ class Model_MenuGroup extends Model_FlyOrm {
     public function check() {
         $result = parent::check();
         if (! $this->is_global) {
-            if (empty($this->groupOwnerPagesId)) {
+            if (empty($this->group_owners_id)) {
                 $this->_validate->error('is_global', 'no_pages');
                 return false;
             }
-        }
+        } 
         return $result;
     }
 
@@ -98,16 +98,12 @@ class Model_MenuGroup extends Model_FlyOrm {
         return $this->where('location', '=', $id)->order_by('ord', 'ASC')->find_all();
     }
 
-    public function get_all_groups() {
-        return $this->find_all();
+    public function get_globals() {
+        return $this->where('is_global', '=', 1)->order_by('ord', 'ASC')->find_all();
     }
 
-    public function get_parent_pages_if_exists() {
-        if (! $this->is_global) {
-            return $this->pages->find_all();
-        } else {
-            return FALSE;
-        }
+    public function get_all_groups() {
+        return $this->find_all();
     }
 
     public function get_items() {
