@@ -64,6 +64,7 @@
           field.blur(function() {
                     resultElement.text('');
           });
+          field.addClass('counter-active');
    return this;
   };
   	

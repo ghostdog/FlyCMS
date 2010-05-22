@@ -26,3 +26,10 @@ input[type="reset"] { border: none; font-size: 100% }
 #preview-anchor, #add_anchor { display: inline;  float: left; clear: none; margin-bottom: 2.9em; margin-left: .3em }
 #add-anchor { margin-left: .6em }
 #footer_on { margin-bottom: 1em }
+#user-frm div {
+   width: 100%;
+   margin-bottom: 1em;
+}
+#user-frm input {
+    width: 96%;
+}

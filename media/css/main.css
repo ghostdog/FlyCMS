@@ -157,9 +157,9 @@ select {
     margin-bottom: -.3em;
 }
 
-#page-content input[type="text"] { height: 2.4em;  }
-#page-content input[type="text"]:focus, textarea:focus { border: 1px solid #39f; background: url(img/content/text_focus_bg.png) repeat-x bottom left }
-#page-content input[type="text"], textarea { background: url('img/content/text_bg.png') repeat-x top left;
+#page-content input[type="text"], #page-content input[type="password"] { height: 2.4em;  }
+#page-content input[type="text"]:focus, textarea:focus, input[type="password"] { border: 1px solid #39f; background: url(img/content/text_focus_bg.png) repeat-x bottom left }
+#page-content input[type="text"], textarea, input[type="password"] { background: url('img/content/text_bg.png') repeat-x top left;
              border:1px solid #999; -moz-border-radius: 4px; -webkit-border-radius: 4px; padding: 0 .5em}
 #page-content label { float: left; padding: 0 0 .3em 1em; font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif; font-size: 110%; color: #333; }
 #page-content .input-wrap-label-right label { float: right }

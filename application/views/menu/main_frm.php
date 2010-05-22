@@ -251,6 +251,7 @@ if ($action == 'add') {
                                     body = outputTable.find('tbody').hide(),
                                     msgOutput = outputTable.find('caption');
                                 msgOutput.text('Pobieranie listy grup...');
+
                                 $.ajax({
                                             dataType : 'html',
                                             data : '',
@@ -287,8 +288,11 @@ if ($action == 'add') {
                     var itemsSize = editor.items.getSize(),
                     changeSize = 0,
                     msgOutput = $('#refresh-msg'),
-                    requestSize = reqSize;
-
+                    requestSize = reqSize,
+                    showGroupChooser = 1;
+                    if ($('#group').attr('checked') == true) {
+                            showGroupChooser = 0;
+                    }
                     if (requestSize == itemsSize) {
                    
                     } else if(requestSize > itemsSize) {
@@ -297,7 +301,7 @@ if ($action == 'add') {
                         msgOutput.text('Odświeżam...');
                         $.ajax({
                             dataType : 'html',
-                            data : 'add_sz='+changeSize+'&next_id='+nextId,
+                            data : 'add_sz='+changeSize+'&next_id='+nextId+'&show_group_chooser='+showGroupChooser,
                             url : <?php echo url::site() ?>  + 'admin/menus/ajax_items_refresh',
                             error : function(err, xhr, status) {
                                 msgOutput.text('Błąd.');

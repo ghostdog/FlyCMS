@@ -15,12 +15,12 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
     }
 
     public function action_edit($id) {
-        $this->model_instance('page')->find($id);
+        $this->m('page')->find($id);
         $this->load_page_form();
     }
 
     public function action_delete($id) {
-        $page = $this->model_instance('page');
+        $page = $this->m('page');
         if ($_POST) {
             $page->_delete($_POST['pages']);
         } else {
@@ -31,9 +31,9 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
     }
 
     public function action_ajax_sections_refresh() {
-        $addSz = intval($_GET['add_sz']);
-        $next_id = intval($_GET['next_id']);
-        $sections = $this->model_instance('section')->get_empty_sections($addSz);
+        $addSz = (int) $_GET['add_sz'];
+        $next_id = (int) $_GET['next_id'];
+        $sections = $this->m('section')->get_empty_sections($addSz);
         $sections = View::factory('section')
                 ->set('sections', $sections)
                 ->set('i', $next_id)
@@ -46,37 +46,34 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
 
 
     public function after() {
-        if (! $this->is_ajax) {
+        if ($this->auto_render) {
             $action = $this->request->action;
             if ($_POST AND $action != 'delete') {
                 fire::log($_POST, 'post');
-                $this->template->content
-                        ->bind('sections', $sections)
-                        ->bind('errors', $page_errors)
-                        ->bind('page_errors', $errors)
-                        ->bind('sections_errors', $sections_errors);
                 $sections_valid = TRUE;
                 $page_valid = TRUE;
-                $posted_sections = $_POST['sections'];
                 $sections = new ArrayObject();
                 $sections_errors = array();
                 $page_errors = array();
-                foreach($posted_sections as $key => $section) {
-                    $section_orm = ORM::factory('section');
-                    if ($action == 'edit') {
-                        $section_orm->find($section['id']);
-                        unset($section['id']);
-                    }
-                    $section_orm->values($section);
-                    if (! $section_orm->check()) {
-                        $sections_errors[$key] = $section_orm->get_errors();
-                    }
-                    $sections->append($section_orm);
-                    if (! empty($sections_errors)) {
-                        $sections_valid = FALSE;
+                if (isset($_POST['sections'])) {
+                    $posted_sections = $_POST['sections'];
+                     foreach($posted_sections as $key => $section) {
+                        $section_orm = $this->mf('section');
+                        if ($action == 'edit') {
+                            $section_orm->find($section['id']);
+                            unset($section['id']);
+                        }
+                        $section_orm->values($section);
+                        if (! $section_orm->check()) {
+                            $sections_errors[$key] = $section_orm->get_errors();
+                        }
+                        $sections->append($section_orm);
+                        if (! empty($sections_errors)) {
+                            $sections_valid = FALSE;
+                        }
                     }
                 }
-                $page = $this->model_instance('page');
+                $page = $this->m('page');
                 $page->values($_POST['page']);
                 if ($page->check() AND $sections_valid) {
                     $page->save();
@@ -99,8 +96,12 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
                 } else {
                     $this->set_msg(FALSE);
                 }
+                $this->template->content
+                        ->set('sections', $sections)
+                        ->set('errors', $page_errors)
+                        ->set('sections_errors', $sections_errors);
             } else if($action == 'edit') {
-                $this->template->content->sections = $this->model_instance('page')->sections->find_all();
+                $this->template->content->sections = $this->m('page')->sections->find_all();
             }
             if ($action == 'index') {
                 $this->set_page_title('Lista strony');
@@ -112,7 +113,7 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
     }
 
     private function create_pages_list($limit = 15) {
-        $finder = new Finder($this->model_instance('page'));
+        $finder = new Finder($this->m('page'));
         $action = $this->request->action;
         if ($action == 'index') {
             $result = $finder->find_all($limit, 'is_main', FALSE);
@@ -131,25 +132,23 @@ class Controller_Admin_Pages extends Controller_Admin_Admin {
     }
 
     private function load_page_form() {
-        $page = $this->model_instance('page');
-        $this->load_page_content('page_form')
-                ->bind('page', $page)
-                ->bind('action', $action)
-                ->bind('sections', $sections)
-                ->set('themes', $this->model_instance('theme')->get_themes());
         $action = $this->request->action;
+        $this->load_page_content('page_form');
         if ($action == 'edit') {
             $action .= '/'.$this->request->param('id');
         } else {
             if (! $_POST) {
-                $sections = $this->model_instance('section')->get_empty_sections(3);
+               $this->template->content->sections = $this->m('section')->get_empty_sections(3);
             }
         }
+        $this->template->content->set('page', $this->m('page'))
+                                ->set('action', $action)
+                                ->set('themes', $this->m('theme')->get_themes());
     }
 
     private function set_msg_from_result($result) {
         $this->session->set('msg', $result['msg'])
-                ->set('is_success', $result['is_success']);
+                      ->set('is_success', $result['is_success']);
     }
 }
 ?>

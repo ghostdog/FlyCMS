@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access');
 
-class Model_MenuItem extends ORM_MPTT {
+class Model_MenuItem extends Model_FlyORM {
 
     protected $_belongs_to = array('menugroup' => array());
 
@@ -27,22 +27,12 @@ class Model_MenuItem extends ORM_MPTT {
         )
     );
 
-    private $errors_filename = 'menuitems';
-
-    public function save() {
-        if ($this->parent_id) {
-            $parent = ORM::factory('menuitem', $this->parent_id);
-            $this->insert_as_last_child($parent);
-        } else {
-            if (! $this->_loaded) {
-                $this->insert_as_new_root();
-            } else {
-                parent::save();
-            }
-        }
+    public function __construct($id = null) {
+        parent::__construct('menuitems', $id);
     }
 
-    public function delete($query = NULL) {
+    public function delete($id = NULL) {
+        $this->find($id);
         $count = ORM::factory('menuitem')->count_all();
         if ($this->is_global) {
             if ($count < 2) {
@@ -56,7 +46,7 @@ class Model_MenuItem extends ORM_MPTT {
                 }
             }
         }
-        parent::delete($query);
+        return parent::delete();
     }
 
     public function  __set($name,  $value) {
@@ -74,12 +64,12 @@ class Model_MenuItem extends ORM_MPTT {
         return $arr_obj;
     }
 
+    public function get_item_group() {
+        return $this->menugroup->find();
+    }
+
     public function get_errors() {
         return $this->_validate->errors($this->errors_filename);
     }
-
-
-    
-
 }
 ?>

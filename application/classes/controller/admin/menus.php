@@ -8,9 +8,9 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
     }
 
     public function action_delete_item($id) {
-        $item = $this->model_instance('menuitem', $id);
+        $item = $this->m('menuitem', $id);
         if ($item->loaded()) {
-            $group_id = $item->menugroup->find()->id;
+            $group_id = $item->get_item_group()->id;
             $item->delete();
             $this->set_msg(TRUE);
             $this->redirect('menus', 'edit', $group_id);
@@ -20,32 +20,36 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
         }
     }
     
-    public function action_add() {}
+    public function action_add() {
+        
+    }
 
     public function action_edit($id) {
-        $this->model_instance('menugroup')->find($id);
+        $this->m('menugroup')->find($id);
     }
 
     public function action_ajax_groups_by_location() {
         $location = intval($_GET['location']);
-        echo json_encode(misc::result_obj2arr($this->model_instance('menugroup')->get_by_location($location),
+        echo json_encode(misc::result_obj2arr($this->m('menugroup')->get_by_location($location),
                                          array('name', 'ord','is_global')));
     }
 
     public function action_ajax_items_refresh() {
-        $addSz = intval($_GET['add_sz']);
-        $next_id = intval($_GET['next_id']);
-        $items = $this->model_instance('menuitem')->get_empty_items($addSz);
+        $addSz = (int) $_GET['add_sz'];
+        $next_id = (int) $_GET['next_id'];
+        $show_group_chooser = (bool)$_GET['show_group_chooser'];
+        $items = $this->m('menuitem')->get_empty_items($addSz);
         $items = View::factory('menu/item_frm')
                  ->set('items', $items)
-                 ->set('groups', $this->model_instance('menugroup')->get_all_groups())
+                 ->set('groups', $this->m('menugroup')->get_all_groups())
                  ->set('i', $next_id)
+                 ->set('show_group_chooser', $show_group_chooser)
                  ->render();
         echo $items;
     }
 
     public function action_ajax_groups_list() {
-        $group = $this->model_instance('menugroup');
+        $group = $this->m('menugroup');
         if ($group->count_all()) {
             $list = View::factory('menu/groups_list')->set('groups', $group->get_all_groups());
             echo $list;
@@ -56,23 +60,24 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
 
     public function action_ajax_group_items() {
         $id = (int)$_GET['group_id'];
-        echo json_encode(misc::result_obj2arr($this->model_instance('menugroup',$id)->get_items($id), array('id', 'name')));
+        echo json_encode(misc::result_obj2arr($this->m('menugroup',$id)->get_items($id), array('id', 'name')));
     }
 
     public function after() {
         $action = $this->request->action;
         if ($action == 'add' OR $action == 'edit') {
-            $group = $this->model_instance('menugroup');
+            $group = $this->m('menugroup');
             $group_editor = View::factory('menu/group_frm')
-                     ->bind('group', $group);
+                     ->set('group', $group);
             $this->template->content = $main_frm = View::factory('menu/main_frm')
-                 ->bind('group', $group_editor)
-                 ->bind('items', $items)
-                 ->set('groups', $group->get_all_groups());
+                 ->set('group', $group_editor)
+                 ->set('groups', $group->get_all_groups())
+                 ->bind('items', $items);
                if ($_POST) {
                     $is_group_valid = TRUE;
                     $are_items_valid = TRUE;
                     $is_group_to_add = $this->is_group_to_add($action);
+                    fire::log($is_group_to_add, 'is group');
 
                     if ($is_group_to_add) {
                         $group_vals = $_POST['group'];
@@ -88,13 +93,12 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
                     
                     $items = new ArrayObject();
                     foreach ($_POST['items'] as $key => $item) {
-                        $temp_item = $this->model_factory('menuitem');
+                        $temp_item = $this->mf('menuitem');
                         if (! empty($item['id'])) {
                            $temp_item->find($item['id']);
                            unset($item['id']);
                         }
                         $items->append($temp_item->values($item));
-                        $errors = array();
                         if (! $temp_item->check()) {
                             $errors[$key] = $temp_item->get_errors();
                         }
@@ -119,11 +123,11 @@ class Controller_Admin_Menus extends Controller_Admin_Admin {
                             $item->save();
                         }
                         $this->set_msg(TRUE);
-                       // $this->redirect('menus/add');
+                        $this->redirect('menus/add');
                     }
                 } else {
                     if ($action == 'add') {
-                        $items = $this->model_instance('menuitem')->get_empty_items(3);
+                        $items = $this->m('menuitem')->get_empty_items(3);
                     } else {
                         $items = $group->get_items();
                     }

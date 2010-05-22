@@ -5,23 +5,50 @@
 		public $template = 'template';
                 protected $session;
                 protected $is_ajax = FALSE;
-                protected $active_models = array();
+                protected $is_internal_request = FALSE;
+                protected $current_user;
+
+                public function before() {
+                    parent::before();
+//                    if (($this->_current_user = cookie::get('authorized')) === NULL)
+//                    {
+//                            if ($this->request->controller !== 'login')
+//                            {
+//                                    // Skip the current action
+//                                    $this->request->action = 'skip';
+//
+//                                    // Load the login page via a sub-query
+//                                    $this->template->content = Request::factory($this->request->uri(array('action' => 'login')))->execute();
+//                            }
+//                    } else if ($this->request->controller == 'login') {
+//
+//                    }
+                    $this->template->page_title = '';
+                    $this->template->content = '';
+                }
 
                 public function __construct(Request $req) {
                     parent::__construct($req);
                     $this->session = Session::instance();
-                    if ( Request::$is_ajax OR $this->request !== Request::instance() ) {
+                    if ( Request::$is_ajax ) {
                         $this->auto_render = FALSE;
                         $this->is_ajax = TRUE;
                         $this->request->headers['Content-Type'] = 'application/json';
+                    }
+                    if ($this->request !== Request::instance()) {
+                        $this->is_internal_request = TRUE;
                     }
                     FirePHP_Profiler::instance()
                         ->group('Profiler')
                         ->post()
                         ->get()
                         ->database()
-                        //->benchmark()
+                        ->benchmark()
                         ->groupEnd();
+                }
+
+                final public function action_skip() {
+                    
                 }
 
                 public function after() {
@@ -78,15 +105,5 @@
                     $this->request->redirect(Route::get($route)->uri($params));
                 }
 
-                protected function model_instance($model_name, $id = NULL) {
-                    if (! isset($this->$model_name)) {
-                           $this->$model_name = ORM::factory($model_name, $id);
-                    }   
-                    return $this->$model_name;
-                }
-
-                protected function model_factory($model_name, $id = NULL) {
-                    return ORM::factory($model_name, $id);
-                }
 	}
 ?>

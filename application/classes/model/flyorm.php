@@ -58,11 +58,12 @@ abstract class Model_FlyOrm extends ORM {
     }
     
     protected function get_config($key) {
-        return Kohana::config($this->_table_name.'.'.$key);
+        return Kohana::config($this->get_msg_group_name().'.'.$key);
+        
     }
 
     protected function set_result($msg_name, $is_success = TRUE) {
-        $msg_group = $this->_table_name;
+        $msg_group = $this->get_msg_group_name();
         $msg_type = ($is_success) ? 'success' : 'fail';
         $this->result['msg'] = Kohana::message('messages', $msg_group.'.'.$msg_type.'.'.$msg_name);
         $this->result['is_success'] = $is_success;
@@ -75,6 +76,10 @@ abstract class Model_FlyOrm extends ORM {
               return FALSE;
         }
         return $result;
+    }
+
+    private function get_msg_group_name() {
+        return Inflector::plural(str_replace('Model_', '', get_class($this)));
     }
 
 }

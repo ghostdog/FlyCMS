@@ -51,7 +51,7 @@ foreach($items as $item) :
 
 <?php
     $action = Request::instance()->action;
-    if ($action == 'add') {
+    if (isset($show_group_chooser) AND $show_group_chooser OR $action == 'add') {
 ?>
  <tr class="select-wrap item-group">
     <td><?php echo form::label('item-group'.$i, 'Grupa odnośników'); ?></td>
@@ -69,25 +69,25 @@ foreach($items as $item) :
 <tr>
     <td class="ajax-msg" colspan="2" style="text-align: right"></td>
 </tr>
-<tr class="select-wrap item-parent">
+<!--<tr class="select-wrap item-parent">
     <td><?php echo form::label('item-parent'.$i, 'Odnośnik nadrzędny'); ?></td>
     <td>
     <?php
-        $group = $item->menugroup;
-        $items = $group->menuitems->find_all();
-        $options[0] = '';
-        foreach($items as $_item) {
-            if ($_item->id == $item->id) {
-                continue;
-            } else {
-                $options[$_item->id] = $_item->name;
-            }
-        }
-        echo form::select('items['.$i.'][parent_id]', $options,
-                        $item->parent, array('id' => 'item-parent'.$i));
+//        $group = $item->menugroup;
+//        $items = $group->menuitems->find_all();
+//        $options[0] = '';
+//        foreach($items as $_item) {
+//            if ($_item->id == $item->id) {
+//                continue;
+//            } else {
+//                $options[$_item->id] = $_item->name;
+//            }
+//        }
+//        echo form::select('items['.$i.'][parent_id]', $options,
+//                        $item->parent, array('id' => 'item-parent'.$i));
     ?>
     </td>
-</tr>
+</tr>-->
 <tr class="select-wrap item-ord">
     <td><?php echo form::label('item-ord'.$i, 'Kolejność'); ?></td>
     <td><?php echo form::select('items['.$i.'][ord]',$ord, $item->ord, array('id' => 'item-ord'.$i));?></td>

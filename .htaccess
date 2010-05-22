@@ -7,11 +7,12 @@ RewriteEngine On
 RewriteBase /kohana/
 
 # Protect application and system files from being viewed
-RewriteCond $1 ^(application|system)
+RewriteCond $1 ^(application|system|modules)
 
 # Rewrite to index.php/access_denied/URL
 RewriteRule ^(.*)$ / [PT,L]
 RewriteRule ^(media) - [PT,L]
+RewriteRule ^(themes) - [PT,L]
 
 # Allow these directories and files to be displayed directly:
 # - index.php (DO NOT FORGET THIS!)

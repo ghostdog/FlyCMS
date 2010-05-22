@@ -53,6 +53,16 @@
                'delete' => 'Strona(y) usunięte z powodzeniem.',
             ),
         ),
+
+        'auth' => array(
+            'fail' => array(
+               'login' => 'Niepoprawne hasło lub nazwa użytkownika.',
+               'change' => 'Próba edycji danych nie powiodła się.',
+            ),
+            'success' => array(
+               'change' => 'Ustawienia zmienione z powodzeniem.',
+            ),
+        ),
     )
 
 ?>

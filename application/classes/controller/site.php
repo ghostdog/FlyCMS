@@ -2,59 +2,51 @@
 
 class Controller_Site extends Controller_Fly {
 
-   public $template = 'site';
-   private $page;
-   private $settings;
-
    public static $meta_names = array('keywords', 'descriptions', 'author');
 
-   public function before() {
-       parent::before();
-       $this->page = ORM::factory('page');
-       $this->settings = ORM::factory('setting')->find();
-
-   }
 
    public function action_main() {
-        $this->page = $this->page->get_main_page();
+        $this->m('page')->get_main_page();
    }
 
    public function action_page($page_title) {
-       $this->page->get_by_link($page_title);
-       if (! $this->page->loaded()) {
-           $this->page->get_main_page();
+       $page = $this->m('page');
+       $page->get_by_link($page_title);
+       if (! $page->loaded()) {
+           $page->get_main_page();
        }
    }
 
    public function after() {
-        $settings = $this->settings;
-        $page = $this->page;
-        $template = $page->template->name;
-        $menus = $page->get_menus();
+        $page = $this->m('page');
         $metas = '';
         foreach(self::$meta_names as $meta) {
-           if (! empty($this->page->$meta)) {
-              $metas .= html::meta($this->page->$meta, $meta).PHP_EOL;
+           if (! empty($page->$meta)) {
+              $metas .= html::meta($page->$meta, $meta).PHP_EOL;
            }
         }
-        $this->template->set('template', $template)
-                       ->set('metas', $metas)
-                       ->set('menus', $menus['content'])
-                       ->set('sections', $page->get_sections())
-                       ->set_global('page', $page);
+        $theme = $page->get_theme_name();
+        Kohana::set_module_path('themes', Kohana::get_module_path('themes').'/'.$theme);
+        $menus = $page->get_menus();
+        $this->template = View::factory('layout')
+                           ->set('theme', $theme)
+                           ->set('metas', $metas)
+                           ->set('menus', $menus['content'])
+                           ->set('sections', $page->get_sections())
+                           ->set_global('page', $page);
         if ($page->header_on) {
-            $this->template->header = View::factory($template.'/header')
+            $settings = $this->m('setting');
+            $this->template->header = View::factory('/header')
                                               ->set('title', $settings->title)
                                               ->set('subtitle', $settings->subtitle)
                                               ->set('menus', $menus['header']);
         }
         if ($page->sidebar_on) {
-            $this->template->sidebar = View::factory($template.'/sidebar', array('menus' => $menus['sidebar']));
+            $this->template->sidebar = View::factory('sidebar', array('menus' => $menus['sidebar']));
         }
         if ($page->footer_on) {
-            $this->template->footer = View::factory($template.'/footer');
+            $this->template->footer = View::factory('footer');
         }
-
         parent::after();
    }
 

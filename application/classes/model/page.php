@@ -78,12 +78,13 @@ class Model_Page extends Model_FlyOrm {
         $content_menus = new ArrayObject();
         foreach($menus_all as $menu) {
             $location = (int) $menu->location;
-            if ($location == 0) {
-                $header_menus->append($menu);
-            } else if ($location == 1) {
-                $sidebar_menus->append($menu);
-            } else if ($location == 2) {
-                $content_menus->append($menu);
+            switch ($location) {
+                case 0 : $header_menus->append($menu);
+                         break;
+                case 1 : $sidebar_menus->append($menu);
+                         break;
+                case 2 : $content_menus->append($menu);
+                         break;
             }
         }
         $menus['header'] = $header_menus;
@@ -94,6 +95,14 @@ class Model_Page extends Model_FlyOrm {
 
     public function get_pages() {
         return $this->order_by('is_main', 'DESC')->find_all();
+    }
+
+    public function get_theme_name() {
+        $name = $this->theme->find()->name;
+        if (empty($name)) {
+           return ORM::factory('theme')->get_global_theme()->name;
+        }
+        return $name;
     }
 
     public function save() {
@@ -163,10 +172,6 @@ class Model_Page extends Model_FlyOrm {
         }
     }
 
-    public function get_result() {
-        return $this->result;
-    }
-
     public function __get($name) {
         $value = parent::__get($name);
         if ($name == 'created' || $name == 'last_modified')
@@ -188,15 +193,15 @@ class Model_Page extends Model_FlyOrm {
             $page = $this;
         }
         if ($this->count_all() > 1) {
-            if (! $page->is_main) {
+//            if (! $page->is_main) {
                 $sections = $page->sections->find_all();
                 foreach ($sections as $section) {
                     $section->delete();
                 }
                 $page->delete();
-            } else {
-                $this->set_result('main_page', FALSE);
-            }
+//            } else {
+//                $this->set_result('main_page', FALSE);
+//            }
         } else {
             $this->set_result('last_page', FALSE);
         }

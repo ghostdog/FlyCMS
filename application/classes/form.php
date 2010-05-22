@@ -33,6 +33,13 @@ class Form extends Kohana_Form {
        $output .= form::input($id, $value, $attr);
        return $output .= '</div>';
    }
+   public static function pass_w_label($id, $label, $value = null , $attr = array()) {
+       $output = '<div class="input-wrap">';
+       $output .= form::label($id, $label);
+       $attr['id'] = $id;
+       $output .= form::password($id, $value, $attr);
+       return $output .= '</div>';
+   }
 
    public static function tarea_w_label($id, $label, $value = null, $attr = array()) {
        $output = '<div class="input-wrap">';

@@ -81,6 +81,7 @@ Kohana::modules(array(
            'unittest'   => MODPATH.'unittest',
            'pagination' => MODPATH.'pagination',
            'mptt'       => MODPATH.'mptt',
+           'themes'     => DOCROOT.'themes',
 	));
 
 //Kohana::$log->attach(new FirePHP_Log_File(APPPATH.'logs'));
@@ -90,6 +91,13 @@ Kohana::modules(array(
  * defaults for the URI.
  */
 #
+//Route::set('auth', 'admin/(/<action>)')
+//		->defaults(array(
+//		'directory' => 'admin',
+//                'controller' => 'auth',
+//                'action' => 'login',
+//));
+
 Route::set('menus', 'admin/menus(/<action>(/<id>))')
 		->defaults(array(
 		'directory' => 'admin',

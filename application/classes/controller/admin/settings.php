@@ -2,29 +2,31 @@
 
 class Controller_Admin_Settings extends Controller_Admin_Admin {
 
-    private $settings;
+    public function action_index() {
 
-    public function before() {
-        parent::before();
-        $this->settings = ORM::factory('setting')->find();
-        $this->set_page_title('Ustawienia globalne');
-        $this->load_page_content('settings')
-             ->bind('settings', $this->settings)
-             ->set('themes', ORM::factory('theme')->get_themes());
     }
 
-    public function action_index() {}
-
     public function action_save() {
+
+    }
+
+    public function after() {
+        $settings = $this->m('setting')->find();
+        $this->set_page_title('Ustawienia globalne');
         if ($_POST) {
-            $saved = $this->settings->save_if_valid($_POST);
+            $saved = $settings->save_if_valid($_POST);
             $this->set_msg($saved);
             if (! $saved) {
-                $this->set_form_errors($this->settings->get_errors());
+                $this->set_form_errors($settings->get_errors());
             } else {
                 $this->redirect('settings');
             }
         }
+        $this->load_page_content('settings')
+                ->set('settings', $settings)
+                ->set('user', DB::query(Database::SELECT, 'SELECT username FROM auth LIMIT 1')->execute()->current())
+                ->set('themes', $this->m('theme')->get_themes());
+        parent::after();
     }
 }
 ?>

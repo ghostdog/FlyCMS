@@ -24,6 +24,11 @@
     echo form::error($errors['description']);
     echo form::help('description-help', 'Treść panelu pomocy dla opisu stron');
     echo form::close_fieldset();
+    echo '<div class="submit">';
+    echo form::submit('settings-submit', 'Zapisz ustawienia');
+    echo form::input('reset', 'Przywróć', array('type' => 'reset'));
+    echo html::anchor('', 'Wyczyść' , array('class' => 'reset'));
+    echo '</div>';
     echo '</div>';
     echo '<div id="column2">';
     echo form::fieldset('Wygląd', array('id' => 'site-theme'));
@@ -43,14 +48,21 @@
     echo form::select('sidebar_on', array(1 => 'Lewa', 2 => 'Prawa', 0 => 'Brak') , $settings->sidebar_on, array('id' => 'sidebar_on'));
     echo '</div>';
     echo form::close_fieldset();
-    echo '<div class="submit">';
-    echo form::submit('settings-submit', 'Zapisz ustawienia');
-    echo form::input('reset', 'Przywróć', array('type' => 'reset'));
-    echo html::anchor('', 'Wyczyść' , array('class' => 'reset'));
-    echo '</div>';
-    echo '</div>';
     echo form::close();
-   
+    echo form::fieldset('Zmiana nazwy użytkownika i hasła', array('id' => 'user-frm'));
+    echo form::open('admin/change');
+    echo form::text_w_label('username', 'Nazwa użytkownika', $user['username']);
+    echo form::error($errors['username']);
+    echo form::pass_w_label('old_pass', 'Wprowadź poprzednie hasło');
+    echo form::error($errors['old_pass']);
+    echo form::pass_w_label('pass1', 'Wprowadź nowe hasło');
+    echo form::error($errors['pass1']);
+    echo form::pass_w_label('pass2', 'Wprowadź ponownie nowe hasło');
+    echo form::error($errors['pass2']);
+    echo form::submit('change', 'Zmień dane użytkownika', array('style' => 'width: 15em; float: right'));
+    echo form::close();
+    echo form::close_fieldset();
+    echo '</div>';
 ?>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -59,5 +71,6 @@ $(document).ready(function(){
      $('#author').counter({maxLength : 50});
      $('#keywords').counter({maxLength : 255});
      $('#description').counter({maxLength : 255});
-});
+     $('#username').counter({maxLength : 25});
+})
 </script>
